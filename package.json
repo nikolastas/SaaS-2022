@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ntua/saas2022-24#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "google-auth-library": "^8.0.2",
     "jsonwebtoken": "^8.5.1"
   }
 }

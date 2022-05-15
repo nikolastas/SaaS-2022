@@ -1,6 +1,7 @@
 const express =  require('express');
 const handler = require('./login_handling/login.js');
 const jwt = require("jsonwebtoken");
+const verifyUser = require('./verifyUser.js')
 app = express();
 
 app.get("/",(req,res) => {
@@ -52,6 +53,8 @@ app.get("/home",(req,res)=>{
         console.log(decodeToken);
         // SQL QUERY TO GET ALL SUBSCRIPTION
         let query = `SELECT SubcriptionType FROM subscription WHERE username = '${decodeToken.sub}'`;
+        //TODO: move the verifyUser to an apropriate location
+        verifyUser(handler.CLIENT_ID, token).catch(console.error);
         res.send(`Hello ${decodeToken.name}`);
     }
     else {
