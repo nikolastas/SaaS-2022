@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<header>
+    <title>Login</title>
+</header>
+<body>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+         data-client_id="121675657166-v1sgbuen2ph1e9qs8iq8h92di7mp676f.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard" data-theme="dark"></div>
+  </body>
+
+
+<script>
+    
+    function handleCredentialResponse(response) {
+        // decodeJwtResponse() is a custom function defined by you
+        // to decode the credential response.
+        console.log(response.credential);
+        // redirect with post request to /home with token
+        window.location.href = '/home?token=' + response.credential;
+        
+    }
+
+
+</script>
+</html>
