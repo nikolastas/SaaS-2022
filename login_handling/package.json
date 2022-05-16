@@ -1,0 +1,17 @@
+{
+  "name": "login_handling",
+  "version": "1.0.0",
+  "description": "This microservice handles the loggin process through the Google API authorization.\r # Auth\r A jwt token.\r AUTH middleweare function in every request ?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "google-auth-library": "^8.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1"
+  }
+}

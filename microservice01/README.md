@@ -1,6 +1,0 @@
-# MICROSERVICE
-
-## (name)
-
-(description)
-
