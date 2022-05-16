@@ -15,7 +15,7 @@ app.get("/login", (req, res) => {
     res.status(200).sendFile(__dirname + "/login_handling/login.html");
 }
 )
-app.get("/upload/:filename", add.upload_csv);
+app.get("/upload/:foldername/:filename", add.upload_csv);
 
 app.get("/home",(req,res)=>{
     const token = req.query.token;
