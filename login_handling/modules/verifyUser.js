@@ -10,7 +10,7 @@ module.exports = async function verifyUser(token) {
       audience: clientID,
     });
     const payload = ticket.getPayload();
-    // const userid = payload['sub'];
-    console.log('Token verified'); //can be removed
+    const userid = payload['sub'];
+    console.log(`${userid}`); //can be removed
 }
 

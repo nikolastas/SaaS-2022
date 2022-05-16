@@ -3,8 +3,9 @@ const express =  require('express');
 const jwt = require("jsonwebtoken");
 const verifyUser = require('./modules/verifyUser.js')
 const checkSubscription = require('./modules/check_sub.js')
-
+const cred = require('./db_config.json')
 app = express();
+
 
 app.get("/",(req,res) => {
     res.status(200).sendFile(__dirname + "/index.html");
@@ -18,6 +19,13 @@ app.get("/login", (req, res) => {
 )
 
 app.get("/home",(req,res)=>{
+    let ans = {
+        verified : 'false',
+        name : '',
+        userID : '',
+        subscription : '',
+        errors: ''
+    }
     const token = req.query.token;
 
     function parseJwt (token) {
@@ -34,12 +42,25 @@ app.get("/home",(req,res)=>{
         let decodeToken = parseJwt(token);
         console.log(decodeToken);
         // SQL QUERY TO GET ALL SUBSCRIPTION
+        ans.name = decodeToken.name;
+        ans.userID = decodeToken.sub;
 
-        verifyUser(token).catch(console.error);
-        // res.send(`Hello ${decodeToken.name}`);
+        ans.verified = verifyUser(token).catch(console.error); //async function
 
-        checkSubscription(decodeToken.sub).catch(console.error);
-        res.send(`Hello ${decodeToken.name}`);
+        async function test() {
+            await checkSubscription(decodeToken.sub)
+            return 5;
+        }
+        console.log(cred.temp)
+
+
+        if(ans.verified === 'false'){
+            ans.errors = "Unauthorized user";
+            res.status(401).send(ans);
+        }
+        else{
+            res.status(200).send(ans);
+        }
 
     }
     else {
