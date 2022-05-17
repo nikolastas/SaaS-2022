@@ -1,4 +1,4 @@
-CREATE TABLE ActualTotalLoad (Datetime timestamp NOT NULL, TotalLoadValue float, UpdateTime timestamp NULL, ResolutionCode varchar(255), AreaAreaName varchar(255) NOT NULL, PRIMARY KEY (Datetime, AreaAreaName));
+CREATE TABLE ActualTotalLoad (Datetime timestamp NOT NULL,ResolutionCode varchar(255), TotalLoadValue float, UpdateTime timestamp NULL, AreaAreaName varchar(255) NOT NULL, PRIMARY KEY (Datetime, AreaAreaName));
 CREATE TABLE AggrGenerationPerType (DateTime timestamp NOT NULL, ResolutionCode varchar(255), ProductionType varchar(255) NOT NULL, ActualGenerationOutput float, ActualConsumption float, UpdateTime timestamp NULL, AreaAreaName varchar(255) NOT NULL, PRIMARY KEY (DateTime, ProductionType, AreaAreaName));
 CREATE TABLE Area (AreaTypeCode varchar(255) NOT NULL, AreaName varchar(255) NOT NULL, MapCode varchar(255) NOT NULL, PRIMARY KEY (AreaName));
 CREATE TABLE PhysicalFlows (DateTime int(10) NOT NULL, FlowValue float, UpdateTime timestamp NULL, ResolutionCode int(10), InAreaAreaName varchar(255) NOT NULL, OutAreaAreaName varchar(255) NOT NULL, PRIMARY KEY (DateTime, InAreaAreaName, OutAreaAreaName));
