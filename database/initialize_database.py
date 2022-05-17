@@ -40,7 +40,7 @@ def check_countries():
     cnx.commit()
     # close connection
     return rows
-countries = check_countries()
+
 
 def add_data(data, database):
     # create cursor
@@ -58,8 +58,7 @@ def add_data(data, database):
         return 
     for d in data:
         # make the data query 
-
-        
+        # special case if d is None !
         data = "("
         for i in d:
             if (i == None):
@@ -68,20 +67,16 @@ def add_data(data, database):
                 data = data + "'" + str(i) + "',"
         data = data[:-1]
         data = data + ")"
+        # make the query
         query = ("INSERT INTO "+ database+" VALUES "+data+"")
-        print(query)
+        # execute query
         cursor.execute(query.format(str(query)))
         # fetch all rows
         rows = cursor.fetchall()
     cnx.commit()
     
     return
-try:
-    add_data(("117516749689603537471", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
-    add_data(("104881660807990284320", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
-except:
-    print("error with user data")
-print("User Data finished")
+
 
 # read csv file
 def read_csv_countries(filename):
@@ -90,13 +85,12 @@ def read_csv_countries(filename):
     for index, row in data.iterrows():
         list_of_data.append((row["AreaTypeCode"], row["AreaName"], row["MapCode"]))
     return list_of_data
-# list_of_data = read_csv_countries("./data/countries/countries_data.csv") 
-# add_data(list_of_data, "area")
+
+
 
 
 def read_csv_no_FF(filename):
     data = pd.read_csv(filename, sep="\t")
-    print(data.head())
     list_data = []
     for index, row in data.iterrows():
         # all the row with not datetime in it
@@ -115,16 +109,10 @@ def read_csv_no_FF(filename):
         list_data.append(tuple(selected_data_from_row.values()))
     return list_data
 
-# d = read_csv_no_FF("./data/aggrgenerationpertype/2022_01_01_01_AggregatedGenerationPerType16.1.BC.csv")
-# add_data(d, "aggrgenerationpertype")
 
-# e = read_csv_no_FF("./data/actualtotalload/2022_01_01_01_ActualTotalLoad6.1.A.csv")
-# add_data(e, "actualtotalload")
 
 def read_csv_data_FF(filename):
     data = pd.read_csv(filename, sep="\t")
-    print(data.head())
-
     list_data = []
     for index, row in data.iterrows():
         # all the row with not datetime in it
@@ -145,8 +133,57 @@ def read_csv_data_FF(filename):
             selected_data_from_row[s+"AreaName"] = row[s+"AreaName"]
         list_data.append(tuple(selected_data_from_row.values()))
     return list_data
+######## ------------------- adding proceess---------------------------- #############
 
-f = read_csv_data_FF("./data/physicalflows/2022_01_01_01_PhysicalFlows12.1.G.csv")
-add_data(f, "physicalflows")
+# --------------------- add countries -----------------
+print("trying to add countries")
+try:
+    list_of_data = read_csv_countries("./data/countries/countries_data.csv") 
+    add_data(list_of_data, "area")
+    print("countries added")
+except:
+    print("error with countries")
+
+# get all counties
+print("Getting all countries")
+try:
+    countries = check_countries()
+    print("Counties: Done!")
+except:
+    print("something went wrong with countries")
+
+# --------------------users-----------------
+print("try to add users!")
+try:
+    add_data(("117516749689603537471", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
+    add_data(("104881660807990284320", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
+    print("User Data finished")
+except:
+    print("error with user data")
+
+
+# ---------------------- aggregation and actual tolal load -----------------
+print("try to add aggregation and actual total load")
+try:
+    d = read_csv_no_FF("./data/aggrgenerationpertype/2022_01_01_01_AggregatedGenerationPerType16.1.BC.csv")
+    add_data(d, "aggrgenerationpertype")
+
+    e = read_csv_no_FF("./data/actualtotalload/2022_01_01_01_ActualTotalLoad6.1.A.csv")
+    add_data(e, "actualtotalload")
+    print("Aggregation and Actual Total Load finished")
+except:
+    print("error with aggregation and actual total load")
+
+
+# ------------------- physical flow -----------------
+print("try to add physical flow")
+try:
+    f = read_csv_data_FF("./data/physicalflows/2022_01_01_01_PhysicalFlows12.1.G.csv")
+    add_data(f, "physicalflows")
+    print("Physical Flow finished")
+except:
+    print("error with physical flow")
+
+
  # close connection
 cnx.close()
