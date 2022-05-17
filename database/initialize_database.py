@@ -157,6 +157,7 @@ print("try to add users!")
 try:
     add_data(("117516749689603537471", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
     add_data(("104881660807990284320", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
+    add_data(("104059457961494644509", '2020-01-01', '2022-12-30', "VALID"), "subscriptions")
     print("User Data finished")
 except:
     print("error with user data")
