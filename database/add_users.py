@@ -1,3 +1,4 @@
+from datetime import datetime
 import numpy 
 import mysql.connector
 import pandas as pd
@@ -57,7 +58,8 @@ def add_data(data, database):
         return 
     for d in data:
         # make the data query 
-    
+
+        
         data = "("
         for i in d:
             if (i == None):
@@ -113,10 +115,38 @@ def read_csv_no_FF(filename):
         list_data.append(tuple(selected_data_from_row.values()))
     return list_data
 
-d = read_csv_no_FF("./data/aggrgenerationpertype/2022_01_01_01_AggregatedGenerationPerType16.1.BC.csv")
+# d = read_csv_no_FF("./data/aggrgenerationpertype/2022_01_01_01_AggregatedGenerationPerType16.1.BC.csv")
 # add_data(d, "aggrgenerationpertype")
 
-e = read_csv_no_FF("./data/actualtotalload/2022_01_01_01_ActualTotalLoad6.1.A.csv")
-add_data(e, "actualtotalload")
+# e = read_csv_no_FF("./data/actualtotalload/2022_01_01_01_ActualTotalLoad6.1.A.csv")
+# add_data(e, "actualtotalload")
+
+def read_csv_data_FF(filename):
+    data = pd.read_csv(filename, sep="\t")
+    print(data.head())
+
+    list_data = []
+    for index, row in data.iterrows():
+        # all the row with not datetime in it
+        incountry = tuple(row[["InAreaTypeCode", "InAreaName", "InMapCode"]])
+        outcountry = tuple(row[["OutAreaTypeCode", "OutAreaName", "OutMapCode"]])
+        for country in [outcountry, incountry]:
+            if(country not in countries):
+                add_data(country, "area")
+                countries.append(country)
+        # replace'nan' with None
+        row = row.replace(numpy.nan, None)
+        selected_data_from_row = dict(row)
+        for s in ["In", "Out"]:
+            del selected_data_from_row[s+"AreaCode"]
+            del selected_data_from_row[s+"AreaTypeCode"]
+            del selected_data_from_row[s+"AreaName"]
+            del selected_data_from_row[s+"MapCode"]
+            selected_data_from_row[s+"AreaName"] = row[s+"AreaName"]
+        list_data.append(tuple(selected_data_from_row.values()))
+    return list_data
+
+f = read_csv_data_FF("./data/physicalflows/2022_01_01_01_PhysicalFlows12.1.G.csv")
+add_data(f, "physicalflows")
  # close connection
 cnx.close()
