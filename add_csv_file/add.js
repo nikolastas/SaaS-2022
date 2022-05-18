@@ -1,8 +1,7 @@
 const fs = require('fs');
-const papa =  require('papaparse');
 const { config } = require('process');
 const mysql = require('mysql2');
-
+const CsvToJson = require('../modules/CsvToJson.js')
 
 
 let con = mysql.createConnection({
@@ -12,7 +11,7 @@ let con = mysql.createConnection({
     database:"saas"
 });
 
-con.connect(function(err){
+con.connect( function(err){
     if (err) throw err;
     console.log("DB Connected");
 });
@@ -29,11 +28,11 @@ async function make_query(query, callback) {
     });
 }
 
-async function get_columns(database) {
-    let sql = `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '${database}'`;
-    return await make_query(sql);
+// async function get_columns(database) {
+//     let sql = `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '${database}'`;
+//     return await make_query(sql);
     
-}
+// }
 
 
 module.exports.upload_csv = async (req, res) => {
@@ -43,65 +42,13 @@ module.exports.upload_csv = async (req, res) => {
         let folder = req.params.foldername;
         let filePath = `./data/${folder}/${file}`;
 
-        const config = {
-            delimiter: "",	// auto-detect
-            newline: "",	// auto-detect
-            quoteChar: '"',
-            escapeChar: '"',
-            header: false,
-            transformHeader: undefined,
-            dynamicTyping: false,
-            preview: 0,
-            encoding: "",
-            worker: false,
-            comments: false,
-            step: undefined,
-            complete: undefined,
-            error: undefined,
-            download: false,
-            downloadRequestHeaders: undefined,
-            downloadRequestBody: undefined,
-            skipEmptyLines: false,
-            chunk: undefined,
-            chunkSize: undefined,
-            fastMode: undefined,
-            beforeFirstChunk: undefined,
-            withCredentials: undefined,
-            transform: undefined,
-            delimitersToGuess: [',', '\t', '|', ';', papa.RECORD_SEP, papa.UNIT_SEP]
-        }
-        fs.createReadStream(filePath, { encoding: "utf-8" })
-            .on('error', err => {
-                console.log(err);
-                res.status(500).send(err);
-            })
-            .on('data', data => {
-                csvData.push(data);
-                
-            })
-            .on("end", function () {
-                let result = papa.parse(csvData.join(""), config);
+        csv_original = fs.readFileSync(filePath, 'utf8');
+        let csv_json = CsvToJson(csv_original, '\t'); 
 
-                for(let i = 0; i < result.data.length; i++){
-                    if (i>0){
-                        let row = result.data[i];
-                        con.query(`INSERT INTO ${folder} VALUES (?,?,?,?,?,?,?)`,
-                        [row[0],row[1],row[6],row[7],row[8],row[9],row[4]],
-                        (err, results) => {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send(err);
-                            }
-                        });
-                    }
-                }
+        console.log(csv_json);
+        
 
-                res.send("finished");    
-                
-                
-            });
-
-                
+        res.send("ok")
        
         
 

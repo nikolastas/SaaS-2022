@@ -1,5 +1,6 @@
 //FIXME:make it work in this project
-module.exports JsonToCsv = function (obj) {
+
+module.exports = function JsonToCsv   (obj) {
     if(obj.PPOList != undefined)
             obj = obj.PPOList;
         let jsonObject;
