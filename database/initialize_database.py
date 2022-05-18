@@ -161,14 +161,14 @@ try:
     add_data(("104881660807990284320", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
     # tasiopoulos
     add_data(("104059457961494644509", '2020-01-01', '2022-12-30', "VALID"), "subscriptions")
-    # tsiakatas
+    # tsiakataras
     add_data(("102898846638332952747", '2020-01-01', '2022-12-30', "VALID"), "subscriptions")
     print("User Data finished")
 except:
     print("error with user data")
 
 
-# ---------------------- aggregation and actual tolal load -----------------
+# ---------------------- aggregation and actual total load -----------------
 print("try to add aggregation and actual total load")
 try:
     d = read_csv_no_FF("./data/aggrgenerationpertype/2022_01_01_01_AggregatedGenerationPerType16.1.BC.csv")
@@ -176,10 +176,13 @@ try:
 
     e = read_csv_no_FF("./data/actualtotalload/2022_01_01_01_ActualTotalLoad6.1.A.csv")
     add_data(e, "actualtotalload")
+
     print("Aggregation and Actual Total Load finished")
 except:
     print("error with aggregation and actual total load")
 
+
+    
 
 # ------------------- physical flow -----------------
 print("try to add physical flow")
