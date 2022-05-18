@@ -155,9 +155,14 @@ except:
 # --------------------users-----------------
 print("try to add users!")
 try:
-    add_data(("117516749689603537471", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
+    # panagiotopoulos
+    add_data(("117516749689603537471", '2020-10-10', '2022-12-30', "VALID"), "subscriptions") 
+    # alexandris
     add_data(("104881660807990284320", '2020-10-10', '2022-12-30', "VALID"), "subscriptions")
+    # tasiopoulos
     add_data(("104059457961494644509", '2020-01-01', '2022-12-30', "VALID"), "subscriptions")
+    # tsiakatas
+    add_data(("102898846638332952747", '2020-01-01', '2022-12-30', "VALID"), "subscriptions")
     print("User Data finished")
 except:
     print("error with user data")
