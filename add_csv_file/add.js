@@ -61,9 +61,9 @@ module.exports.upload_csv = async (req, res) => {
 
         if(true){     
             let sql_query = "INSERT INTO aggrgenerationpertype VALUES"
-            for (let i = 0; i < csv_json.length; i++) {
+            for (let i = 0; i < csv_json.length - 1; i++) {
                 let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaName'] + "')" 
-                if(i < csv_json.length - 1)
+                if(i < csv_json.length - 2)
                     temp += ",";
                 sql_query += temp;
             }
