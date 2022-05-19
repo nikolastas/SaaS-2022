@@ -1,67 +1,69 @@
 const express =  require('express');
-// const handler = require('./login.js');
-const jwt = require("jsonwebtoken");
 const verifyUser = require('./modules/verifyUser.js')
 const checkSubscription = require('./modules/check_sub.js')
-const cred = require('./db_config.json')
+const parseJwt = require('./modules/decodeToken')
+const bodyParser = require("body-parser");
+const {decode} = require("jsonwebtoken");
+const AddUser = require('./controller/addUser')
+
+
+const port = 6660 ;
 app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/",(req,res) => {
     res.status(200).sendFile(__dirname + "/index.html");
 })
 
-
 app.get("/login", (req, res) => {
-
         res.status(200).sendFile(__dirname + "/login.html");
     }
 )
 
+app.get("/logout", (req,res)=>{
+        res.status()
+})
+
 app.get("/home",(req,res)=>{
+
     let ans = {
         verified : 'false',
         name : '',
         userID : '',
-        subscription : '',
+        email : '',
+        subscription : -2,
         errors: ''
     }
     const token = req.query.token;
 
-    function parseJwt (token) {
-        let base64Url = token.split('.')[1];
-        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(jsonPayload);
-    }
-
     if(token){
         let decodeToken = parseJwt(token);
         console.log(decodeToken);
-        // SQL QUERY TO GET ALL SUBSCRIPTION
+
         ans.name = decodeToken.name;
         ans.userID = decodeToken.sub;
-
+        ans.email = decodeToken.email;
         ans.verified = verifyUser(token).catch(console.error); //async function
 
-        async function test() {
-            await checkSubscription(decodeToken.sub)
-            return 5;
-        }
-        console.log(cred.temp)
-
-
-        if(ans.verified === 'false'){
-            ans.errors = "Unauthorized user";
-            res.status(401).send(ans);
-        }
-        else{
-            res.status(200).send(ans);
+        async function CheckSubs () {
+            ans.subscription = await checkSubscription(decodeToken.sub);
         }
 
+        CheckSubs().then(()=> {
+            if(ans.verified === 'false'){
+                ans.errors = "Unauthorized user";
+                res.status(401).send(ans);
+            }
+            else{
+                if(ans.subscription === -1)  {
+                    console.log(ans.userID)
+                    AddUser(ans.userID,ans.email);
+                }
+
+                res.status(200).send(ans);
+            }
+        })
     }
     else {
         res.status(401).send("Unauthorized user");
@@ -69,7 +71,6 @@ app.get("/home",(req,res)=>{
 
 });
 
-const port = 6660 ;
 app.listen(process.env.port || port, () => {
     console.log(`Server is running on port ${port}`);
 });
