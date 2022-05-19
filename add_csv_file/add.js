@@ -34,6 +34,18 @@ async function make_query(query, callback) {
     
 // }
 
+//   json = [...,{
+
+//     DateTime: '2022-01-01 00:00:00.000',
+//     ResolutionCode: 'PT15M',
+//     ProductionType: 'Other renewable',
+//     ActualGenerationOutput: '9.71',
+//     ActualConsumption: '',
+//     UpdateTime: '2022-01-01 01:36:57'
+//     AreaName: 'DE(TenneT DE) CTA',
+
+//   }, ...]
+
 
 module.exports.upload_csv = async (req, res) => {
     let csvData = [];
@@ -45,8 +57,20 @@ module.exports.upload_csv = async (req, res) => {
         csv_original = fs.readFileSync(filePath, 'utf8');
         let csv_json = CsvToJson(csv_original, '\t'); 
 
-        console.log(csv_json);
-        
+        // console.log(csv_json);
+
+        if(true){     
+            let sql_query = "INSERT INTO aggrgenerationpertype VALUES"
+            for (let i = 0; i < csv_json.length; i++) {
+                let temp = "('" + csv_json[i]['DateTime'].toString() + "','" + csv_json[i]['ResolutionCode'].toString() +"','"+ csv_json[i]['ProductionType'].toString() + "','" + csv_json[i]['ActualGenerationOutput'].toString() + "','" + csv_json[i]['ActualConsumption'].toString() + "','" + csv_json[i]['UpdateTime'].toString() + "','" + csv_json[i]['AreaName'].toString() + "')" 
+                if(i < csv_json.length - 1)
+                    temp += ",";
+                sql_query += temp;
+            }
+        }
+        sql_query += ";";
+
+        console.log(sql_query)
 
         res.send("ok")
        
