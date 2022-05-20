@@ -46,6 +46,10 @@ async function make_query(query, callback) {
 
 //   }, ...]
 
+//helper function for filling empty with the "stuffing" of our choice
+function FillEmptyString (str, stuffing) {
+    return str === ''? stuffing : str;
+}
 
 module.exports.upload_csv = async (req, res) => {
     let csvData = [];
@@ -54,23 +58,47 @@ module.exports.upload_csv = async (req, res) => {
         let folder = req.params.foldername;
         let filePath = `./data/${folder}/${file}`;
 
-        csv_original = fs.readFileSync(filePath, 'utf8');
+        let csv_original = fs.readFileSync(filePath, 'utf8');
         let csv_json = CsvToJson(csv_original, '\t'); 
 
-        // console.log(csv_json);
 
-        if(true){     
-            let sql_query = "INSERT INTO aggrgenerationpertype VALUES"
+
+        let sql_query;
+        if(folder == "aggrgenerationpertype"){     
+            sql_query = "INSERT INTO aggrgenerationpertype VALUES"
             for (let i = 0; i < csv_json.length - 1; i++) {
                 let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaName'] + "')" 
                 if(i < csv_json.length - 2)
                     temp += ",";
                 sql_query += temp;
             }
+            sql_query += ";";
+            console.log(sql_query)
         }
-        sql_query += ";";
 
-        console.log(sql_query)
+        else if(folder == "physicalflows"){     
+            sql_query = "INSERT INTO physicalflows VALUES"
+            for (let i = 0; i < csv_json.length - 1; i++) {
+                let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','"  + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InAreaName']  + "','" + csv_json[i]['OutAreaName']+ "')" 
+                if(i < csv_json.length - 2)
+                    temp += ",";
+                sql_query += temp;
+            }
+            sql_query += ";";
+            console.log(sql_query)
+        }
+
+        else if(folder == "actualtotalload") {
+            sql_query = "INSERT INTO actualtotalload VALUES"
+            for (let i = 0; i < csv_json.length - 1; i++) {
+                let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaAreaName'] + "')" 
+                if(i < csv_json.length - 2)
+                    temp += ",";
+                sql_query += temp;
+            }
+            sql_query += ";";
+            console.log(sql_query)
+        }
 
         res.send("ok")
        
