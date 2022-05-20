@@ -65,15 +65,15 @@ module.exports.upload_csv = async (req, res) => {
 
         let sql_query;
         if(folder == "aggrgenerationpertype"){     
-            sql_query = "INSERT INTO aggrgenerationpertype VALUES"
+            sql_query = "INSERT INTO aggrgenerationpertype () VALUES"
             for (let i = 0; i < csv_json.length - 1; i++) {
-                let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaName'] + "')" 
+                let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption']+ "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaName'] + "')" 
                 if(i < csv_json.length - 2)
                     temp += ",";
                 sql_query += temp;
             }
             sql_query += ";";
-            console.log(sql_query)
+            sql_query = sql_query.replaceAll("''", null);
         }
 
         else if(folder == "physicalflows"){     
@@ -85,22 +85,21 @@ module.exports.upload_csv = async (req, res) => {
                 sql_query += temp;
             }
             sql_query += ";";
-            console.log(sql_query)
+            sql_query = sql_query.replaceAll("''", null);
         }
 
         else if(folder == "actualtotalload") {
             sql_query = "INSERT INTO actualtotalload VALUES"
             for (let i = 0; i < csv_json.length - 1; i++) {
-                let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaAreaName'] + "')" 
+                let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['AreaName'] + "')" 
                 if(i < csv_json.length - 2)
                     temp += ",";
                 sql_query += temp;
             }
             sql_query += ";";
-            console.log(sql_query)
         }
 
-        res.send("ok")
+        res.send(sql_query)
        
         
 
