@@ -1,8 +1,9 @@
+require('dotenv').config()
 const mysql = require('mysql');
-const cred = require('../db_config.json');
+const cred = require(process.env.DBCONFIGFILE);
 const con = mysql.createConnection(cred.dbconf);
 
-module.exports  =  function checkSub(userID)  {
+module. exports  =  function checkSub(userID)  {
     return new Promise(function (resolve, reject){
         const sql_query = `SELECT SubscriptionEndTime FROM subscriptions WHERE username = '${userID}'`;
         con.query(sql_query, (err, result) => {
