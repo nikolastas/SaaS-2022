@@ -2,6 +2,7 @@ const fs = require('fs');
 const { config } = require('process');
 const mysql = require('mysql2');
 const CsvToJson = require('../modules/CsvToJson.js')
+const child_process = require('child_process');  
 
 
 let con = mysql.createConnection({
@@ -16,7 +17,7 @@ con.connect( function(err){
     console.log("DB Connected");
 });
 
-
+//TODO: implement it in the correct microservice
 async function make_query(query, callback) {
     var connection = con;
     console.log(query);
@@ -27,24 +28,6 @@ async function make_query(query, callback) {
         }
     });
 }
-
-// async function get_columns(database) {
-//     let sql = `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '${database}'`;
-//     return await make_query(sql);
-    
-// }
-
-//   json = [...,{
-
-//     DateTime: '2022-01-01 00:00:00.000',
-//     ResolutionCode: 'PT15M',
-//     ProductionType: 'Other renewable',
-//     ActualGenerationOutput: '9.71',
-//     ActualConsumption: '',
-//     UpdateTime: '2022-01-01 01:36:57'
-//     AreaName: 'DE(TenneT DE) CTA',
-
-//   }, ...]
 
 //helper function for filling empty with the "stuffing" of our choice
 function FillEmptyString (str, stuffing) {
@@ -57,6 +40,12 @@ module.exports.upload_csv = async (req, res) => {
         let file = req.params.filename;
         let folder = req.params.foldername;
         let filePath = `./data/${folder}/${file}`;
+
+        //TODO: impement it later
+        // let workerProcess = child_process.spawn('python3', ['add_new_csv.py', i]);  
+        // workerProcess.stdout.on('data', function (data) {  
+        //     console.log('stdout: ' + data);  
+        // });  
 
         let csv_original = fs.readFileSync(filePath, 'utf8');
         let csv_json = CsvToJson(csv_original, '\t'); 
@@ -100,9 +89,6 @@ module.exports.upload_csv = async (req, res) => {
         }
 
         res.send(sql_query)
-       
-        
-
     }
     else{
         //send res error need parameters
