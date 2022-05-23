@@ -42,25 +42,26 @@ module.exports.upload_csv = async (req, res) => {
         let folder = req.params.foldername;
         let filePath = `./data/${folder}/${file}`;  
 
-        let text;
-        try{text = fs.readFileSync("./"+ folder + "_last.txt");}
-        catch{text = ''}
+        let text_last;
+        try{text_last = fs.readFileSync("./add_csv_file/"+ folder + "_last.txt");}
+        catch{text_last = ''}
         
 
-        if(text !== '') {
-            await compare_csv(text, filePath, "./"+folder+"/difference.csv");
-            let csv_original = fs.readFileSync("./"+folder+"/difference.csv", 'utf8');
+        let csv_original;
+        if(text_last !== '') {
+            await compare_csv(filePath, text_last, "./data/"+folder+"/difference.csv");
+            csv_original = fs.readFileSync("./data/"+folder+"/difference.csv", 'utf8');
             // delete not recent file
-            fs.unlinkSync(text);
+            // fs.unlinkSync(text_last);
         } 
         else
-            let csv_original = fs.readFileSync(filePath, 'utf8');
+            csv_original = fs.readFileSync(filePath, 'utf8');
         
-        let csv_json = CsvToJson(csv_original, '\t'); 
+        csv_json = CsvToJson(csv_original, '\t'); 
 
 
         // write latest input file in the text
-        fs.writeFileSync("./"+ folder + "_last.txt", filePath)
+        fs.writeFileSync("./add_csv_file/"+ folder + "_last.txt", filePath)
 
 
         let sql_query;
