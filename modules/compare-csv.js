@@ -1,8 +1,6 @@
 
 const fs = require('fs');
 
-
-
 const generateDeltaFile = (pathToBaseFile, pathToFileForComparison, pathForOutputFileName = './difference.csv') => {
     let baseFileContent = '', secondaryFileContent = '', changedLine = ''
     return new Promise((resolve, reject) => {

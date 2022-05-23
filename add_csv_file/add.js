@@ -2,7 +2,8 @@ const fs = require('fs');
 const { config } = require('process');
 const mysql = require('mysql2');
 const CsvToJson = require('../modules/CsvToJson.js')
-const child_process = require('child_process');  
+const child_process = require('child_process');
+const compare_csv = require('../modules/compare-csv.js')
 
 
 let con = mysql.createConnection({
@@ -36,20 +37,30 @@ function FillEmptyString (str, stuffing) {
 
 module.exports.upload_csv = async (req, res) => {
     let csvData = [];
-    if(req.params.filename && req.params.foldername ){
+    if(req.params.filename && req.params.foldername){
         let file = req.params.filename;
         let folder = req.params.foldername;
-        let filePath = `./data/${folder}/${file}`;
+        let filePath = `./data/${folder}/${file}`;  
 
-        //TODO: impement it later
-        // let workerProcess = child_process.spawn('python3', ['add_new_csv.py', i]);  
-        // workerProcess.stdout.on('data', function (data) {  
-        //     console.log('stdout: ' + data);  
-        // });  
+        let text;
+        try{text = fs.readFileSync("./"+ folder + "_last.txt");}
+        catch{text = ''}
+        
 
-        let csv_original = fs.readFileSync(filePath, 'utf8');
+        if(text !== '') {
+            await compare_csv(text, filePath, "./"+folder+"/difference.csv");
+            let csv_original = fs.readFileSync("./"+folder+"/difference.csv", 'utf8');
+            // delete not recent file
+            fs.unlinkSync(text);
+        } 
+        else
+            let csv_original = fs.readFileSync(filePath, 'utf8');
+        
         let csv_json = CsvToJson(csv_original, '\t'); 
 
+
+        // write latest input file in the text
+        fs.writeFileSync("./"+ folder + "_last.txt", filePath)
 
 
         let sql_query;
