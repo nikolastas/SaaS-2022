@@ -68,6 +68,8 @@ def add_data(data, database):
         data = data[:-1]
         data = data + ")"
         # make the query
+        
+        
         query = ("INSERT INTO "+ database+" VALUES "+data+"")
         # execute query
         cursor.execute(query.format(str(query)))
@@ -82,10 +84,12 @@ def add_data(data, database):
 def read_csv_countries(filename):
     data = pd.read_csv(filename, sep=";")
     list_of_data = []
+    counties_added = {}
     for index, row in data.iterrows():
-        list_of_data.append((row["AreaTypeCode"], row["AreaName"], row["MapCode"]))
+        if(row["AreaTypeCode"] == "CTY" and row["MapCode"] not in counties_added):
+            list_of_data.append((row["AreaTypeCode"], row["AreaName"], row["MapCode"]))
+            counties_added[row["MapCode"]] = True
     return list_of_data
-
 
 
 
@@ -93,20 +97,17 @@ def read_csv_no_FF(filename):
     data = pd.read_csv(filename, sep="\t")
     list_data = []
     for index, row in data.iterrows():
-        # all the row with not datetime in it
-        country = tuple(row[["AreaTypeCode", "AreaName", "MapCode"]])
-        if(country not in countries):
-            add_data(country, "area")
-            countries.append(country)
-        # replace'nan' with -
-        row = row.replace(numpy.nan, None)
-        selected_data_from_row = dict(row)
-        del selected_data_from_row["AreaCode"]
-        del selected_data_from_row["AreaTypeCode"]
-        del selected_data_from_row["AreaName"]
-        del selected_data_from_row["MapCode"]
-        selected_data_from_row["AreaName"] = row["AreaName"]
-        list_data.append(tuple(selected_data_from_row.values()))
+        if(row["AreaTypeCode"] == "CTY" ):
+            # all the row with not datetime in it
+            # replace'nan' with -
+            row = row.replace(numpy.nan, None)
+            selected_data_from_row = dict(row)
+            del selected_data_from_row["AreaCode"]
+            del selected_data_from_row["AreaTypeCode"]
+            del selected_data_from_row["AreaName"]
+            del selected_data_from_row["MapCode"]
+            selected_data_from_row["MapCode"] = row["MapCode"]
+            list_data.append(tuple(selected_data_from_row.values()))
     return list_data
 
 
@@ -115,23 +116,18 @@ def read_csv_data_FF(filename):
     data = pd.read_csv(filename, sep="\t")
     list_data = []
     for index, row in data.iterrows():
-        # all the row with not datetime in it
-        incountry = tuple(row[["InAreaTypeCode", "InAreaName", "InMapCode"]])
-        outcountry = tuple(row[["OutAreaTypeCode", "OutAreaName", "OutMapCode"]])
-        for country in [outcountry, incountry]:
-            if(country not in countries):
-                add_data(country, "area")
-                countries.append(country)
-        # replace'nan' with None
-        row = row.replace(numpy.nan, None)
-        selected_data_from_row = dict(row)
-        for s in ["In", "Out"]:
-            del selected_data_from_row[s+"AreaCode"]
-            del selected_data_from_row[s+"AreaTypeCode"]
-            del selected_data_from_row[s+"AreaName"]
-            del selected_data_from_row[s+"MapCode"]
-            selected_data_from_row[s+"AreaName"] = row[s+"AreaName"]
-        list_data.append(tuple(selected_data_from_row.values()))
+        if(row["InAreaTypeCode"] == "CTY"  and row["OutAreaTypeCode"] == "CTY"):
+            # all the row with not datetime in it
+            # replace'nan' with None
+            row = row.replace(numpy.nan, None)
+            selected_data_from_row = dict(row)
+            for s in ["In", "Out"]:
+                del selected_data_from_row[s+"AreaCode"]
+                del selected_data_from_row[s+"AreaTypeCode"]
+                del selected_data_from_row[s+"AreaName"]
+                del selected_data_from_row[s+"MapCode"]
+                selected_data_from_row[s+"MapCode"] = row[s+"MapCode"]
+            list_data.append(tuple(selected_data_from_row.values()))
     return list_data
 ######## ------------------- adding proceess---------------------------- #############
 
@@ -188,6 +184,7 @@ except:
 print("try to add physical flow")
 try:
     f = read_csv_data_FF("./data/physicalflows/2022_01_01_01_PhysicalFlows12.1.G.csv")
+    print(f[0])
     add_data(f, "physicalflows")
     print("Physical Flow finished")
 except:
