@@ -30,8 +30,8 @@ module.exports = function (pathToBaseFile, pathToFileForComparison, pathForOutpu
                         // use above formed json object and pass each line as key
                         // value of externLookup[iLine] would be undefined if secondary file didn't have same line
                         // in that case current line is considered as changed line and will be eventually written to output file
-
-                        if (!externLookup[iLine]) changedLine = changedLine + iLine + '\n'
+                        // include the CTY code , if it is not there just skip line
+                        if (!externLookup[iLine] && iLine.includes('CTY')) changedLine = changedLine + iLine + '\n'
                     })
                     // console.log(changedLine)
                     fs.writeFileSync(pathForOutputFileName, changedLine)

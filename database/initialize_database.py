@@ -71,6 +71,7 @@ def add_data(data, database):
         
         
         query = ("INSERT INTO "+ database+" VALUES "+data+"")
+        # print(query)
         # execute query
         cursor.execute(query.format(str(query)))
         # fetch all rows
@@ -184,7 +185,6 @@ except:
 print("try to add physical flow")
 try:
     f = read_csv_data_FF("./data/physicalflows/2022_01_01_01_PhysicalFlows12.1.G.csv")
-    print(f[0])
     add_data(f, "physicalflows")
     print("Physical Flow finished")
 except:

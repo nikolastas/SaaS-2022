@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const CsvToJson = require('../modules/CsvToJson.js')
 const child_process = require('child_process');
 const compare_csv = require('../modules/compare-csv.js')
-
+const readFileasync = require('../modules/read-file-async.js');
 
 let con = mysql.createConnection({
     host: "localhost",
@@ -37,11 +37,10 @@ function FillEmptyString (str, stuffing) {
 
 function return_correct_data(csv_json, folder){
     let sql_query;
-    if(folder == "aggrgenerationpertype" || folder == "actualtotalload" ){
-        
-        sql_query = "INSERT INTO "+ folder +" VALUES"
+    if(folder == "aggrgenerationpertype"){     
+        sql_query = "INSERT INTO aggrgenerationpertype VALUES"
         for (let i = 0; i < csv_json.length - 1; i++) {
-            let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
+            let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption']+ "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
             if(i < csv_json.length - 2)
                 temp += ",";
             sql_query += temp;
@@ -49,10 +48,23 @@ function return_correct_data(csv_json, folder){
         sql_query += ";";
         sql_query = sql_query.replaceAll("''", null);
     }
-    else if( folder == "physicalflows"){
-        sql_query = "INSERT INTO "+ folder+" VALUES"
+
+    else if(folder == "physicalflows"){     
+        sql_query = "INSERT INTO physicalflows VALUES"
         for (let i = 0; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','"  + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InMapCode']  + "','" + csv_json[i]['OutMapCode']+ "')" 
+            if(i < csv_json.length - 2)
+                temp += ",";
+            sql_query += temp;
+        }
+        sql_query += ";";
+        sql_query = sql_query.replaceAll("''", null);
+    }
+
+    else if(folder == "actualtotalload") {
+        sql_query = "INSERT INTO actualtotalload VALUES"
+        for (let i = 0; i < csv_json.length - 1; i++) {
+            let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
             if(i < csv_json.length - 2)
                 temp += ",";
             sql_query += temp;
@@ -79,7 +91,8 @@ module.exports.upload_csv = async (req, res) => {
         if(text_last != '') {
             try{
                 await compare_csv(filePath, text_last, "./data/"+folder+"/difference.csv");
-                csv_original = fs.createReadStream("./data/"+folder+"/difference.csv", 'utf8');
+                // csv_original = fs.readFileSync("./data/"+folder+"/difference.csv", 'utf8');
+                csv_original = await readFileasync("./data/"+folder+"/difference.csv", false);
             // delete not recent file
             // fs.unlinkSync(text_last);
             }
@@ -90,10 +103,12 @@ module.exports.upload_csv = async (req, res) => {
         } 
         else
             try{
-                csv_original = fs.readFileSync(filePath, 'utf8');
+                csv_original = await readFileasync(filePath, true);
+
             }
             catch{
                 res.status(400).send("Error2: File not found");
+                return;
             }
             
         try{
