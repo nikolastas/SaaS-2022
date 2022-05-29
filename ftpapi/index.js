@@ -10,7 +10,8 @@ const baseUrl = '/';
 
 var options = {
     key: fs.readFileSync(path.join(__dirname, '\\Certificate\\CA\\localhost\\localhost.decrypted.key')),
-    cert: fs.readFileSync(path.join(__dirname, '.\\Certificate\\CA\\localhost\\localhost.crt'))
+    cert: fs.readFileSync(path.join(__dirname, '.\\Certificate\\CA\\localhost\\localhost.crt')),
+    ca: [fs.readFileSync(path.join(__dirname, '.\\Certificate\\CA\\CA.pem'))]
 }
 //the api needs a datetime in this specific form: YYYY_MM_DD_HH, e.g. 2022_01_01_01
 app.get(baseUrl+"AGRT/:datetime", (req,res) => {
