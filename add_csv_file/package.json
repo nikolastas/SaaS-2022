@@ -1,0 +1,15 @@
+{
+  "name": "add_csv_file",
+  "version": "1.0.0",
+  "description": "(description)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Tasiop & Tsiakat",
+  "license": "ISC",
+  "dependencies": {
+    "mysql2": "^2.3.3"
+  }
+}

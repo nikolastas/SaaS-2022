@@ -1,39 +1,16 @@
 const fs = require('fs');
-const { config } = require('process');
-const mysql = require('mysql2');
-const CsvToJson = require('../modules/CsvToJson.js')
-const child_process = require('child_process');
-const compare_csv = require('../modules/compare-csv.js')
-const readFileasync = require('../modules/read-file-async.js');
 
-let con = mysql.createConnection({
-    host: "localhost",
-    user:"root",
-    password:"root",
-    database:"saas"
-});
+const CsvToJson = require('../../modules/CsvToJson.js')
+const con = require("../utils/database.js");
+const compare_csv = require('../../modules/compare-csv.js')
+const readFileasync = require('../../modules/read-file-async.js');
 
+
+// connect to database
 con.connect( function(err){
     if (err) throw err;
     console.log("DB Connected");
 });
-
-//TODO: implement it in the correct microservice
-async function make_query(query, callback) {
-    var connection = con;
-    console.log(query);
-    return await connection.query(query, (err, results) => {
-        if (err) {
-            console.log(err);
-            throw err;
-        }
-    });
-}
-
-//helper function for filling empty with the "stuffing" of our choice
-function FillEmptyString (str, stuffing) {
-    return str === ''? stuffing : str;
-}
 
 function return_correct_data(csv_json, folder){
     let sql_query;
@@ -83,7 +60,7 @@ module.exports.upload_csv = async (req, res) => {
         let filePath = `./data/${folder}/${file}`;  
 
         let text_last;
-        try{text_last = fs.readFileSync("./add_csv_file/"+ folder + "_last.txt");}
+        try{text_last = fs.readFileSync("./controller/"+ folder + "_last.txt");}
         catch{text_last = ''}
         
 
@@ -93,8 +70,9 @@ module.exports.upload_csv = async (req, res) => {
                 await compare_csv(filePath, text_last, "./data/"+folder+"/difference.csv");
                 // csv_original = fs.readFileSync("./data/"+folder+"/difference.csv", 'utf8');
                 csv_original = await readFileasync("./data/"+folder+"/difference.csv", false);
-            // delete not recent file
-            // fs.unlinkSync(text_last);
+                
+                // delete not recent file
+                // fs.unlinkSync(text_last);
             }
             catch{
                 res.status(400).send("Error1: File not found");
@@ -116,7 +94,7 @@ module.exports.upload_csv = async (req, res) => {
 
 
         // write latest input file in the text
-        fs.writeFileSync("./add_csv_file/"+ folder + "_last.txt", filePath)
+        fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
 
         // make query
         let sql_query = return_correct_data(csv_json, folder);

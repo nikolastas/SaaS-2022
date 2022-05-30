@@ -2,7 +2,6 @@ const express =  require('express');
 const handler = require('./login_handling/login.js');
 const jwt = require("jsonwebtoken");
 const verifyUser = require('./verifyUser.js')
-const add = require("./add_csv_file/add.js");
 app = express();
 
 app.get("/",(req,res) => {
@@ -15,7 +14,7 @@ app.get("/login", (req, res) => {
     res.status(200).sendFile(__dirname + "/login_handling/login.html");
 }
 )
-app.get("/upload/:foldername/:filename", add.upload_csv);
+// app.get("/upload/:foldername/:filename", add.upload_csv);
 
 app.get("/home",(req,res)=>{
     const token = req.query.token;
