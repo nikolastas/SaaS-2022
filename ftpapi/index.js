@@ -9,8 +9,8 @@ var path = require('path');
 const baseUrl = '/';
 
 var options = {
-    key: fs.readFileSync(path.join(__dirname, '\\Certificate\\CA2\\client\\client.decrypted.key')),
-    cert: fs.readFileSync(path.join(__dirname, '.\\Certificate\\CA2\\client\\client.crt')),
+    key: fs.readFileSync(path.join(__dirname, '\\Certificate\\cert\\localhost\\localhost.decrypted.key')),
+    cert: fs.readFileSync(path.join(__dirname, '.\\Certificate\\cert\\localhost\\localhost.crt')),
     // requestCert: true,
     // ca: [fs.readFileSync(path.join(__dirname, '.\\Certificate\\CA\\CA.pem'))]
 }
