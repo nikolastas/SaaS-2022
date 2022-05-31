@@ -16,7 +16,7 @@ function return_correct_data(csv_json, folder){
     let sql_query;
     if(folder == "aggrgenerationpertype"){     
         sql_query = "INSERT INTO aggrgenerationpertype VALUES"
-        for (let i = 0; i < csv_json.length - 1; i++) {
+        for (let i = 1; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption']+ "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
             if(i < csv_json.length - 2)
                 temp += ",";
@@ -28,7 +28,7 @@ function return_correct_data(csv_json, folder){
 
     else if(folder == "physicalflows"){     
         sql_query = "INSERT INTO physicalflows VALUES"
-        for (let i = 0; i < csv_json.length - 1; i++) {
+        for (let i = 1; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','"  + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InMapCode']  + "','" + csv_json[i]['OutMapCode']+ "')" 
             if(i < csv_json.length - 2)
                 temp += ",";
@@ -40,7 +40,7 @@ function return_correct_data(csv_json, folder){
 
     else if(folder == "actualtotalload") {
         sql_query = "INSERT INTO actualtotalload VALUES"
-        for (let i = 0; i < csv_json.length - 1; i++) {
+        for (let i = 1; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
             if(i < csv_json.length - 2)
                 temp += ",";
