@@ -3,7 +3,7 @@
     "host": "localhost",
     "user": "root",
     "password": "root",
-    "database": "db_rev1"
+    "database": "saas"
   },
   "temp": -1
 }
