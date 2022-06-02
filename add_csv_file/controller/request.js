@@ -4,7 +4,6 @@ const path = require('path');
 // make a https request
 
 module.exports.make_request = async (req, res) => {
-    // console.log(fs.readFileSync(path.join(__dirname, "..", "..", "ftpapi", "Certificate", "CA", "CA.pem")).toString());
     let options = {
         // key: fs.readFileSync(path.join(__dirname, "..", "..", "ftpapi", "Certificate", "cert", "localhost", "localhost.decrypted.key")).toString(),
         // cert: fs.readFileSync(path.join(__dirname, "..", "..", "ftpapi", "Certificate", "cert", "localhost", "localhost.crt")).toString(),
@@ -24,7 +23,6 @@ module.exports.make_request = async (req, res) => {
             data += d;
         });
         response.on('end', () => {
-            // console.log(data);
             res.send(data);
             return;
         });

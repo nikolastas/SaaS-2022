@@ -1,10 +1,9 @@
 const fs = require('fs');
 
-const CsvToJson = require('../../modules/CsvToJson.js')
+const CsvToJson = require('../../modules/CsvToJson.js');
 const con = require("../utils/database.js");
-const compare_csv = require('../../modules/compare-csv.js')
+const compare_csv = require('../../modules/compare-csv.js');
 const readFileasync = require('../../modules/read-file-async.js');
-
 
 // connect to database
 con.connect( function(err){
@@ -92,21 +91,19 @@ module.exports.upload_csv = async (req, res) => {
         try{
         csv_json = CsvToJson(csv_original, '\t'); 
 
-
         // write latest input file in the text
         fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
 
         // make query
         let sql_query = return_correct_data(csv_json, folder);
         
-
         res.status(200).send(sql_query)
         }
         catch{
-            res.status(400).send("Error3: either making query or writing file");
+           res.status(400).send("Error3: either making query or writing file");
         }
     }
-    else{
+    else {
         //send res error need parameters
         res.send("error with parameters");
     }
