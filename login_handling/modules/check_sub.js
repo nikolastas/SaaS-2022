@@ -7,7 +7,6 @@ module. exports  =  function checkSub(userID)  {
     return new Promise(function (resolve, reject){
         const sql_query = `SELECT SubscriptionEndTime FROM subscriptions WHERE username = '${userID}'`;
         con.query(sql_query, (err, result) => {
-            // console.log(Object.keys(result).length)
             if (err) reject(err);
             if (!Object.keys(result).length) {
                 resolve(-1) ;
