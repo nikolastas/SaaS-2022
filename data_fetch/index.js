@@ -1,23 +1,29 @@
-const express =  require('express');
+const express = require('express');
 const bodyParser = require("body-parser");
 const test = require("./endpoints/ActualTotalLoad");
-require('dotenv').config()
+const router = require("router");
+require('dotenv').config();
 app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 
-
-
-
-const file_path = "./endpoints/"
-app.get("/home",(req,res)=>{
+app.get("/home", (req, res) => {
+    console.log("Home")
+    res.status(200).send()
 });
 
 
-app.get("/test", (req, res) =>{
-    test(req,res).then();
+app.post("/test", (req, res) => {
+    async function lol() {
+        let result = await test(req, res);
+        return result;
+    }
+    lol().then((d) => {
+        console.log(d[0])
+    });
+
     res.status(200).send()
-})
+});
 
 
 app.listen(process.env.PORT, () => {

@@ -1,0 +1,19 @@
+SELECT json_object('Datetime', Datetime, 'TotalLoadValue', TotalLoadValue, 'UpdateTime', UpdateTime, 'MapCode', MapCode)
+FROM (Select Datetime, TotalLoadValue, UpdateTime, MapCode
+      from actualtotalload
+      where MapCode = 'AL'
+        AND Datetime between '2021-01-01 08:31:01' and '2022-06-06 08:31:01'
+      ORDER BY (Datetime) desc) as mysql_data;
+
+Select Datetime, TotalLoadValue, UpdateTime, MapCode
+from actualtotalload
+where MapCode = 'AL'
+  AND Datetime between '2021-01-01 08:31:01' and '2022-06-06 08:31:01'
+ORDER BY (Datetime) desc;
+
+
+SELECT json_object('Datetime', Datetime, 'TotalLoadValue', TotalLoadValue, 'UpdateTime', UpdateTime, 'MapCode', MapCode)
+from actualtotalload
+where MapCode = 'AL'
+  AND Datetime between '2021-01-01 08:31:01' and '2022-06-06 08:31:01'
+ORDER BY (Datetime) desc;
