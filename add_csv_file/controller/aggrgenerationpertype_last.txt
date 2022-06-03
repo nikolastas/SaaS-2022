@@ -1,1 +1,1 @@
-./data/aggrgenerationpertype/2022_01_01_10_AggregatedGenerationPerType16.1.BC.csv
+./data/aggrgenerationpertype/2022_01_01_01_AggregatedGenerationPerType16.1.BC.csv
