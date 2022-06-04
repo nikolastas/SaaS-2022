@@ -21,7 +21,7 @@ function ModifyData(csv_json, folder, wanted_datetime) {
                 temp += ",";
             // condition we need to delete new data to the db
             if(wanted_datetime != csv_json[i]["DateTime"].split(":")[0]) 
-                del_queries.push(("DELETE FROM" + folder + "WHERE DateTime == '" + csv_json[i]["DateTime"] + "' AND ProductionType == '" + csv_json[i]['ProductionType'] + "' AND MapCode == '"+ csv_json[i]['MapCode'] +"';").replaceAll("'null'", null)); 
+                del_queries.push(("DELETE FROM " + folder + " WHERE DateTime = '" + csv_json[i]["DateTime"] + "' AND ProductionType = '" + csv_json[i]['ProductionType'] + "' AND MapCode = '"+ csv_json[i]['MapCode'] +"';").replaceAll("'null'", null)); 
 
             
         }
@@ -39,7 +39,7 @@ function ModifyData(csv_json, folder, wanted_datetime) {
             if(wanted_datetime != csv_json[i]["DateTime"].split(":")[0]) 
                 // append del_queries
 
-                del_queries.push(("DELETE FROM" + folder + "WHERE DateTime == '" + csv_json[i]["DateTime"] + "' AND InMapCode == '" + csv_json[i]['InMapCode'] + "' AND OutMapCode == '"+ csv_json[i]['OutMapCode'] +"';").replaceAll("'null'", null)); 
+                del_queries.push(("DELETE FROM " + folder + " WHERE DateTime = '" + csv_json[i]["DateTime"] + "' AND InMapCode = '" + csv_json[i]['InMapCode'] + "' AND OutMapCode = '"+ csv_json[i]['OutMapCode'] +"';").replaceAll("'null'", null)); 
 
         }
         temp = temp.replaceAll("'null'", null);
@@ -55,7 +55,7 @@ function ModifyData(csv_json, folder, wanted_datetime) {
                 temp += ",";
             // condition we need to delete new data to the db
             if(wanted_datetime != csv_json[i]["DateTime"].split(":")[0]) 
-                del_queries.push(("DELETE FROM" + folder + "WHERE DateTime == '" + csv_json[i]["DateTime"] +  "' AND MapCode == '"+ csv_json[i]['MapCode'] +"';").replaceAll("'null'", null)); 
+                del_queries.push(("DELETE FROM " + folder + " WHERE DateTime = '" + csv_json[i]["DateTime"] +  "' AND MapCode = '"+ csv_json[i]['MapCode'] +"';").replaceAll("'null'", null)); 
 
         }
         // delete the last comma

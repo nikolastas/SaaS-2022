@@ -49,7 +49,7 @@ const make_query_function = require("../modules/make_query_function.js");
             let result_of_query = await make_query_function(con_for_add_microservice, original_queries[folders.indexOf(folder)]);
             console.log(folder, result_of_query.length);
             data_from_tables[folder] = result_of_query;
-            let datetime = "2022-01-01 00";
+            let datetime = "2022-01-01 03";
             let [query,del_queries] = ModifyData.ModifyData(result_of_query, folder, datetime);
             console.log(query,del_queries);
             if (del_queries.length > 0){

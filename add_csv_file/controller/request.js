@@ -73,7 +73,7 @@ async function make_request(){
                     let file = datetime_formated+"_"+f;
                     console.log("Checking file " + file + " in folder " + folder);
                     let result_from_add = await add_csv_to_db.upload_csv(folder, file);
-                    console.log(result_from_add)
+                    // console.log(result_from_add)
                 
             }
 
