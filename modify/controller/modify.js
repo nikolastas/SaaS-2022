@@ -1,70 +1,79 @@
 const fs = require('fs');
 const con = require("../utils/database.js");
-const CsvToJson = require('../../modules/CsvToJson.js');
+const con_for_add_microservice = require("../utils/database_from_add_microservice.js");
+const ModifyData = require("../modules/modify_data.js");
+const make_query_function = require("../modules/make_query_function.js");
 
 
-con.connect( (err) => {
-    if (err) throw err;
-    console.log("DB connnected");
-});
 
-function ModifyData(csv, folder, wanted_datetime) {
-    //convert csv to json
-    let csv_json = CsvToJson(csv);
+
+
     
-    //TODO: make a definite query
-    let query = '';
-
-    if(folder == "aggrgenerationpertype") { 
-
-        for (let i = 1; i < csv_json.length - 1; i++) {
-            let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption']+ "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
-            
-            // condition we need to delete new data to the db
-            if(wanted_datetime != csv_json[i]["DateTime"].split(':')[0]) 
-                query += "DELETE FROM" + folder + "WHERE DateTime == '" + csv_json[i]["DateTime"] + "' AND ProductionType == '" + csv_json[i]['ProductionType'] + "' AND MapCode == '"+ csv_json[i]['MapCode'] +"';"; 
-
-            query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
-        }
-    }
-    else if(folder == "physicalflows"){
-        for (let i= 0;i < csv_json.length - 1; i++ ) {
-            let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InMapCode'] + "','" + csv_json[i]['OutMapCode']+ "')" 
-            
-            // condition we need to delete new data to the db
-            if(wanted_datetime != csv_json[i]["DateTime"].split(':')[0]) 
-                query += "DELETE FROM" + folder + "WHERE DateTime == '" + csv_json[i]["DateTime"] + "' AND InMapCode == '" + csv_json[i]['InMapCode'] + "' AND OutMapCode == '"+ csv_json[i]['OutMapCode'] +"';"; 
-
-            query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
-        }
-    }
-    else if(folder == "actualtotalload"){
-        
-        for (let i = 1; i < csv_json.length - 1; i++) {
-            let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['MapCode'] + "','" + csv_json[i]['UpdateTime'] +  "')" 
-            
-            // condition we need to delete new data to the db
-            if(wanted_datetime != csv_json[i]["DateTime"].split(':')[0]) 
-                query += "DELETE FROM" + folder + "WHERE DateTime == '" + csv_json[i]["DateTime"] +  "' AND MapCode == '"+ csv_json[i]['MapCode'] +"';"; 
-
-            query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
-        }
-    }
-    else {
-        concole.log("Wrong folder name");
-        return;
-    }
-
-    con.query(query, (err, result) => {
-        if (err) throw err;
-        // remove this later if not needed
-        console.log(result);
-    });
 
     module.exports.modify = async (req,res) =>{
-        res.send("Modified");
+        try{
+            con.connect( (err) => {
+                if (err) throw err;
+                console.log("DB connnected");
+            });
+        } catch(err){
+            console.log(err);
+            res.status(500).send("database error");
+            return;
+        }
+        // database connected 
+        let folders = ["physicalflows","actualtotalload","aggrgenerationpertype"] 
+        let original_queries = [ 
+            `
+            SELECT DATE_FORMAT( DateTime,'%Y-%m-%d %H:%i:%s') as DateTime, ResolutionCode, FlowValue ,
+            DATE_FORMAT(UpdateTime, '%Y-%m-%d %H:%i:%s') as UpdateTime,InMapCode, OutMapCode
+            FROM physicalflows;
+            `,
+            `
+            SELECT DATE_FORMAT( DateTime,'%Y-%m-%d %H:%i:%s') as DateTime, ResolutionCode,TotalLoadValue ,
+            DATE_FORMAT(UpdateTime, '%Y-%m-%d %H:%i:%s') as UpdateTime,
+            MapCode
+            FROM actualtotalload;
+            `,
+            `
+            SELECT DATE_FORMAT( DateTime,'%Y-%m-%d %H:%i:%s') as DateTime, ResolutionCode,ProductionType ,
+            ActualGenerationOutput,ActualConsumption,
+            DATE_FORMAT(UpdateTime, '%Y-%m-%d %H:%i:%s') as UpdateTime,
+            MapCode
+            FROM aggrgenerationpertype;
+            `
+        ]
+        let data_from_tables = [];
+        result_of_query_for_modify = [] ;
+        for (let folder of folders){
+            let result_of_query = await make_query_function(con_for_add_microservice, original_queries[folders.indexOf(folder)]);
+            console.log(folder, result_of_query.length);
+            data_from_tables[folder] = result_of_query;
+            let datetime = "2022-01-01 00";
+            let [query,del_queries] = ModifyData.ModifyData(result_of_query, folder, datetime);
+            console.log(query,del_queries);
+            if (del_queries.length > 0){
+                try{
+                    for (let del_query of del_queries){
+                        await make_query_function(con, del_query);
+                    }
+                }catch(err){
+                    console.log("delete_queries: ",err);
+                
+                }
+            }
+            try{
+            result_of_query_for_modify[folder] = await make_query_function(con, query);
+            } catch(err){
+                console.log(err);
+                res.status(500).send(err);
+                return;
+            }
+        }
+
+        
+        res.send(result_of_query_for_modify);
     }
 
 
 
-}
