@@ -108,6 +108,12 @@ module.exports.upload_csv = async function (folder, file) {
         let sql_query = return_correct_data(csv_json, folder);
         // console.log("sql: ",sql_query);
         if(sql_query != ""){
+            try{
+                await make_query_function(con, "truncate table "+ folder+";");
+                
+            }catch{
+                console.log("Error: cannot truncate table"+folder);
+            }
             result_from_query = await make_query_function(con, sql_query);
             if ("error" in result_from_query){throw result_from_query}
         }
