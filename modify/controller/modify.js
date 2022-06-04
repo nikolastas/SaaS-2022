@@ -55,10 +55,10 @@ const make_query_function = require("../modules/make_query_function.js");
             if (del_queries.length > 0){
                 try{
                     for (let del_query of del_queries){
-                        await make_query_function(con, del_query);
+                        await make_query_function(con, `${del_query}`);
                     }
                 }catch(err){
-                    console.log("delete_queries: ",err);
+                    console.log("error with delete_queries: ",err);
                 
                 }
             }
@@ -72,7 +72,7 @@ const make_query_function = require("../modules/make_query_function.js");
         }
 
         
-        res.send(result_of_query_for_modify);
+        res.status(200).send("Data modified succesfully");
     }
 
 
