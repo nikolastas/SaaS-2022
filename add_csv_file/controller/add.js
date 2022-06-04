@@ -1,9 +1,10 @@
 const fs = require('fs');
-
+const mysql = require("mysql2");
 const CsvToJson = require('../../modules/CsvToJson.js');
 const con = require("../utils/database.js");
 const compare_csv = require('../../modules/compare-csv.js');
 const readFileasync = require('../../modules/read-file-async.js');
+const make_query_function = require('../modules/make_query');
 
 // connect to database
 con.connect( function(err){
@@ -12,9 +13,9 @@ con.connect( function(err){
 });
 
 function return_correct_data(csv_json, folder){
-    let sql_query;
+    let sql_query="";
     if(folder == "aggrgenerationpertype"){     
-        sql_query = "INSERT INTO aggrgenerationpertype VALUES"
+        // sql_query = "INSERT INTO aggrgenerationpertype VALUES"
         for (let i = 1; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['ProductionType'] + "','" + csv_json[i]['ActualGenerationOutput'] + "','" + csv_json[i]['ActualConsumption']+ "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
             if(i < csv_json.length - 2)
@@ -23,10 +24,11 @@ function return_correct_data(csv_json, folder){
         }
         sql_query += ";";
         sql_query = sql_query.replaceAll("''", null);
+
     }
 
     else if(folder == "physicalflows"){     
-        sql_query = "INSERT INTO physicalflows VALUES"
+        // sql_query = "INSERT INTO physicalflows VALUES"
         for (let i = 1; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','"  + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InMapCode']  + "','" + csv_json[i]['OutMapCode']+ "')" 
             if(i < csv_json.length - 2)
@@ -38,7 +40,7 @@ function return_correct_data(csv_json, folder){
     }
 
     else if(folder == "actualtotalload") {
-        sql_query = "INSERT INTO actualtotalload VALUES"
+        // sql_query = "INSERT INTO actualtotalload VALUES"
         for (let i = 1; i < csv_json.length - 1; i++) {
             let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['TotalLoadValue'] + "','" + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['MapCode'] + "')" 
             if(i < csv_json.length - 2)
@@ -48,14 +50,21 @@ function return_correct_data(csv_json, folder){
         sql_query += ";";
         sql_query = sql_query.replaceAll("''", null);
     }
+    
+    if (sql_query=="" || sql_query==null|| sql_query==";"){
+        return "";
+    }
+    else{
+        sql_query = "INSERT INTO "+ folder + " VALUES" + sql_query;
+    }
     return sql_query;
 }
 
-module.exports.upload_csv = async (req, res) => {
+module.exports.upload_csv = async function (folder, file) {
+    console.log("got in");
     let csvData = [];
-    if(req.params.filename && req.params.foldername){
-        let file = req.params.filename;
-        let folder = req.params.foldername;
+    if(file && folder){
+        
         let filePath = `./data/${folder}/${file}`;  
 
         let text_last;
@@ -71,11 +80,11 @@ module.exports.upload_csv = async (req, res) => {
                 csv_original = await readFileasync("./data/"+folder+"/difference.csv", false);
                 
                 // delete not recent file
-                // fs.unlinkSync(text_last);
+                fs.unlinkSync(text_last);
             }
             catch{
-                res.status(400).send("Error1: File not found");
-                return;
+                return("Error1: File not found");
+                // return;
             }
         } 
         else
@@ -84,8 +93,9 @@ module.exports.upload_csv = async (req, res) => {
 
             }
             catch{
-                res.status(400).send("Error2: File not found");
-                return;
+                console.log("no such file ", filePath);
+                return("Error2: File not found");
+                // return;
             }
             
         try{
@@ -96,16 +106,27 @@ module.exports.upload_csv = async (req, res) => {
 
         // make query
         let sql_query = return_correct_data(csv_json, folder);
-        
-        res.status(200).send(sql_query)
+        // console.log("sql: ",sql_query);
+        if(sql_query != ""){
+            try{
+                await make_query_function(con, "truncate table "+ folder+";");
+                
+            }catch{
+                console.log("Error: cannot truncate table"+folder);
+            }
+            result_from_query = await make_query_function(con, sql_query);
+            if ("error" in result_from_query){throw result_from_query}
+        }
+        console.log("csv file updated to database")
+        return(sql_query)
         }
         catch{
-           res.status(400).send("Error3: either making query or writing file");
+           return("Error3: either making query or writing file");
         }
     }
     else {
         //send res error need parameters
-        res.send("error with parameters");
+        return("error with parameters");
     }
     
 }

@@ -7,8 +7,9 @@ const request = require('../controller/request.js');
 const router = express.Router();
 
 
-router.get("/upload/:foldername/:filename", add.upload_csv);
+// router.get("/upload/:foldername/:filename", add.upload_csv);
 
-router.get("/get", request.make_request);
+router.get("/start", request.make_request);
+// request(); <-- uncomment this to start the api calls every 1 min
 
 module.exports = router;
