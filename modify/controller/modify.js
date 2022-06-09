@@ -17,9 +17,10 @@ const make_query_function = require("../modules/make_query_function.js");
                 console.log("DB connnected");
             });
         } catch(err){
+            // retry connection
             console.log(err);
-            res.status(500).send("database error");
-            return;
+            // res.status(500).send("database error");
+            // return;
         }
         // database connected 
         let folders = ["physicalflows","actualtotalload","aggrgenerationpertype"] 
@@ -36,6 +37,7 @@ const make_query_function = require("../modules/make_query_function.js");
             FROM actualtotalload;
             `,
             `
+            
             SELECT DATE_FORMAT( DateTime,'%Y-%m-%d %H:%i:%s') as DateTime, ResolutionCode,ProductionType ,
             ActualGenerationOutput,ActualConsumption,
             DATE_FORMAT(UpdateTime, '%Y-%m-%d %H:%i:%s') as UpdateTime,
@@ -49,18 +51,20 @@ const make_query_function = require("../modules/make_query_function.js");
             let result_of_query = await make_query_function(con_for_add_microservice, original_queries[folders.indexOf(folder)]);
             console.log(folder, result_of_query.length);
             data_from_tables[folder] = result_of_query;
-            let datetime = "2022-01-01 03";
+            let datetime = "2022-01-01 00";
             let [query,del_queries] = ModifyData.ModifyData(result_of_query, folder, datetime);
             console.log(query,del_queries);
             if (del_queries.length > 0){
-                try{
-                    for (let del_query of del_queries){
+                for (let del_query of del_queries){
+                    try{
+                          
                         await make_query_function(con, `${del_query}`);
+                    }catch(err){
+                        console.log("error with delete_queries: ",err);
+                    
                     }
-                }catch(err){
-                    console.log("error with delete_queries: ",err);
-                
                 }
+                console.log("delete queries done, with length: ",del_queries.length);
             }
             try{
             result_of_query_for_modify[folder] = await make_query_function(con, query);

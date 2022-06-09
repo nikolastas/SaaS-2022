@@ -1,9 +1,9 @@
 const fs = require('fs');
 const mysql = require("mysql2");
-const CsvToJson = require('../../modules/CsvToJson.js');
+const CsvToJson = require('../modules/CsvToJson.js');
 const con = require("../utils/database.js");
-const compare_csv = require('../../modules/compare-csv.js');
-const readFileasync = require('../../modules/read-file-async.js');
+const compare_csv = require('../modules/compare-csv.js');
+const readFileasync = require('../modules/read-file-async.js');
 const make_query_function = require('../modules/make_query');
 
 // connect to database
