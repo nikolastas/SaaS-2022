@@ -1,28 +1,30 @@
-const {Kafka, Partitioners} = require("kafkajs");
-const kafka = new Kafka({
-    clientId: 'lol',
-    brokers: ['localhost:9092'],
-});
-const producer = kafka.producer({createPartitioner: Partitioners.LegacyPartitioner})
+const kafka_client = require('./kafka.js');
 
+const producer = kafka_client.producer({allowAutoTopicCreation: false});
 
-const run = async () => {
-    let i = 4;
+const produce_string = async (my_topic, message, key) => {
     await producer.connect()
-    while (i < 4) {
+    try {
+        // send a message to the configured topic with the given key
         await producer.send({
-            topic: 'test',
+            topic: my_topic,
             messages: [
-                {value: i}
-            ]
+                {
+                    key: String(key),
+                    value: message,
+                },
+            ],
         })
-        i++;
+
+        // if the message is written successfully, log it in console
+        //TODO: may remove later
+        console.log("Kafka writes: ", message)
+    } catch (err) {
+        console.error("could not write message " + err)
     }
-    // await producer.disconnect()
+
 }
 
-run().then(() => {
-    console.log("bob")
-})
 
-// await producer.disconnect()
+//produce_string("test_topic", "DATA READY", 1);
+module.exports = produce_string;

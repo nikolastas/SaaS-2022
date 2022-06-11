@@ -18,6 +18,7 @@ app.post("/test", (req, res) => {
         let result = await test(req, res);
         return result;
     }
+
     lol().then((d) => {
         console.log(d[0])
     });
