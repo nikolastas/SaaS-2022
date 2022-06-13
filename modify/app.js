@@ -1,17 +1,13 @@
 const express = require('express');
 // const cors = require('cors');
 // const auth = require('./utils/auth');
-
-const routes = require('./endpoints/routes.js');
+const run = require('./endpoints/routes.js');
 
 
 const app = express();
 
-// app.use(cors());
-// app.use(auth);
 
-
-app.use('/', routes);
-
+// run the consumer
+run();
 
 module.exports = app;

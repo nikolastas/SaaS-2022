@@ -11,17 +11,16 @@ const make_query_function = require("../modules/make_query_function.js");
     
 
     module.exports.modify = async (req,res) =>{
-        try{
-            con.connect( (err) => {
-                if (err) throw err;
-                console.log("DB connnected");
-            });
-        } catch(err){
-            // retry connection
-            console.log(err);
-            // res.status(500).send("database error");
-            // return;
-        }
+        
+        con.connect( (err) => {
+            if (err) throw new Error("error with DB of modify");
+            console.log("DB of modify connnected");
+        });
+        
+        con_for_add_microservice.connect( (err) => {
+            if (err) throw new Error("error with DB of add microservice");
+            console.log("DB of add microservice connnected");
+        });
         // database connected 
         let folders = ["physicalflows","actualtotalload","aggrgenerationpertype"] 
         let original_queries = [ 
@@ -61,6 +60,7 @@ const make_query_function = require("../modules/make_query_function.js");
                         await make_query_function(con, `${del_query}`);
                     }catch(err){
                         console.log("error with delete_queries: ",err);
+                        throw new Error("error2 with delete_queries");
                     
                     }
                 }
@@ -70,13 +70,12 @@ const make_query_function = require("../modules/make_query_function.js");
             result_of_query_for_modify[folder] = await make_query_function(con, query);
             } catch(err){
                 console.log(err);
-                res.status(500).send(err);
-                return;
+                throw new Error("error3 with query for modify");
             }
         }
 
-        
-        res.status(200).send("Data modified succesfully");
+        return ({status: "success", result:result_of_query_for_modify});
+        // res.status(200).send("Data modified succesfully");
     }
 
 
