@@ -46,7 +46,7 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const freq = 1000*60/4;//1 min in ms
+const freq = 1000*60/4;//15 sec
 // const freq = 500;//500 ms for debugging
 async function make_request(){
 

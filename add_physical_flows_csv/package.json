@@ -1,0 +1,22 @@
+{
+  "name": "add_csv_file",
+  "version": "1.0.1",
+  "engines": {
+    "node": "16.15.0",
+    "npm": "8.5.5"
+  },
+  "description": "(description)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Tasiopoulos & Tsiakat",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "kafkajs": "^2.0.2",
+    "mysql2": "^2.3.3"
+  }
+}
