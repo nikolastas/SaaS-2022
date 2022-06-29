@@ -60,22 +60,35 @@ const freq = 1000*60/4;//15 sec
 async function make_request(){
 
     let hh = 0;
+    let prev_hh = 0;
     let thekey = 0;
     let modifydatetime = "";
+    let prev_datetime = new Date("January 01, 2022 12:00:00");
     const datetime = new Date("January 01, 2022 12:00:00");
-
+    
     while(1){
         
         // console.log(datetime.toISOString().split('T')[0].replaceAll('-','_') + "_" + ("0" + hh).slice(-2));
         try{
             let datetime_formated = datetime.toISOString().split('T')[0].replaceAll('-','_') + "_" + ("0" + hh).slice(-2);
-            modifydatetime = datetime.toISOString().split('T')[0] + " " + ("0" + hh).slice(-2);
+            if( hh == 0){
+                prev_hh = 23;
+                // get previuous day of datetime
+                prev_datetime = new Date(datetime.getTime() - 24*60*60*1000);
+            }
+            else{
+                prev_datetime = datetime;
+                prev_hh = hh-1;
+            }
+            modifydatetime = prev_datetime.toISOString().split('T')[0] + " " + ("0" + prev_hh).slice(-2);
             await getdata(datetime_formated);
             if(hh === 23){
                 hh = 0;
+                
                 datetime.setDate(datetime.getDate() + 1);
             }
             else{
+                
                 hh++;
             }
 
@@ -92,6 +105,7 @@ async function make_request(){
             thekey++;
             
             kafka_producer("data_input_physical","DATA READY : " + modifydatetime ,thekey);
+            
             await timeout(freq);
         }
         catch(error){

@@ -54,6 +54,7 @@ function return_correct_data(csv_json, folder){
     }
     else{
         sql_query = "INSERT INTO "+ folder + " VALUES" + sql_query;
+        // wraios !
     }
     return sql_query;
 }

@@ -54,7 +54,10 @@ module.exports.modify = async (datetime) =>{
         console.log("delete queries done, with length: ",del_queries.length);
     }
     try{
-    result_of_query_for_modify = await make_query_function(con, query);
+        if(query != ""){
+            result_of_query_for_modify = await make_query_function(con, query);
+            
+        }
     } catch(err){
         console.log(err);
         throw new Error("error3 with query for modify");

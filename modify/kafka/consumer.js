@@ -8,7 +8,7 @@ const simple_consume = async (somethingToDo ) => {
     console.log("runnign simple consume");
 	await consumer.connect()
     // change kafka topic
-	await consumer.subscribe({ topic: "data_input_aggr", fromBeginning: true  }) //TODO: change it later to variable
+	await consumer.subscribe({ topic: "data_input_physical", fromBeginning: true  }) //TODO: change it later to variable
 	await consumer.run({
 		// when new message in client
 		eachMessage: async  ({ message }) => {

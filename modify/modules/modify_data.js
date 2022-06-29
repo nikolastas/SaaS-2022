@@ -27,7 +27,12 @@ function ModifyData(csv_json, folder, wanted_datetime) {
         }
         temp = temp.replaceAll("'null'", null);
         
-        query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
+        if (temp != ""){
+            query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
+        }
+        else{
+            query = "";
+        }
     }
     else if(folder == "physicalflows"){
         temp = "";
@@ -36,15 +41,20 @@ function ModifyData(csv_json, folder, wanted_datetime) {
             if(i < csv_json.length - 1)
                 temp += ",";
             // condition we need to delete new data to the db
-            if(wanted_datetime != csv_json[i]["DateTime"].split(":")[0]) 
+            if(wanted_datetime != csv_json[i]["DateTime"].split(":")[0]) {
                 // append del_queries
 
                 del_queries.push(("DELETE FROM " + folder + " WHERE DateTime = '" + csv_json[i]["DateTime"] + "' AND InMapCode = '" + csv_json[i]['InMapCode'] + "' AND OutMapCode = '"+ csv_json[i]['OutMapCode'] +"';").replaceAll("'null'", null)); 
-
+            }
         }
         temp = temp.replaceAll("'null'", null);
         
-        query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
+        if (temp != ""){
+            query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
+        }
+        else{
+            query = "";
+        }
 
     }
     else if(folder == "actualtotalload"){
@@ -60,8 +70,12 @@ function ModifyData(csv_json, folder, wanted_datetime) {
         }
         // delete the last comma
         temp = temp.replaceAll("'null'", null);
-        
-        query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
+        if (temp != ""){
+            query += "INSERT INTO " +folder+ " VALUES " + temp + ";";
+        }
+        else{
+            query = "";
+        }
 
     }
     else {
