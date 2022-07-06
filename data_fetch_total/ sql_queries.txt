@@ -1,0 +1,18 @@
+Select Datetime, TotalLoadValue, UpdateTime, MapCode
+from actualtotalload
+where MapCode = 'AL'
+  AND Datetime between '2021-01-01 08:31:01' and '2022-06-06 08:31:01'
+ORDER BY (Datetime) desc;
+
+CREATE TABLE ActualTotalLoad (Datetime datetime NOT NULL,
+ResolutionCode varchar(255),
+TotalLoadValue float,
+UpdateTime datetime NULL,
+MapCode varchar(255) NOT NULL)
+
+INSERT INTO actualtotalload (Datetime, ResolutionCode, TotalLoadValue, UpdateTime, MapCode)
+VALUES ('2022-07-01 00:45:00', 'PT15M', '181', '2022-01-13 08:31:01', 'AL');
+
+SELECT * from actualtotalload Order by (Datetime) desc Limit 100;
+
+TRUNCATE TABLE actualtotalload;

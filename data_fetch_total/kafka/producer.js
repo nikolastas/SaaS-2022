@@ -22,9 +22,6 @@ const produce_string = async (my_topic, message, key) => {
     } catch (err) {
         console.error("could not write message " + err)
     }
-
 }
 
-
-//produce_string("test_topic", "DATA READY", 1);
 module.exports = produce_string;
