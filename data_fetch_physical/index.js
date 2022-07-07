@@ -6,14 +6,13 @@ require('dotenv').config();
 app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
-//TODO change endpoints for forntend;
 app.get("/home", (req, res) => {
     console.log("Home")
     res.status(200).send()
 });
 
 
-app.post("/test", (req, res) => {
+app.post("/physical", (req, res) => {
     async function lol() {
         let result = await test(req, res);
         return result;

@@ -13,7 +13,7 @@ app.get("/home", (req, res) => {
 });
 
 
-app.post("/test", (req, res) => {
+app.post("/total", (req, res) => {
     async function lol() {
         let result = await test(req, res);
         return result;
