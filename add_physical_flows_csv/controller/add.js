@@ -54,13 +54,13 @@ function return_correct_data(csv_json, folder){
     }
     else{
         sql_query = "INSERT INTO "+ folder + " VALUES" + sql_query;
-        // wraios !
+        // wraios ! thanks
     }
     return sql_query;
 }
 
 module.exports.upload_csv = async function (folder, file) {
-    console.log("got in");
+    // console.log("got in");
     let csvData = [];
     if(file && folder){
         
