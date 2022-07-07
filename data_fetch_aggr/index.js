@@ -6,7 +6,7 @@ require('dotenv').config();
 app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
-
+//TODO change endpoints for forntend;
 app.get("/home", (req, res) => {
     console.log("Home")
     res.status(200).send()

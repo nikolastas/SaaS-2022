@@ -14,7 +14,7 @@ const con_datafetch = mysql.createConnection(config.db_datafetch);
 
 //if group id doesnt exist, throws some errors but then works just fine
 //TODO check if groupid needs change
-const consumer = kafka_client.consumer({groupId: "my-consumer-group"})
+const consumer = kafka_client.consumer({groupId: "my-consumer-physical"})
 
 const simple_consume = async () => {
     // first, we wait for the client to connect and subscribe to the given topic
