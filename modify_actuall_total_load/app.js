@@ -1,11 +1,20 @@
 const express = require('express');
-const add = require('../controller/modify.js');
+// const cors = require('cors');
+// const auth = require('./utils/auth');
+
+const add = require('./controller/modify.js');
 // every microservice must have its own modify_controller 
-const modify_controller = require('../controller/modify_ff.js');
-const kafka_consumer = require('../kafka/consumer.js');
-const kafka_producer = require('../kafka/producer.js');
+const modify_controller = require('./controller/modify_total.js');
+const kafka_consumer = require('./kafka/consumer.js');
+const kafka_producer = require('./kafka/producer.js');
 // const answersController = require('../controllers/answers');
 // const isAuth = require('../middlewares/authentication')
+
+const app = express();
+
+
+// run the consumer
+
 let key = 1;
 async function foo(message){
     let message_data_ready = message.value.toString().split(":")[0].slice(0, -1);
@@ -23,7 +32,7 @@ async function foo(message){
         }
         // cnage kafka topic !
 
-        await kafka_producer("data_modify_physical", "DATA READY", key);
+        await kafka_producer("data_modify_total", "DATA READY", key);
         key += 1;
     }
 }
@@ -32,4 +41,6 @@ kafka_consumer(foo).catch((err) => {
     console.error("error in producer: ", err)
 });
 };
-module.exports = run;
+
+run();
+module.exports = app;
