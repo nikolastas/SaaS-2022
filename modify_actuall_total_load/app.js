@@ -4,7 +4,7 @@ const express = require('express');
 
 const add = require('./controller/modify.js');
 // every microservice must have its own modify_controller 
-const modify_controller = require('./controller/modify_total.js');
+const modify_controller = require('./controller/modify_actual.js');
 const kafka_consumer = require('./kafka/consumer.js');
 const kafka_producer = require('./kafka/producer.js');
 // const answersController = require('../controllers/answers');

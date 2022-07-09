@@ -4,7 +4,7 @@ let con = mysql.createConnection({
     host: "localhost",
     user:"root",
     password:"root",
-    database:"saas2"
+    database:"modify_aggr"
 });
 
 
