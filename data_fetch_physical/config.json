@@ -3,13 +3,13 @@
     "host": "localhost",
     "user": "root",
     "password": "root",
-    "database": "modify_ff"
+    "database": "saas"
   },
   "db_datafetch": {
     "host": "localhost",
     "user": "root",
     "password": "root",
-    "database": "data_fetch_ff"
+    "database": "test"
   },
   "sql": {
     "SQL_QUERY_SELECT": "SELECT * from physicalflows",
