@@ -1,3 +1,4 @@
+
 CREATE TABLE ActualTotalLoad (Datetime datetime NOT NULL,
 ResolutionCode varchar(255), 
 TotalLoadValue float, 
@@ -33,3 +34,4 @@ ALTER TABLE ActualTotalLoad ADD CONSTRAINT FKActualTota412327 FOREIGN KEY (MapCo
 ALTER TABLE AggrGenerationPerType ADD CONSTRAINT FKAggrGenera687323 FOREIGN KEY (MapCode) REFERENCES Area (MapCode);
 ALTER TABLE PhysicalFlows ADD CONSTRAINT FKPhysicalFl871357 FOREIGN KEY (InMapCode) REFERENCES Area (MapCode);
 ALTER TABLE PhysicalFlows ADD CONSTRAINT FKPhysicalFl555898 FOREIGN KEY (OutMapCode) REFERENCES Area (MapCode);
+

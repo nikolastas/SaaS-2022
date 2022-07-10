@@ -1,6 +1,6 @@
 # NTUA ECE SAAS 2022 PROJECT
   
-## TEAM (24)
+## TEAM (XX)
   
   
 περιγραφή - οδηγίες
