@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const test = require("./endpoints/ActualTotalLoad");
-const router = require("router");
+const select_data = require("./endpoints/ActualTotalLoad");
+// const router = require("router");
+const jwt = require("jsonwebtoken");
+const simple_consume = require("./kafka/consumer");
+const verifyUser = require('./middleware/verifyUser.js')
 require('dotenv').config();
 app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -13,19 +16,38 @@ app.get("/home", (req, res) => {
 });
 
 
-app.post("/total", (req, res) => {
-    async function lol() {
-        let result = await test(req, res);
-        return result;
+app.post("/data_fetch/Total", verifyUser, (req, res) => {
+
+    async function promise_select_data() {
+        return await select_data(req, res);
     }
 
-    lol().then((d) => {
-        console.log(d[0])
+    const data = {
+        username: req.body.user,
+        email: req.body.email,
+        userID: req.body.userID
+    };
+
+    console.log(JSON.stringify(data));
+
+    const accessToken = jwt.sign(data, process.env.MY_SECRET_KEY)
+    res.set('authentication', accessToken);
+
+    //TODO delete console.log below;
+    //TODO handle error;
+    promise_select_data().then((d) => {
+        if (d.length === 0) {
+            res.status(503).send({"error": "No data available"});
+        } else {
+            res.status(200).send(d)
+        }
     });
 
-    res.status(200).send()
 });
 
+simple_consume().catch((err) => {
+    console.error("error in producer: ", err)
+});
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running...`);

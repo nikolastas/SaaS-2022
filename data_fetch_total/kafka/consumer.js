@@ -43,6 +43,8 @@ const simple_consume = async () => {
     })
 }
 
-simple_consume().catch((err) => {
-    console.error("error in producer: ", err)
-});
+// simple_consume().catch((err) => {
+//     console.error("error in producer: ", err)
+// });
+
+module.exports = simple_consume

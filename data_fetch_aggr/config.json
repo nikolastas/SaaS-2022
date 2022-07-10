@@ -12,7 +12,7 @@
     "database": "test"
   },
   "sql": {
-    "SQL_QUERY_SELECT": "SELECT * from aggrgenerationpertype LIMIT 5",
+    "SQL_QUERY_SELECT": "SELECT * from aggrgenerationpertype",
     "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE aggrgenerationpertype"
   },
   "kafka": {
