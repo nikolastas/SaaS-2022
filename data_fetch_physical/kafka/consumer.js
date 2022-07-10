@@ -4,6 +4,7 @@ const import_data = require('../endpoints/ImportData');
 const produce_string = require('./producer');
 const config = require('../config.json')
 const mysql = require("mysql");
+//TODO propably mysql 2
 
 // require('dotenv').config();
 // console.log(cred.dbconf);
@@ -24,6 +25,7 @@ const simple_consume = async () => {
         // when new message in client
         eachMessage:
             async ({message}) => {
+                console.log(message.value.toString());
                 if (message.value.toString() === "DATA READY") {
                     //take the data from the modify microservice database
                     let new_data = await make_query_func(con_modify, config.sql.SQL_QUERY_SELECT);

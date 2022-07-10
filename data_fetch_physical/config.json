@@ -3,16 +3,16 @@
     "host": "localhost",
     "user": "root",
     "password": "root",
-    "database": "saas"
+    "database": "modify_ff"
   },
   "db_datafetch": {
     "host": "localhost",
     "user": "root",
     "password": "root",
-    "database": "test"
+    "database": "data_fetch_ff"
   },
   "sql": {
-    "SQL_QUERY_SELECT": "SELECT * from physicalflows LIMIT 5",
+    "SQL_QUERY_SELECT": "SELECT * from physicalflows",
     "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE physicalflows"
   },
   "kafka": {
