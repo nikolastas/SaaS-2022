@@ -1,0 +1,22 @@
+{
+  "db_modify": {
+    "host": "localhost",
+    "user": "root",
+    "password": "root",
+    "database": "saas"
+  },
+  "db_datafetch": {
+    "host": "localhost",
+    "user": "root",
+    "password": "root",
+    "database": "test"
+  },
+  "sql": {
+    "SQL_QUERY_SELECT": "SELECT * from physicalflows LIMIT 5",
+    "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE physicalflows"
+  },
+  "kafka": {
+    "consumer_topic" : "data_modify_physical",
+    "producer_topic" : "data_fetch_to_display"
+  }
+}

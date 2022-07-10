@@ -1,0 +1,22 @@
+{
+  "db_modify": {
+    "host": "localhost",
+    "user": "root",
+    "password": "root",
+    "database": "saas"
+  },
+  "db_datafetch": {
+    "host": "localhost",
+    "user": "root",
+    "password": "root",
+    "database": "test"
+  },
+  "sql": {
+    "SQL_QUERY_SELECT": "SELECT * from actualtotalload LIMIT 5",
+    "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE actualtotalload"
+  },
+  "kafka": {
+    "consumer_topic" : "data_modify_total",
+    "producer_topic" : "data_fetch_to_display"
+  }
+}
