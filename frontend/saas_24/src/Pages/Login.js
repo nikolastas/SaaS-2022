@@ -8,6 +8,7 @@ const Login = () => {
     const handleLogin = (response) => {
 
         const token = response.credential;
+        console.log(token)
 
         const options = {
             method: "post",
@@ -18,14 +19,17 @@ const Login = () => {
             },
         }
 
-        fetch("http://localhost:6660/home", options).then((data) => console.log(data));
+        fetch("http://localhost:6660/home", options).then(res => res.json())
+            .then(data => {
+                console.log('Success:', data);
+            });
 
         document.getElementById("signInDiv").hidden = true;
 
     }
 
     useEffect(() => {
-        /*global google*/
+        /* global google */
         //TODO make this safer
         google.accounts.id.initialize({
             client_id: "427817892641-7pif8nq9bmqt36sbpo9a8hdnq7l93qgj.apps.googleusercontent.com",

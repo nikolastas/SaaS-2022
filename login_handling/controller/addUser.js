@@ -15,7 +15,15 @@ module.exports = function AddUser(username, email, sub_length) {
     let sql_query = `INSERT INTO subscriptions VALUES ('${username}','${email}','${TimeNow}','${TimeEnd}','') `;
 
     con.query(sql_query, (err) => {
-        if (err) throw err;
+        if (err) {
+            if(err.code === "ER_DUP_ENTRY") {
+                console.log("User alreasy exists");
+            }
+            else {
+                console.error(err);
+            }
+
+        }
         console.log("User Created Successfully");
     })
 }

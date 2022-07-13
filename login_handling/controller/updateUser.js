@@ -4,6 +4,17 @@ const con = mysql.createConnection(cred.dbconf);
 const sub_choose = require("../modules/sub_choose");
 const take_data = require('../modules/MakeQueryFunction');
 
+
+
+/**
+ * @name UpdateUser
+ * @description Updates the users subscription
+ * @param {string} username the username of the given user
+ * @param {string} email the email of the given user
+ * @param {string} sub_length update subscription according to the value of sub_length value (1/3/6 months)
+ * @param {string} subscription corresponds to the ongoing subscription (-1 -> never subscripted)
+ *
+ */
 module.exports = function UpdateUser(username, email, sub_length, subscription) {
     //toISOString().slice(0, 19).replace('T', ' ');
     console.log(username + " " + email + " " + sub_length);
