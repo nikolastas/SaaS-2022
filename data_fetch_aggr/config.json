@@ -1,18 +1,18 @@
 {
   "db_modify": {
-    "host": "localhost",
+    "host": "35.204.254.162",
     "user": "root",
     "password": "root",
-    "database": "saas"
+    "database": "modify_agrt"
   },
   "db_datafetch": {
-    "host": "localhost",
+    "host": "35.204.254.162",
     "user": "root",
     "password": "root",
-    "database": "test"
+    "database": "fetch_agrt"
   },
   "sql": {
-    "SQL_QUERY_SELECT": "SELECT * from aggrgenerationpertype",
+    "SQL_QUERY_SELECT": "SELECT * from aggrgenerationpertype LIMIT 5",
     "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE aggrgenerationpertype"
   },
   "kafka": {

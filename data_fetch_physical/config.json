@@ -1,15 +1,15 @@
 {
   "db_modify": {
-    "host": "localhost",
+    "host": "35.204.254.162",
     "user": "root",
     "password": "root",
-    "database": "saas"
+    "database": "modify_ff"
   },
   "db_datafetch": {
-    "host": "localhost",
+    "host": "35.204.254.162",
     "user": "root",
     "password": "root",
-    "database": "test"
+    "database": "fetch_ff"
   },
   "sql": {
     "SQL_QUERY_SELECT": "SELECT * from physicalflows",

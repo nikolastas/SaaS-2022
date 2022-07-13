@@ -1,18 +1,18 @@
 {
   "db_modify": {
-    "host": "localhost",
+    "host": "35.204.254.162",
     "user": "root",
     "password": "root",
-    "database": "saas"
+    "database": "modify_atl"
   },
   "db_datafetch": {
-    "host": "localhost",
+    "host": "35.204.254.162",
     "user": "root",
     "password": "root",
-    "database": "test"
+    "database": "fetch_atl"
   },
   "sql": {
-    "SQL_QUERY_SELECT": "SELECT * from actualtotalload",
+    "SQL_QUERY_SELECT": "SELECT * from actualtotalload LIMIT 5",
     "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE actualtotalload"
   },
   "kafka": {
