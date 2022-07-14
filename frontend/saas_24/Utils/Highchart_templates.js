@@ -114,7 +114,7 @@ chart = Highcharts.chart('container', {
     },
     series: [
     {
-    		name: value_out,
+    	name: value_out,
         data: []
     }]
 });
@@ -126,18 +126,23 @@ function DrawChart (value_out) {
     let time = arr['UpdateTime'];
     let value = arr[value_out] == null ? 0 : arr[value_out];
 
-    let point = [time , value];
+    let point = [time ,value];
     chart.series[0].addPoint(point, true, false);
   }
   chart.redraw();
 }
 
-function ChangeChart(value_out) {
+function ChangeCharts(value_out) {
   chart.setTitle({text: jsonArr[0]['MapCode'] + ' ' + value_out });
-  
-  //redraw Chart
+  area_chart.setTitle({text: jsonArr[0]['MapCode'] + ' ' + value_out });
+
+  //redraw Charts
   chart.series[0].setData([]);
   DrawChart(value_out);
+
+  
+  area_chart.series[0].setData([]);
+  DrawAreaChart(value_out);
 }
 
 
