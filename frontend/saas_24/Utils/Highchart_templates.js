@@ -114,7 +114,7 @@ chart = Highcharts.chart('container', {
     },
     series: [
     {
-    		name: value_out,
+    	name: value_out,
         data: []
     }]
 });
@@ -123,22 +123,66 @@ chart = Highcharts.chart('container', {
 function DrawChart (value_out) {
 	for(let arr of jsonArr) 
   {
-    let time = arr['UpdateTime'];
+    let time = Date.parse(arr['UpdateTime']);
     let value = arr[value_out] == null ? 0 : arr[value_out];
 
-    let point = [time , value];
+    let point = [time ,value];
     chart.series[0].addPoint(point, true, false);
   }
   chart.redraw();
 }
 
-function ChangeChart(value_out) {
+function ChangeCharts(value_out) {
   chart.setTitle({text: jsonArr[0]['MapCode'] + ' ' + value_out });
-  
-  //redraw Chart
+  area_chart.setTitle({text: jsonArr[0]['MapCode'] + ' ' + value_out });
+
+  //redraw Charts
   chart.series[0].setData([]);
   DrawChart(value_out);
+
+  
+  area_chart.series[0].setData([]);
+  DrawAreaChart(value_out);
 }
 
-DrawChart(value_out);
+
+let chart_area = Highcharts.chart('container', {
+    chart: {
+        type: 'areaspline'
+    },
+    xAxis: {
+        type: 'datetime'
+    },
+    title: {
+    	text: jsonArr[0]['MapCode'] + ' ' + value_out + ' '
+    },
+    credits: {
+        enabled: false
+    },
+    plotOptions: {
+        areaspline: {
+            fillOpacity: 0.5
+        }
+    },
+    series: [{
+        name: jsonArr[0]['MapCode'],
+        data: []
+    }]
+});
+
+// value_out is one of the three types e.g. ActualGenerationOutput
+function DrawAreaChart (value_out) {
+	let val = 0;
+	for(let arr of jsonArr) 
+  {
+    let time = new Date(arr['UpdateTime']);
+    let temp = arr[value_out] == null ? 0 : arr[value_out];
+		val += temp;
+    
+    let point = [time , val];
+    chart.series[0].addPoint(point, true, false);
+  }
+  chart.redraw();
+}
+
 
