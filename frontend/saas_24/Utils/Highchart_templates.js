@@ -140,5 +140,44 @@ function ChangeChart(value_out) {
   DrawChart(value_out);
 }
 
-DrawChart(value_out);
+
+let chart_area = Highcharts.chart('container', {
+    chart: {
+        type: 'areaspline'
+    },
+    xAxis: {
+        type: 'datetime'
+    },
+    title: {
+    	text: jsonArr[0]['MapCode'] + ' ' + value_out + ' '
+    },
+    credits: {
+        enabled: false
+    },
+    plotOptions: {
+        areaspline: {
+            fillOpacity: 0.5
+        }
+    },
+    series: [{
+        name: jsonArr[0]['MapCode'],
+        data: []
+    }]
+});
+
+// value_out is one of the three types e.g. ActualGenerationOutput
+function DrawAreaChart (value_out) {
+	let val = 0;
+	for(let arr of jsonArr) 
+  {
+    let time = new Date(arr['UpdateTime']);
+    let temp = arr[value_out] == null ? 0 : arr[value_out];
+		val += temp;
+    
+    let point = [time , val];
+    chart.series[0].addPoint(point, true, false);
+  }
+  chart.redraw();
+}
+
 
