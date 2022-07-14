@@ -123,7 +123,7 @@ chart = Highcharts.chart('container', {
 function DrawChart (value_out) {
 	for(let arr of jsonArr) 
   {
-    let time = arr['UpdateTime'];
+    let time = Date.parse(arr['UpdateTime']);
     let value = arr[value_out] == null ? 0 : arr[value_out];
 
     let point = [time ,value];
