@@ -8,7 +8,7 @@ const Login = () => {
     const handleLogin = (response) => {
 
         const token = response.credential;
-        console.log(token)
+        //console.log(token)
 
         const options = {
             method: "post",
@@ -19,9 +19,27 @@ const Login = () => {
             },
         }
 
-        fetch("http://localhost:6660/home", options).then(res => res.json())
+        fetch("http://localhost:6660/home", options).then(r => r.json())
             .then(data => {
-                console.log('Success:', data);
+                sessionStorage.setItem("authentication",token);
+                if(parseInt(data.subscription)===-1){
+                    document.getElementById("UserArea").innerHTML = "Hello "+data.name;
+                    document.getElementById("Info").innerHTML = "You need to create a new user to continue";
+                    document.getElementById("newUser").hidden = false;
+                }
+                else if(parseInt(data.subscription)===0){
+                    document.getElementById("UserArea").innerHTML = "Hello "+data.name;
+                    document.getElementById("Info").innerHTML = "You need to renew your subscription to continue";
+                    document.getElementById("renew").hidden = false;
+                }
+                else if(parseInt(data.subscription)===1){
+
+                    window.location.href = "/home";
+                }
+                else{
+                    document.getElementById("UserArea").innerHTML = "Hello "+data.name;
+                    document.getElementById("Info").innerHTML = "You need to refresh the page because an unexpected error is occured";
+                }
             });
 
         document.getElementById("signInDiv").hidden = true;
@@ -53,11 +71,17 @@ const Login = () => {
 
     return (
         <div className="App">
+            <h1 id="UserArea"></h1>
+            <h2 id="Info"></h2>
             <div id="signInDiv"></div>
             <button onClick={(e) => {
                 handleSignOut(e)
             }}>SignOut
             </button>
+            <button id = "renew" hidden="true">Renew Subscription</button>
+            <button id = "newUser" hidden="true" onClick={()=>{
+                window.location.href = "/newuser";
+            }}>New User</button>
         </div>
     )
 }

@@ -6,6 +6,7 @@ import './App.css';
 // import Header from './Components/Header';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
+import NewUser from "./Pages/NewUser";
 // import Logout from './Pages/Logout';
 import Statistics from './Pages/Statistics';
 
@@ -19,6 +20,7 @@ function App() {
             <Routes>
                 <Route path="/home" element={<Home/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/newuser" element={<NewUser/>}/>
                 <Route path="/statistics" element={<Statistics/>}/>
             </Routes>
             {/*<Footer/>*/}
