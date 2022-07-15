@@ -2,6 +2,11 @@ const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(process.env.clientID);
 const parseJwt = require('../modules/decodeToken')
 
+/**
+ * @name verify
+ * @description verifies the validity of the users info
+ * @param {string} token the response token of the SSO Login Service
+ */
 async function verify(token) {
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -36,6 +41,9 @@ module.exports = function verifyUser(req, res, next) {
             req.body.email = data.email;
             req.body.userID = data.sub;
             req.body.token = tokenHeader;
+            console.log(req.body.sublength);
+            // if(req.body.sublength !== undefined)
+            //     next.body.sublength = req.body.sublength;
             next()
         }).catch((e) => {
             console.error(e);

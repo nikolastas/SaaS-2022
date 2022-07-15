@@ -92,7 +92,7 @@ app.post("/subscription/EndSub", verifyUser, (req, res) => {
     })
 });
 
-app.post("/test", verifyUser, (req, res) => {
+app.post("/check", verifyUser, (req, res) => {
     res.set('authentication', req.body.token);
     res.set("Access-Control-Allow-Origin","*");
     res.status(200).send("Test passed successfully");

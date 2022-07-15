@@ -3,6 +3,11 @@ const mysql = require('mysql');
 const cred = require(process.env.DBCONFIGFILE);
 const con = mysql.createConnection(cred.dbconf);
 
+/**
+ * @name endSub
+ * @description returns the subscription's expiration date of the given user
+ * @param {string} username the username of the given user
+ */
 module.exports = function endSub(username) {
     return new Promise(function (resolve, reject) {
         const sql_query = `SELECT SubscriptionEndTime FROM subscriptions WHERE username = '${username}'`;

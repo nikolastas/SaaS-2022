@@ -1,7 +1,8 @@
 import React from 'react'
 import {useState, useEffect} from 'react';
 
-const NewUser = () => {
+const RenewUser = () => {
+
 
     let [msg, setMsg] = useState(<h1>Loading...</h1>);
     let token = sessionStorage.getItem('authentication');
@@ -28,11 +29,12 @@ const NewUser = () => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    'sublength': val
+                    'sublength': val,
+                    'subscription':'1'
                 })
             }
 
-            fetch("http://localhost:6660/subscription/NewSub", options).then(r => {
+            fetch("http://localhost:6660/subscription/UpdateSub", options).then(r => {
                 if (!r.ok) {
 
                     sessionStorage.removeItem('authentication')
@@ -45,7 +47,7 @@ const NewUser = () => {
                 } else {
                     setMsg(
                         <>
-                            <h1>User Creation Successfully</h1>
+                            <h1>Subscription renewed Successfully</h1>
                             <p>Redirecting to Home</p>
                         </>
                     )
@@ -69,7 +71,7 @@ const NewUser = () => {
             setMsg(
                 <>
                     <h1>Choose a subscription plan below</h1>
-                    <button id="submit" onClick={handlesub}>Subscribe and Create User</button>
+                    <button id="submit" onClick={handlesub}>Subscribe and Renew subscription</button>
                     <select id="select">
                         <option name="1" value={1}>1 month</option>
                         <option name="2" value={2}>6 months</option>
@@ -88,4 +90,4 @@ const NewUser = () => {
     )
 }
 
-export default NewUser;
+export default RenewUser;
