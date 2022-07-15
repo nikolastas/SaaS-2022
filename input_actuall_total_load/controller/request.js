@@ -9,7 +9,8 @@ const { time } = require('console');
 const { resolve } = require('path');
 const { rejects } = require('assert');
 const kafka_producer = require('../kafka/producer.js');
-
+const dot = require('dotenv');
+dot.config();
 
 const agent = new https.Agent({  
     ca:[fs.readFileSync(path.join(__dirname, "CA.pem")).toString() ]
@@ -33,7 +34,7 @@ const agent = new https.Agent({
 
 function getdata(datetime){
     // let datetime = "2022_01_02_23";
-    let request = 'https://localhost:9103/ATL/'+datetime;
+    let request = process.env.BASE_URL_REQUEST+datetime;
 
     return new Promise(async function (resolve, rejects){
 
@@ -45,7 +46,8 @@ function getdata(datetime){
         console.log("Got files for datetime " + datetime);
         resolve (response);
         }).catch(error => {
-            console.log(error);
+            
+            console.log("error", error);
         
       });
     });

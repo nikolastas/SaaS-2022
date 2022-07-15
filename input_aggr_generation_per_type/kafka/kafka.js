@@ -2,16 +2,21 @@
 File that configures kafka client class
 */
 const { Kafka } = require('kafkajs');
+const dot = require('dotenv');
+dot.config();
 
-const m_username = 'EP3SP67RGDXP57IK'
-const m_password = 'aTLGhy8a1/lYhe9GX71oEps9U6HzHfn29x2Pfy2bRvmNUGZP2pvQ9IP6gf1bfHdH'
+let broker = process.env.KAFKA_BROKER;
+let m_username = process.env.KAFKA_USERNAME;
+let m_password = process.env.KAFKA_PASSWORD;
+
+
 
 // Create client instance upon running
 // based upon confluent instructions
 const kafka = new Kafka({
     clientID: 'input_ff',
     // set it to desired confluent host
-    brokers: ['pkc-41mxj.uksouth.azure.confluent.cloud:9092'],
+    brokers: [broker],
     ssl: true,
     sasl: {
         mechanism: 'plain', // scram-sha-256 or scram-sha-512

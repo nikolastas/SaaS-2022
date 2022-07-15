@@ -1,4 +1,4 @@
 /node_modules
 /package-lock.json
-/data/aggrgenerationpertype/2022_01_31_23_AggregatedGenerationPerType16.1.BC.csv
-/data/aggrgenerationpertype/2022_01_31_22_AggregatedGenerationPerType16.1.BC.csv
+/data/aggrgenerationpertype/*
+/controller/actualtotalload_last.txt

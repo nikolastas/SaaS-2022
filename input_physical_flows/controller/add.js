@@ -28,6 +28,7 @@ function return_correct_data(csv_json, folder){
     // }
 
     // sql_query = "INSERT INTO physicalflows VALUES"
+    
     for (let i = 1; i < csv_json.length - 1; i++) {
         let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','"  + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InMapCode']  + "','" + csv_json[i]['OutMapCode']+ "')" 
         if(i < csv_json.length - 2)
@@ -50,10 +51,12 @@ function return_correct_data(csv_json, folder){
     // }
     
     if (sql_query=="" || sql_query==null|| sql_query==";"){
+        console.log("No data to insert");
         return "";
     }
     else{
         sql_query = "INSERT INTO "+ folder + " VALUES" + sql_query;
+        console.log("sql_query: " + sql_query);
         // wraios ! thanks
     }
     return sql_query;
@@ -110,14 +113,17 @@ module.exports.upload_csv = async function (folder, file) {
         if(sql_query != ""){
             try{
                 await make_query_function(con, "truncate table "+ folder+";");
+                // con.end();
                 
-            }catch{
-                console.log("Error: cannot truncate table"+folder);
+            }catch(err){
+                console.log(err);
+                console.log("Error: cannot truncate table "+folder);
             }
             result_from_query = await make_query_function(con, sql_query);
+            // con.end();
             if ("error" in result_from_query){throw result_from_query}
         }
-        console.log("csv file updated to database");
+        console.log("csv file updated to database", sql_query);
         return(sql_query)
         }
         catch{

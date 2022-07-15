@@ -7,7 +7,7 @@ const readFileasync = require('../modules/read-file-async.js');
 const make_query_function = require('../modules/make_query');
 
 // connect to database
-con.connect( function(err){
+let connection = con.connect( function(err){
     if (err) throw err;
     console.log("DB Connected");
 });

@@ -1,32 +1,28 @@
-const config = require("./config.json");
 const aws = require('aws-sdk'); 
 
 const path = require('path');
-const axios = require('axios');
+
 const fs = require('fs');
 const https = require('https');
-const { PassThrough } = require('stream');
+const dot = require("dotenv");
+dot.config();
 const add_csv_to_db = require('../controller/add');
-const res = require('express/lib/response');
-const { time } = require('console');
-const { resolve } = require('path');
-const { rejects } = require('assert');
+
 const kafka_producer = require('../kafka/producer.js');
+const con = require("../utils/database.js");
+const make_query_function = require('../modules/make_query');
 
 
 
 
-const agent = new https.Agent({  
-    ca:[fs.readFileSync(path.join(__dirname, "CA.pem")).toString() ]
-});
 
 aws.config.update({
-    secretAccessKey:config.SECRET_ACCESS_KEY,
-    accessKeyId:config.ACCESS_KEY,
-    region:config.REGION
+    secretAccessKey:process.env.SECRET_ACCESS_KEY,
+    accessKeyId:process.env.ACCESS_KEY,
+    region:process.env.REGION
 })
 
-const BUCKET = config.BUCKET;
+const BUCKET = process.env.BUCKET;
 
 const s3 = new aws.S3();
     
@@ -55,13 +51,15 @@ function getdata(datetime){
             Bucket: BUCKET,
             Key: file
         }
+        let file2= datetime+"_PhysicalFlows12.1.G.csv";
     
         return new Promise((resolve, reject) => {
             // create read stream for object
-            console.log(config.BUCKET);
-            let stream = s3.getObject({Bucket: config.BUCKET, Key: file}).createReadStream();
-            let p = path.join(path.join(__dirname, "..", "data","physicalflows", params.Key));
+            // console.log(config.BUCKET);
+            let stream = s3.getObject({Bucket: process.env.BUCKET, Key: file}).createReadStream();
+            let p = path.join(path.join(__dirname, "..", "data","physicalflows", file));
             p = p.replaceAll('\\', '/');
+            console.log(p);
             var fileStream = fs.createWriteStream(p);
             stream.pipe(fileStream);
             
@@ -69,7 +67,10 @@ function getdata(datetime){
             stream.on('error', (err) => reject(new Error(err)));
             
             // on end resolve the Promise
-            stream.on('end', () => resolve());
+            stream.on('end', () => {
+            let kkk = fs.readFileSync(p);
+            console.log(kkk);
+            resolve()});
           });
     }
     catch(e){
@@ -133,6 +134,18 @@ async function make_request(){
             kafka_producer("data_input_physical","DATA READY : " + modifydatetime ,thekey);
             
             await timeout(freq);
+            // if prev and curr datetime are on different months, then wait for next month
+            if(prev_datetime.getMonth() != datetime.getMonth()){
+                try{
+                    await make_query_function(con, "truncate table "+ folder+";");
+                    // con.end();
+                    console.log("i truncated table " + folder+ " because the month changed");
+                    
+                }catch(err){
+                    console.log(err);
+                    console.log("Error: cannot truncate table "+folder);
+                }
+            }  
         }
         catch(error){
             console.log("something went wrong");

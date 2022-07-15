@@ -7,8 +7,10 @@ module. exports  =  function checkSub(con, sql_query)  {
             con.query(sql_query, function (err, result, fields) {
               if (err) throw err;
               
+                
+            }).then(() => {
+                con.end();
                 resolve(result);
-            });
           });
     })
-}
+})};
