@@ -1,8 +1,4 @@
 require("dotenv").config();
-
-const express = require('express');
-const app = express();
-
 const aws = require('aws-sdk'); 
 
 const fs = require('fs');
