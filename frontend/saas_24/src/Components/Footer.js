@@ -67,6 +67,9 @@ const Footer = () => {
                 <p>a project by group SAAS21-24®</p>
                 {msg}
                 <button onClick={handleLogout} hidden={hid}>Logout</button>
+                <button onClick={()=>{
+                    window.location.href = "/renewsub"
+                }} hidden = {hid}>Extend Plan</button>
             </div>
         </>
         )
