@@ -2,6 +2,8 @@ import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+require("highcharts/modules/exporting")(Highcharts);
+require("highcharts/modules/export-data")(Highcharts);
 
 
 // Needed functions for running the code (react didnt let me module export)
@@ -76,8 +78,7 @@ function FindTypeOfJSON (json) {
 function DrawChartLine (jsonArr, type_out, chart_line) {
 	//Agregation per type
     if(type_out == 'ActualGenerationOutput') {
-        chart_line.setTitle({text: 'Actual Generation Output  from ' +  jsonArr[0]['MapCode']});
-        
+        chart_line.setTitle({text: 'Generation Per Type ('+jsonArr[0]['ProductionType']+') ' +  jsonArr[0]['MapCode']});
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
             let value = arr[type_out] == null ? 0 : arr[type_out];
@@ -89,7 +90,7 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
 
     // Actual Total Load
     else if(type_out == 'TotalLoadValue') {
-        chart_line.setTitle({text: 'Actual Total Load  from ' +jsonArr[0]['InMapCode'] + ' to ' + jsonArr[0]['OutMapCode']});
+        chart_line.setTitle({text: 'Actual Total Load'+ jsonArr[0]['MapCode']});
 
         for(let arr of jsonArr) {
             let time = Date.parse(arr['Datetime']);
@@ -102,7 +103,7 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
 
     // Physical flows
     else {
-       	chart_line.setTitle({text: 'Physical Flows of'});
+       	chart_line.setTitle({text: 'Cross-Border Flows'+jsonArr[0]['InMapCode'] + '->' + jsonArr[0]['OutMapCode']});
         
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
@@ -126,7 +127,7 @@ function DrawChartArea (jsonArr, type_out, chart_area) {
 	//Agregation per type
     let temp = 0;
     if(type_out == 'ActualGenerationOutput') {
-        chart_area.setTitle({text: 'Actual Generation Output accumulated from ' +  jsonArr[0]['MapCode']});
+        chart_area .setTitle({text: 'Generation Per Type Accumulated ('+jsonArr[0]['ProductionType']+') ' +  jsonArr[0]['MapCode']});
         
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
@@ -140,7 +141,7 @@ function DrawChartArea (jsonArr, type_out, chart_area) {
 
     // Actual Total Load
     else if(type_out == 'TotalLoadValue') {
-        chart_area.setTitle({text: 'Actual Total Load  accumulated from ' +jsonArr[0]['InMapCode'] + ' to ' + jsonArr[0]['OutMapCode']});
+        chart_area.setTitle({text: 'Actual Total Load Accumulated '+ jsonArr[0]['MapCode']});
         
         for(let arr of jsonArr) {
             let time = Date.parse(arr['Datetime']);
@@ -154,7 +155,7 @@ function DrawChartArea (jsonArr, type_out, chart_area) {
 
     // Physical flows
     else {
-       	chart_area.setTitle({text: 'Physical Flows  accumulated'});
+        chart_area.setTitle({text: 'Cross-Border Flows Accumulated '+jsonArr[0]['InMapCode'] + '->' + jsonArr[0]['OutMapCode']});
         
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
@@ -177,6 +178,9 @@ const HighchartTest = () => {
             type: 'datetime'
         },
         title: {
+            text: ''
+        },
+        subtitle: {
             text: ''
         },
         credits: {
@@ -204,6 +208,9 @@ const HighchartTest = () => {
         title: {
             text: ''
         },
+        subtitle: {
+            text: ''
+        },
         credits: {
             enabled: false
         },
@@ -218,6 +225,7 @@ const HighchartTest = () => {
             data: []
     }]});
 
+    let LastUpdateTime = ''
     // called when refresh is needed
     // MUST be called and when visting the page for the first time
     const Redraw = () => {
@@ -225,10 +233,13 @@ const HighchartTest = () => {
         //take the charts from refrenced components
         const chart_line = chartComponent.current?.chart;
         const chart_area = chartComponent2.current?.chart;
-
+        
         DrawChartLine(jsonArr, type_out, chart_line);
         DrawChartArea(jsonArr, type_out, chart_area);
+        //returns last update time den kserw na to vazw vreite to
+        LastUpdateTime = jsonArr[jsonArr.length-1]['UpdateTime'];
     }
+
 
     // I love react
     // makes a refence to an html element and binds it to a variable
@@ -239,9 +250,10 @@ const HighchartTest = () => {
     return (
         <div>
           <HighchartsReact  ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>
-          <div>like</div>
+          <p>like</p>
           <HighchartsReact  ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
           <button onClick={Redraw}>Refresh</button>
+          <h1>Last Update Time: {LastUpdateTime}</h1>
         </div>
       );
 }
