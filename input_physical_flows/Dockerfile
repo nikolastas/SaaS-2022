@@ -40,9 +40,13 @@ CMD [ "node", "server.js" ]
 # deploy app to google with no autherizing.
 
 
-
 # EXAMPLE FOR DUMMIES :)
-# 1. docker build . -t nikos/input_physical_flows
-# 2. docker run -p 8080:6660 -d nikos/input_physical_flows
-# 3. gcloud auth activate-service-account keen-ascent-356215@appspot.gserviceaccount.com --key-file=1.json
-# 4. docker push eu.gcr.io/keen-ascent-356215/input_ff
+# 1. docker build . -t nikos/input_ff
+# 2.(skip if dont want to test it) docker run -p 8080:6660 -d nikos/input_ff
+# 2.5.(skip if done once) gcloud authenticate and get the json key form google console
+# 3. (skip if done once) gcloud auth activate-service-account core-parsec-356516@appspot.gserviceaccount.com --key-file=1.json
+# 4. docker tag nikos/input_ff eu.gcr.io/core-parsec-356516/input_ff:v0
+# 5. docker push eu.gcr.io/core-parsec-356516/input_ff:v0
+# 6. delete all docker images from pc 
+# 7. delete all container from pc
+# 8. deploy to gcloud with env variables and always running

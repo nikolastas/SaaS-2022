@@ -99,9 +99,9 @@ module.exports.upload_csv = async function (folder, file) {
             }
             
         try{
-            console.log(csv_original.toString())
+            // console.log(csv_original.toString())
             let csv_json = CsvToJson(csv_original, '\t'); 
-            console.log(csv_json);
+            // console.log(csv_json);
             // write latest input file in the text
             fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
 

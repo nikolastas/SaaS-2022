@@ -1,6 +1,9 @@
 const con = require("../utils/database.js");
 const mysql = require("mysql2");
 const dot = require("dotenv");
+const path = require("path");
+const fs = require("fs");
+
 dot.config();
 
 
@@ -24,6 +27,19 @@ async function ResetDB(jsonHost) {
             con.query(sql_query, function (err, result, fields) {
               if (err) reject({err:err, success:false});
                 con.end();
+                try {
+                    const direcotry = "data/physicalflows/";
+                    let files = fs.readdirSync(direcotry);
+                    for (const file of files) {
+                        console.log((path.join(__dirname,direcotry, file)))
+                        fs.unlinkSync(path.join(__dirname,direcotry, file));
+                    };    
+                    const directory2 = "/controller/physicalflows_last.txt";
+                    console.log(path.join(directory2));
+                    fs.unlinkSync(path.join(__dirname,directory2));
+                    }catch(err) {
+                        console.log(err);
+                    }
                 resolve({success: true});
             });
           

@@ -35,7 +35,7 @@ module.exports.modify = async (datetime) =>{
     if(date.getMonth() != date_next.getMonth()){
     
         console.log("[MONTH CHANGE] time to truncate table " + datetime.split("-")[0] + "-" + datetime.split("-")[1], " this date must be the first day and the first hour of the month");
-        let query = "TRUNCATE TABLE actualtotalload;";
+        let query = "TRUNCATE TABLE physicalflows;";
         await make_query_function(con, query);
     }
     // database connected 

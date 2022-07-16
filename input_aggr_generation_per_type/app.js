@@ -41,12 +41,12 @@ let host_list = [
 
 let date = new Date("January 01, 2022 12:00:00");
 let hh = 0;
-console.log(date);
+// console.log(date);
 
 async function get_data(req, res) {
 // make date have next day
     
-    console.log(date);
+    // console.log(date);
     
     let result = await request.make_request(date, hh);
     if(hh === 23){
@@ -70,7 +70,7 @@ async function reset_databases(req, res) {
        result =  await resetDB.ResetDB(hostElement);
        
     }   
-    console.log(result);
+    // console.log(result);
     if(result.success){
         res.send(result).status(200);
     }
