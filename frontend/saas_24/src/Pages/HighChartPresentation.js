@@ -3,6 +3,9 @@ import {useState, useEffect, useRef} from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
+require("highcharts/modules/exporting")(Highcharts);
+require("highcharts/modules/export-data")(Highcharts);
+
 
 // Needed functions for running the code (react didnt let me module export)
 //#region module
@@ -16,7 +19,7 @@ let jsonArr = `[
         "ActualGenerationOutput": 279.14,
         "ActualConsumption": null,
         "UpdateTime": "2022-01-01T00:50:06.000Z",
-        "MapCode": "DE"
+        "MapCode": "hgdf"
     },
     {
         "DateTime": "2021-12-31T22:30:00.000Z",
@@ -25,7 +28,7 @@ let jsonArr = `[
         "ActualGenerationOutput": 279.14,
         "ActualConsumption": null,
         "UpdateTime": "2022-01-01T00:33:53.000Z",
-        "MapCode": "DE"
+        "MapCode": "hgdf"
     },
     {
         "DateTime": "2021-12-31T22:15:00.000Z",
@@ -58,10 +61,10 @@ jsonArr = JSON.parse(jsonArr)
 function FindTypeOfJSON (json) {
     if(json.hasOwnProperty('ActualGenerationOutput'))
         return 'ActualGenerationOutput';
-    
+
     else if(json.hasOwnProperty('TotalLoadValue'))
         return 'TotalLoadValue';
-    
+
     else
         return 'FlowValue';
 }
@@ -74,14 +77,18 @@ function FindTypeOfJSON (json) {
  * @param {Object} chart_area the chart given to manipulate
  */
 function DrawChartLine (jsonArr, type_out, chart_line) {
-	//Agregation per type
+
+    //change the series name and the legend title
+    chart_line.series[0].name = type_out;
+    chart_line.legend.allItems[0].update({name:type_out});
+
+    //Agregation per type
     if(type_out == 'ActualGenerationOutput') {
-        chart_line.setTitle({text: 'Actual Generation Output  from ' +  jsonArr[0]['MapCode']});
-        
+        chart_line.setTitle({text: 'Generation Per Type ('+jsonArr[0]['ProductionType']+') ' +  jsonArr[0]['MapCode']});
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
             let value = arr[type_out] == null ? 0 : arr[type_out];
-    
+
             let point = [time ,value];
             chart_line.series[0].addPoint(point, true, false);
         }
@@ -89,12 +96,12 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
 
     // Actual Total Load
     else if(type_out == 'TotalLoadValue') {
-        chart_line.setTitle({text: 'Actual Total Load  from ' +jsonArr[0]['InMapCode'] + ' to ' + jsonArr[0]['OutMapCode']});
+        chart_line.setTitle({text: 'Actual Total Load '+ jsonArr[0]['MapCode']});
 
         for(let arr of jsonArr) {
             let time = Date.parse(arr['Datetime']);
             let value = arr[type_out] == null ? 0 : arr[type_out];
-    
+
             let point = [time ,value];
             chart_line.series[0].addPoint(point, true, false);
         }
@@ -102,17 +109,17 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
 
     // Physical flows
     else {
-       	chart_line.setTitle({text: 'Physical Flows of'});
-        
+        chart_line.setTitle({text: 'Cross-Border Flows '+jsonArr[0]['InMapCode'] + '->' + jsonArr[0]['OutMapCode']});
+
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
             let value = arr[type_out] == null ? 0 : arr[type_out];
-    
+
             let point = [time ,value];
             chart_line.series[0].addPoint(point, true, false);
         }
     }
-  chart_line.redraw();
+    chart_line.redraw();
 }
 
 /**
@@ -123,16 +130,20 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
  * @param {Object} chart_area the chart given to manipulate
  */
 function DrawChartArea (jsonArr, type_out, chart_area) {
-	//Agregation per type
+
+    //change the series name
+    chart_area.series[0].name = type_out;
+    chart_area.legend.allItems[0].update({name:type_out});
+    //Agregation per type
     let temp = 0;
     if(type_out == 'ActualGenerationOutput') {
-        chart_area.setTitle({text: 'Actual Generation Output accumulated from ' +  jsonArr[0]['MapCode']});
-        
+        chart_area .setTitle({text: 'Generation Per Type Accumulated ('+jsonArr[0]['ProductionType']+') ' +  jsonArr[0]['MapCode']});
+
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
             let value = (arr[type_out] == null ? 0 : arr[type_out]);
-    				temp += value;
-    
+            temp += value;
+
             let point = [time ,temp];
             chart_area.series[0].addPoint(point, true, false);
         }
@@ -140,13 +151,13 @@ function DrawChartArea (jsonArr, type_out, chart_area) {
 
     // Actual Total Load
     else if(type_out == 'TotalLoadValue') {
-        chart_area.setTitle({text: 'Actual Total Load  accumulated from ' +jsonArr[0]['InMapCode'] + ' to ' + jsonArr[0]['OutMapCode']});
-        
+        chart_area.setTitle({text: 'Actual Total Load Accumulated '+ jsonArr[0]['MapCode']});
+
         for(let arr of jsonArr) {
             let time = Date.parse(arr['Datetime']);
             let value = (arr[type_out] == null ? 0 : arr[type_out]);
-    				temp += value;
-    
+            temp += value;
+
             let point = [time ,temp];
             chart_area.series[0].addPoint(point, true, false);
         }
@@ -154,20 +165,21 @@ function DrawChartArea (jsonArr, type_out, chart_area) {
 
     // Physical flows
     else {
-       	chart_area.setTitle({text: 'Physical Flows  accumulated'});
-        
+        chart_area.setTitle({text: 'Cross-Border Flows Accumulated '+jsonArr[0]['InMapCode'] + '->' + jsonArr[0]['OutMapCode']});
+
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
             let value = arr[type_out] == null ? 0 : arr[type_out];
-    
+
             let point = [time ,value];
             chart_area.series[0].addPoint(point, true, false);
         }
     }
-  chart_area.redraw();
-}
-//#endregion module
 
+    chart_area.redraw();
+}
+
+//#endregion module
 const HighchartTest = () => {
     let type_out = FindTypeOfJSON(jsonArr[0]);
 
@@ -179,6 +191,9 @@ const HighchartTest = () => {
         title: {
             text: ''
         },
+        subtitle: {
+            text: ''
+        },
         credits: {
             enabled: false
         },
@@ -188,10 +203,10 @@ const HighchartTest = () => {
             }
         },
         series: [
-        {
-            name: type_out,
-            data: []
-    }]});
+            {
+                name: type_out,
+                data: []
+            }]});
 
     //options for the Area chart
     const [optionsArea, setOptionsArea] = useState({
@@ -204,6 +219,9 @@ const HighchartTest = () => {
         title: {
             text: ''
         },
+        subtitle: {
+            text: ''
+        },
         credits: {
             enabled: false
         },
@@ -213,22 +231,32 @@ const HighchartTest = () => {
             }
         },
         series: [
-        {
-            name: type_out,
-            data: []
-    }]});
+            {
+                name: type_out,
+                data: []
+            }]});
 
+    let LastUpdateTime = ''
     // called when refresh is needed
     // MUST be called and when visting the page for the first time
+
     const Redraw = () => {
 
         //take the charts from refrenced components
         const chart_line = chartComponent.current?.chart;
         const chart_area = chartComponent2.current?.chart;
 
+
+        //remove previous data
+        chart_line.series[0].setData([]);
+        chart_area.series[0].setData([]);
+
         DrawChartLine(jsonArr, type_out, chart_line);
         DrawChartArea(jsonArr, type_out, chart_area);
+        //returns last update time den kserw na to vazw vreite to
+        LastUpdateTime = jsonArr[jsonArr.length-1]['UpdateTime'];
     }
+
 
     // I love react
     // makes a refence to an html element and binds it to a variable
@@ -238,12 +266,13 @@ const HighchartTest = () => {
 
     return (
         <div>
-          <HighchartsReact  ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>
-          <div>like</div>
-          <HighchartsReact  ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
-          <button onClick={Redraw}>Refresh</button>
+            <HighchartsReact  ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>
+            <p>like</p>
+            <HighchartsReact  ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
+            <button onClick={Redraw}>Refresh</button>
+            <h1>Last Update Time: {LastUpdateTime}</h1>
         </div>
-      );
+    );
 }
 
 export default HighchartTest;

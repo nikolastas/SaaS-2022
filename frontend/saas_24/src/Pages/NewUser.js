@@ -49,7 +49,7 @@ const NewUser = () => {
                             <p>Redirecting to Home</p>
                         </>
                     )
-                    sleep(3000).then(() => {
+                    sleep(2000).then(() => {
                         window.location.href = "/home"
                     })
                 }

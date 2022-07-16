@@ -33,7 +33,7 @@ app.post("/home", verifyUser, (req, res) => {
 
     async function CheckSubs() {
         // redirect client through frontend based on subscription value
-        ans.subscription = await checkSubscription(ans.name);
+        ans.subscription = await checkSubscription(ans.email);
     }
 
     CheckSubs()

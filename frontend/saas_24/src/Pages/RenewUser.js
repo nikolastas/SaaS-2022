@@ -30,43 +30,52 @@ const RenewUser = () => {
                 },
                 body: new URLSearchParams({
                     'sublength': val,
-                    'subscription':'1'
+                    'subscription': '1'
                 })
             }
 
-            fetch("http://localhost:6660/subscription/UpdateSub", options).then(r => {
-                if (!r.ok) {
+            fetch("http://localhost:6660/subscription/UpdateSub", options)
+                .then(r => {
+                    if (!r.ok) {
 
-                    sessionStorage.removeItem('authentication')
+                        sessionStorage.removeItem('authentication')
+                        // setMsg(
+                        //         <h1>User Creation failed please try to log in again</h1>
+                        // )
+                        sleep(2000).then(() => {
+                            window.location.href = "/renewuser";
+                        })
+                    } else {
+                        setMsg(
+                            <>
+                                <h1>Subscription renewed Successfully</h1>
+                                <p>Redirecting to Home</p>
+                            </>
+                        )
+                        sleep(2000).then(() => {
+                            window.location.href = "/home"
+                        })
+                    }
+                })
+                .catch((e) => {
+                    console.log(e)
                     setMsg(
-                        <>
-                            <h1>User Creation failed please try to log in again</h1>
-                            <button id="butt">Login</button>
-                        </>
+                        <h1>User Creation failed please try to log in again</h1>
                     )
-                } else {
-                    setMsg(
-                        <>
-                            <h1>Subscription renewed Successfully</h1>
-                            <p>Redirecting to Home</p>
-                        </>
-                    )
-                    sleep(3000).then(() => {
-                        window.location.href = "/home"
-                    })
-                }
-            })
+                    window.location.href = "/renewuser";
+                })
         }
 
-        if (token === undefined || token === null) {
+        if (!token) {
             sessionStorage.removeItem("authentication")
             setMsg(
                 <>
                     <h1>You are in this page by mistake</h1>;
-                    <button id="butt" onClick={login}>Login</button>;
                 </>
             )
-
+            sleep(2000).then(() => {
+                login()
+            })
         } else {
             setMsg(
                 <>

@@ -3,8 +3,12 @@ import {useEffect} from "react";
 
 const Login = () => {
 
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
 
     const handleLogin = (response) => {
+
 
         const token = response.credential;
         console.log(token)
@@ -18,6 +22,9 @@ const Login = () => {
     useEffect(() => {
         /* global google */
         //TODO make this safer
+
+        if(window.google === undefined) window.location.reload()
+
         google.accounts.id.initialize({
             client_id: "427817892641-7pif8nq9bmqt36sbpo9a8hdnq7l93qgj.apps.googleusercontent.com",
             callback: handleLogin,

@@ -9,7 +9,7 @@
     "host": "localhost",
     "user": "root",
     "password": "root",
-    "database": "test"
+    "database": "saas"
   },
   "sql": {
     "SQL_QUERY_SELECT": "SELECT * from aggrgenerationpertype",
