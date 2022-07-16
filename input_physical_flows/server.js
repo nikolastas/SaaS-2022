@@ -3,9 +3,12 @@ const express = require('express');
 const app = require('./app.js');
 const con = require('./utils/database.js');
 const path = require('path');
+const dot = require('dotenv');
+dot.config();
 
-var port = 6660 ;
-app.listen(process.env.port || port, () => {
+
+var port = process.env.PORT || 6660 ;
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`go to https://localhost:${port}/`);
     // close con when app is closed

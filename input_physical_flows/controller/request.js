@@ -7,7 +7,7 @@ const https = require('https');
 const dot = require("dotenv");
 dot.config();
 const add_csv_to_db = require('../controller/add');
-
+const Stream = require('stream');
 const kafka_producer = require('../kafka/producer.js');
 const con = require("../utils/database.js");
 const make_query_function = require('../modules/make_query');
@@ -46,7 +46,7 @@ function getdata(datetime){
     //   });
     // });
     try{
-        let file = datetime+"_PhysicalFlows12.1.G.csv";
+        let file = "FF/"+datetime+"_PhysicalFlows12.1.G.csv";
         let params ={
             Bucket: BUCKET,
             Key: file
@@ -56,8 +56,11 @@ function getdata(datetime){
         return new Promise((resolve, reject) => {
             // create read stream for object
             // console.log(config.BUCKET);
-            let stream = s3.getObject({Bucket: process.env.BUCKET, Key: file}).createReadStream();
-            let p = path.join(path.join(__dirname, "..", "data","physicalflows", file));
+            let stream = s3.getObject(params).createReadStream({encoding: 'utf8'});
+            // download the file from s3
+            stream.pipe(fs.createWriteStream(path.join(__dirname, "..", "data", "physicalflows", file2)));
+            
+            let p = path.join(path.join(__dirname, "..", "data","physicalflows", file2));
             p = p.replaceAll('\\', '/');
             console.log(p);
             var fileStream = fs.createWriteStream(p);
@@ -68,8 +71,8 @@ function getdata(datetime){
             
             // on end resolve the Promise
             stream.on('end', () => {
-            let kkk = fs.readFileSync(p);
-            console.log(kkk);
+            
+            
             resolve()});
           });
     }
