@@ -12,6 +12,6 @@ let con = mysql.createConnection({
     password: process.env.DATABASE_USER_PASSWORD,
     database: process.env.DATABASE_NAME
 });
-console.log( process.env.DATABASE_HOST, process.env.DATABASE_USER, process.env.DATABASE_USER_PASSWORD, process.env.DATABASE_NAME);
+
 
 module.exports = con;
