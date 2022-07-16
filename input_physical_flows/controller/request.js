@@ -87,18 +87,16 @@ function timeout(ms) {
 
 const freq = 1000*60/4;//15 sec
 // const freq = 500;//500 ms for debugging
-async function make_request(){
+async function make_request(datetime, hh){
 
-    let hh = 0;
+    // let hh = 0;
     let prev_hh = 0;
     let thekey = 0;
     let modifydatetime = "";
     let prev_datetime = new Date("January 01, 2022 12:00:00");
-    const datetime = new Date("January 01, 2022 12:00:00");
+    // const datetime = new Date("January 01, 2022 12:00:00");
     
-    while(1){
-        
-        // console.log(datetime.toISOString().split('T')[0].replaceAll('-','_') + "_" + ("0" + hh).slice(-2));
+    
         try{
             let datetime_formated = datetime.toISOString().split('T')[0].replaceAll('-','_') + "_" + ("0" + hh).slice(-2);
             if( hh == 0){
@@ -147,22 +145,19 @@ async function make_request(){
                 }catch(err){
                     console.log(err);
                     console.log("Error: cannot truncate table "+folder);
+                    return {success:false};
                 }
-            }  
+            }
+            return {success:true};  
         }
         catch(error){
             console.log("something went wrong");
             console.log(error);
             await timeout(freq);
+            return {success:false};
         }
         
-    }
+    
 }
-module.exports.make_request = async (req,res) =>{
-    make_request();
-    // res.send("Request started");
-}
-// make_request();
+module.exports.make_request = make_request;
 
-//the api needs a type of measurement and a datetime in this specific form: YYYY_MM_DD_HH, e.g. AGRT/2022_01_01_01
-// let datetime = '2022_01_02_23'//change date and time at chosen intervals
