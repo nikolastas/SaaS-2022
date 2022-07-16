@@ -59,13 +59,13 @@ jsonArr = JSON.parse(jsonArr)
  */
 function FindTypeOfJSON (json) {
     if(json.hasOwnProperty('ActualGenerationOutput'))
-        return 'ActualGenerationOutput';
+    return 'ActualGenerationOutput';
     
     else if(json.hasOwnProperty('TotalLoadValue'))
-        return 'TotalLoadValue';
+    return 'TotalLoadValue';
     
     else
-        return 'FlowValue';
+    return 'FlowValue';
 }
 
 /**
@@ -76,7 +76,12 @@ function FindTypeOfJSON (json) {
  * @param {Object} chart_area the chart given to manipulate
  */
 function DrawChartLine (jsonArr, type_out, chart_line) {
-	//Agregation per type
+    
+    //change the series name and the legend title
+    chart_line.series[0].name = type_out;
+    chart_line.legend.allItems[0].update({name:type_out});
+
+    //Agregation per type
     if(type_out == 'ActualGenerationOutput') {
         chart_line.setTitle({text: 'Generation Per Type ('+jsonArr[0]['ProductionType']+') ' +  jsonArr[0]['MapCode']});
         for(let arr of jsonArr) {
@@ -90,7 +95,7 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
 
     // Actual Total Load
     else if(type_out == 'TotalLoadValue') {
-        chart_line.setTitle({text: 'Actual Total Load'+ jsonArr[0]['MapCode']});
+        chart_line.setTitle({text: 'Actual Total Load '+ jsonArr[0]['MapCode']});
 
         for(let arr of jsonArr) {
             let time = Date.parse(arr['Datetime']);
@@ -103,7 +108,7 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
 
     // Physical flows
     else {
-       	chart_line.setTitle({text: 'Cross-Border Flows'+jsonArr[0]['InMapCode'] + '->' + jsonArr[0]['OutMapCode']});
+       	chart_line.setTitle({text: 'Cross-Border Flows '+jsonArr[0]['InMapCode'] + '->' + jsonArr[0]['OutMapCode']});
         
         for(let arr of jsonArr) {
             let time = Date.parse(arr['DateTime']);
@@ -113,7 +118,7 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
             chart_line.series[0].addPoint(point, true, false);
         }
     }
-  chart_line.redraw();
+    chart_line.redraw();
 }
 
 /**
@@ -124,6 +129,10 @@ function DrawChartLine (jsonArr, type_out, chart_line) {
  * @param {Object} chart_area the chart given to manipulate
  */
 function DrawChartArea (jsonArr, type_out, chart_area) {
+
+    //change the series name
+    chart_area.series[0].name = type_out;
+    chart_area.legend.allItems[0].update({name:type_out});
 	//Agregation per type
     let temp = 0;
     if(type_out == 'ActualGenerationOutput') {
@@ -165,7 +174,8 @@ function DrawChartArea (jsonArr, type_out, chart_area) {
             chart_area.series[0].addPoint(point, true, false);
         }
     }
-  chart_area.redraw();
+
+    chart_area.redraw();
 }
 //#endregion module
 
@@ -228,12 +238,18 @@ const HighchartTest = () => {
     let LastUpdateTime = ''
     // called when refresh is needed
     // MUST be called and when visting the page for the first time
+    
     const Redraw = () => {
 
         //take the charts from refrenced components
         const chart_line = chartComponent.current?.chart;
         const chart_area = chartComponent2.current?.chart;
         
+
+        //remove previous data
+        chart_line.series[0].setData([]);  
+        chart_area.series[0].setData([]);
+
         DrawChartLine(jsonArr, type_out, chart_line);
         DrawChartArea(jsonArr, type_out, chart_area);
         //returns last update time den kserw na to vazw vreite to
