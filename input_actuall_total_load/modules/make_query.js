@@ -1,4 +1,5 @@
 
+
 module. exports  =  function checkSub(con, sql_query)  {
     return new Promise(function (resolve, reject){
         
@@ -6,11 +7,9 @@ module. exports  =  function checkSub(con, sql_query)  {
             if (err) throw err;
             con.query(sql_query, function (err, result, fields) {
               if (err) throw err;
-              
-                
-            }).then(() => {
-                con.end();
+              //con.close(); //here?
                 resolve(result);
+            });
           });
     })
-})};
+  }

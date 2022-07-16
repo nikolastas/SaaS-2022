@@ -1,9 +1,10 @@
 const aws = require('aws-sdk'); 
 const con = require("../utils/database.js");
+const make_query_function = require('../modules/make_query');
 const fs = require('fs');
 const https = require('https');
 const path = require('path');
-const make_query_function = require('../modules/make_query');
+
 const add_csv_to_db = require('./add');
 const kafka_producer = require('../kafka/producer.js');
 const dot = require('dotenv');
