@@ -99,6 +99,13 @@ app.post("/check", verifyUser, (req, res) => {
 
 })
 
+app.post("/logout",verifyUser,(req,res)=>{
+    res.set("Access-Control-Allow-Origin","*");
+    res.status(200).send({
+        log:"Logout Successfull"
+    })
+})
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running...`);

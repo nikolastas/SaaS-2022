@@ -2,7 +2,7 @@ import * as ReactDOM from "react-dom";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
 // import {useEffect} from "react";
-// import Footer from './Components/Footer'
+import Footer from './Components/Footer'
 // import Header from './Components/Header';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
@@ -31,7 +31,7 @@ function App() {
                 <Route path="/statistics" element={<Statistics/>}/>
                 <Route path="/hc" element={<HighchartTest/>}/>
             </Routes>
-            {/*<Footer/>*/}
+            <Footer/>
         </BrowserRouter>
     );
 }

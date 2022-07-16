@@ -32,21 +32,21 @@ const Login = () => {
         )
     }, []);
 
-    const handleSignOut = (event) => {
-        console.log(event)
-        document.getElementById("signInDiv").hidden = false;
-        ;
-    }
+    // const handleSignOut = (event) => {
+    //     console.log(event)
+    //     document.getElementById("signInDiv").hidden = false;
+    //     ;
+    // }
 
     return (
         <div className="App">
             <h1 id="UserArea"></h1>
             <h2 id="Info"></h2>
             <div id="signInDiv"></div>
-            <button onClick={(e) => {
+            {/* {<button onClick={(e) => {
                 handleSignOut(e)
             }}>SignOut
-            </button>
+            </button>} */}
             {/*{msg}*/}
         </div>
     )
