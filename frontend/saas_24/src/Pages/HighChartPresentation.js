@@ -2,6 +2,8 @@ import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+require("highcharts/modules/exporting")(Highcharts);
+require("highcharts/modules/export-data")(Highcharts);
 
 require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
@@ -66,7 +68,7 @@ function FindTypeOfJSON (json) {
         return 'TotalLoadValue';
 
     else
-        return 'FlowValue';
+    return 'FlowValue';
 }
 
 /**
@@ -245,6 +247,11 @@ const HighchartTest = () => {
         //take the charts from refrenced components
         const chart_line = chartComponent.current?.chart;
         const chart_area = chartComponent2.current?.chart;
+
+
+        //remove previous data
+        chart_line.series[0].setData([]);
+        chart_area.series[0].setData([]);
 
 
         //remove previous data
