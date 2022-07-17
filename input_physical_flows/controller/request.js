@@ -129,12 +129,12 @@ async function make_request(datetime, hh){
             // let file = datetime_formated+"_"+f;
             console.log("Checking file " + file + " in folder " + folder);
             let result_from_add = await add_csv_to_db.upload_csv(folder, file);
-            // console.log(result_from_add)
+            console.log(result_from_add)
             
             //kafka message
             thekey++;
             
-            kafka_producer("data_input_physical","DATA READY : " + modifydatetime ,thekey);
+            await kafka_producer("data_input_physical","DATA READY : " + modifydatetime ,thekey);
             
             await timeout(freq);
             // if prev and curr datetime are on different months, then wait for next month
