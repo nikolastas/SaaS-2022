@@ -28,8 +28,11 @@ const Footer = () => {
     const fetch_api = () => {
         fetch("http://localhost:6660/subscription/EndSub", options)
             .then((r) => {
-                if (!r.ok) setStat(<p style={{color: "red"}}>Down</p>); else setStat(<p
-                    style={{color: "green"}}>Live</p>);
+                if (!r.ok) setStat(<p style={{color: "red"}}>Down</p>)
+                else setStat(
+                    <p
+                        style={{color: "green"}}>Live</p>
+                )
                 return r
             })
             .then(r => r.json())
@@ -42,11 +45,14 @@ const Footer = () => {
                 } else {
                     setMsg(<p>Days left {diff}</p>)
                 }
-            }).catch((e) => {
-            console.log(e)
-            setStat(<p style={{color: "red"}}>Down</p>)
-        });
+            })
+            .catch((e) => {
+                console.log(e)
+                setStat(<p style={{color: "red"}}>Down</p>)
+            });
     }
+
+
 
     useEffect(() => {
         {

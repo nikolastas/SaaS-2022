@@ -6,7 +6,6 @@ import {useState, useEffect, useRef} from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import {FindTypeOfJSON, DrawChartLine, DrawChartArea} from './HighChartPresentation'
 import Highcharts from "highcharts";
-import Re from "react-datepicker";
 
 
 require("highcharts/modules/exporting")(Highcharts);
@@ -16,8 +15,49 @@ require("highcharts/modules/exporting")(Highcharts);
 require("highcharts/modules/export-data")(Highcharts);
 
 const Statistics = () => {
+    const login = () => {
+        window.location.href = "/login";
+    }
+    let Sdata = [
+    {
+        "DateTime": "2021-12-31T22:45:00.000Z",
+        "ResolutionCode": "PT15M",
+        "ProductionType": "Fossil Oil",
+        "ActualGenerationOutput": 279.14,
+        "ActualConsumption": null,
+        "UpdateTime": "2022-01-01T00:50:06.000Z",
+        "MapCode": "hgdf"
+    },
+    {
+        "DateTime": "2021-12-31T22:30:00.000Z",
+        "ResolutionCode": "PT15M",
+        "ProductionType": "Fossil Oil",
+        "ActualGenerationOutput": 279.14,
+        "ActualConsumption": null,
+        "UpdateTime": "2022-01-01T00:33:53.000Z",
+        "MapCode": "hgdf"
+    },
+    {
+        "DateTime": "2021-12-31T22:15:00.000Z",
+        "ResolutionCode": "PT15M",
+        "ProductionType": "Fossil Oil",
+        "ActualGenerationOutput": 279.14,
+        "ActualConsumption": null,
+        "UpdateTime": "2022-01-01T00:19:29.000Z",
+        "MapCode": "DE"
+    },
+    {
+        "DateTime": "2021-12-31T22:00:00.000Z",
+        "ResolutionCode": "PT15M",
+        "ProductionType": "Fossil Oil",
+        "ActualGenerationOutput": 279.14,
+        "ActualConsumption": null,
+        "UpdateTime": "2022-01-01T00:13:06.000Z",
+        "MapCode": "DE"
+    }
+]
 
-    let fetchInterval = 5000 // 2 seconds.
+    let fetchInterval = 10000 // 2 seconds.
 
     let [prevdata, setPrevData] = useState("")
 
@@ -32,7 +72,9 @@ const Statistics = () => {
     });
 
     let [link, setLink] = useState("")
-    let [data, setData] = useState("")
+    let [options, setOptions] = useState({})
+
+    // let [data, setData] = useState("")
 
     const disp_options = [
         {value: 1, label: 'Generation per type'},
@@ -110,7 +152,6 @@ const Statistics = () => {
         {value: 'Wi', label: 'Wind Onshore'}
     ]
 
-
     const HandleFirstSel = (e) => {
         setSelval1(e);
         setSelval2({
@@ -151,9 +192,7 @@ const Statistics = () => {
 
     let token = sessionStorage.getItem('authentication');
     // console.log(token)
-    const login = () => {
-        window.location.href = "/login";
-    }
+
 
     //let type_out = FindTypeOfJSON(jsonArr[0]);
     let type_out = 'TotalLoadValue';
@@ -203,7 +242,7 @@ const Statistics = () => {
         plotOptions: {
             areaspline: {
                 fillOpacity: 0.5
-            }
+            },
         },
         series: [
             {
@@ -216,6 +255,8 @@ const Statistics = () => {
     // called when refresh is needed
     // MUST be called and when visting the page for the first time
 
+
+
     const Redraw = (jsonArr) => {
         let type_out = FindTypeOfJSON(jsonArr[0]);
         //take the charts from refrenced components
@@ -227,10 +268,11 @@ const Statistics = () => {
         chart_line.series[0].setData([]);
         chart_area.series[0].setData([]);
 
+        setInterval(() =>{
+            chart_line.series[0].setData([Math.random(),Math.random(),Math.random(),Math.random(),Math.random()]);
+            chart_area.series[0].setData([Math.random(),Math.random(),Math.random(),Math.random(),Math.random()]);
+        },2000)
 
-        //remove previous data
-        chart_line.series[0].setData([]);
-        chart_area.series[0].setData([]);
 
         DrawChartLine(jsonArr, type_out, chart_line);
         DrawChartArea(jsonArr, type_out, chart_area);
@@ -248,7 +290,13 @@ const Statistics = () => {
 
     useEffect(() => {
 
-            let options = {}
+            if (token === undefined || token === null) {
+                sessionStorage.removeItem("authentication")
+                login()
+
+            }
+
+            // let options = {}
 
             if (selval1.value === 0) {
                 setMsg2(
@@ -296,7 +344,7 @@ const Statistics = () => {
 
             if (selval1.value === 0 && selval2.value !== -1) {
                 console.log(0)
-                options = {
+                setOptions({
                     method: "post",
                     cache: "no-cache",
                     credentials: "same-origin",
@@ -308,13 +356,13 @@ const Statistics = () => {
                         'MapCode': selval2.value,
                         'Date': date.toISOString().slice(0, 19).replace('T', ' ')
                     })
-                }
+                })
 
                 setLink('http://localhost:8084/data_fetch/Total')
 
             } else if (selval1.value === 1 && selval2.value !== -1 && selval3.value !== -1) {
                 console.log(1)
-                options = {
+                setOptions({
                     method: "post",
                     cache: "no-cache",
                     credentials: "same-origin",
@@ -327,12 +375,12 @@ const Statistics = () => {
                         'Date': date.toISOString().slice(0, 19).replace('T', ' '),
                         'ProductionType': selval3.label
                     })
-                }
+                })
                 setLink('http://localhost:8082/data_fetch/Aggr')
 
             } else if (selval1.value === 2 && selval2.value !== -1 && selval3.value !== -1) {
                 console.log(2)
-                options = {
+                setOptions({
                     method: "post",
                     cache: "no-cache",
                     credentials: "same-origin",
@@ -345,41 +393,54 @@ const Statistics = () => {
                         'Date': date.toISOString().slice(0, 19).replace('T', ' '),
                         'OutMapCode': selval3.value
                     })
-                }
+                })
                 setLink('http://localhost:8083/data_fetch/Physical')
             }
 
             console.log(link)
 
-            setInterval(() => {
-                if (link !== "") {
+            // setInterval(() => {
+            //     if (link !== "") {
+            //         console.log(options.body)
+            //         fetch(link, options)
+            //             .then(r => r.json())
+            //             .then(d => {
+            //                 console.log(JSON.stringify(d) !== JSON.stringify(prevdata))
+            //                 setMsg4(false)
+            //
+            //                 if (JSON.stringify(d) !== JSON.stringify(prevdata)) {
+            //                     Redraw(d)
+            //                     // setData(d)
+            //                     setPrevData(d)
+            //                     console.log(prevdata[1])
+            //                 }
+            //                 console.log("el")
+            //
+            //             })
+            //             .catch((e) => console.log(e))
+            //     } else {
+            //         setMsg4(true)
+            //     }
+            //
+            //
+            // }, fetchInterval)
 
-                    fetch(link, options)
-                        .then(r => r.json())
-                        .then(d => {
-                            console.log(JSON.stringify(d) !== JSON.stringify(prevdata))
-                            setMsg4(false)
-
-                            if (JSON.stringify(d) !== JSON.stringify(prevdata)) {
-                                Redraw(d)
-                                setData(d)
-
-                                console.log(prevdata[1])
-                            }
-                            console.log("edw")
-                            setPrevData(d)
-                        })
-                        .catch((e) => console.log(e))
-                } else {
-                    setMsg4(true)
-                }
 
 
-            }, fetchInterval)
+        }, [selval1, selval2, selval3, date, prevdata, token]
 
 
-        }, [selval1, selval2, selval3, link, date, data, token]
     )
+
+    Redraw([{
+        "DateTime": "2021-12-31T22:30:00.000Z",
+        "ResolutionCode": "PT15M",
+        "ProductionType": "Fossil Oil",
+        "ActualGenerationOutput": 279.14,
+        "ActualConsumption": null,
+        "UpdateTime": "2022-01-01T00:33:53.000Z",
+        "MapCode": "hgdf"
+    }])
 
     return (
         <>
@@ -389,7 +450,7 @@ const Statistics = () => {
                 {msg2}
                 {msg3}
             </div>
-            <div hidden={msg4}>
+            <div>
                 <HighchartsReact ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>
                 <p>like</p>
                 <HighchartsReact ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
