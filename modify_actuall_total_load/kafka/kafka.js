@@ -11,7 +11,7 @@ let broker = process.env.KAFKA_BROKER;
 // Create client instance upon running
 // based upon confluent instructions
 const kafka = new Kafka({
-    clientID: 'modify_agrt',
+    clientID: 'modify_atl',
     // set it to desired confluent host
     brokers: [broker],
     ssl: true,

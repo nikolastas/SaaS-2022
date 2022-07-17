@@ -12,7 +12,7 @@ let m_password = process.env.KAFKA_PASSWORD;
 // Create client instance upon running
 // based upon confluent instructions
 const kafka = new Kafka({
-    clientID: 'input_ff',
+    clientID: 'input_atl',
     // set it to desired confluent host
     brokers: [broker],
     ssl: true,

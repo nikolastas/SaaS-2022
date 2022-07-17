@@ -1,7 +1,7 @@
 const kafka_client = require('./kafka.js');
 
 //if group id doesnt exist, throws some erorrs but then works just fine
-const consumer = kafka_client.consumer({ groupId: "my-consumer-group" })
+const consumer = kafka_client.consumer({ groupId: "atl" })
 
 const simple_consume = async (somethingToDo ) => {
 	// first, we wait for the client to connect and subscribe to the given topic
