@@ -34,7 +34,7 @@ const RenewUser = () => {
                 })
             }
 
-            fetch("http://localhost:6660/subscription/UpdateSub", options)
+            fetch("https://login-dsgmlwmwqa-ew.a.run.app/subscription/UpdateSub", options)
                 .then(r => {
                     if (!r.ok) {
 

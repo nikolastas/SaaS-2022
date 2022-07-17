@@ -32,7 +32,7 @@ const NewUser = () => {
                 })
             }
 
-            fetch("http://localhost:6660/subscription/NewSub", options).then(r => {
+            fetch("https://login-dsgmlwmwqa-ew.a.run.app/subscription/NewSub", options).then(r => {
                 if (!r.ok) {
 
                     sessionStorage.removeItem('authentication')
