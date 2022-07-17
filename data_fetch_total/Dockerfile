@@ -30,7 +30,7 @@ CMD [ "node", "index.js" ]
 # thetoume analogws to public port
 
 # 
-# docker tag <username>/<onoma-app> eu.gcr.io/core-parsec-356516/<onoma-app>:<version>
+# docker tag <username>/<onoma-app> eu.gcr.io/solid-coral-355916/<onoma-app>:<version>
 
 # gcloud auth login
 
@@ -49,8 +49,8 @@ CMD [ "node", "index.js" ]
 # 2.(skip if dont want to test it) docker run -p 8080:6660 -d nikos/fetch_atl
 # 2.5.(skip if done once) gcloud authenticate and get the json key form google console
 # 3. (skip if done once) gcloud auth activate-service-account --key-file=1.json
-# 4. docker tag nikos/fetch_atl eu.gcr.io/core-parsec-356516/fetch_atl:v0
-# 5. docker push eu.gcr.io/core-parsec-356516/fetch_atl:v0
+# 4. docker tag nikos/fetch_atl eu.gcr.io/solid-coral-355916/fetch_atl:v0
+# 5. docker push eu.gcr.io/solid-coral-355916/fetch_atl:v0
 # 6. delete all docker images from pc 
 # 7. delete all container from pc
 # 8. deploy to gcloud with env variables and always running
