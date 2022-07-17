@@ -136,18 +136,7 @@ async function make_request(datetime, hh){
             
             await timeout(freq);
              // if prev and curr datetime are on different months, then wait for next month
-             if(prev_datetime.getMonth() != datetime.getMonth()){
-                try{
-                    await make_query_function(con, "truncate table "+ folder+";");
-                    // con.end();
-                    console.log("i truncated table " + folder+ " because the month changed");
-                    
-                }catch(err){
-                    console.log(err);
-                    console.log("Error: cannot truncate table "+folder);
-                    return {success:false};
-                }
-            } 
+             
             return {success:true};
         }
         catch(error){

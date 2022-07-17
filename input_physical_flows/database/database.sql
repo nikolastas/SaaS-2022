@@ -1,10 +1,10 @@
 
-CREATE TABLE Area (AreaTypeCode varchar(255) NOT NULL, 
+CREATE TABLE area (AreaTypeCode varchar(255) NOT NULL, 
 AreaName varchar(255) NOT NULL, 
 MapCode varchar(255) NOT NULL, 
 PRIMARY KEY (MapCode));
 
-CREATE TABLE PhysicalFlows (DateTime datetime NOT NULL,
+CREATE TABLE physicalflows (DateTime datetime NOT NULL,
 ResolutionCode varchar(255), 
 FlowValue float, 
 UpdateTime datetime NULL,
@@ -13,5 +13,5 @@ OutMapCode varchar(255) NOT NULL,
 
 PRIMARY KEY (DateTime, InMapCode, OutMapCode));
 
-ALTER TABLE PhysicalFlows ADD CONSTRAINT FKPhysicalFl871357 FOREIGN KEY (InMapCode) REFERENCES Area (MapCode);
-ALTER TABLE PhysicalFlows ADD CONSTRAINT FKPhysicalFl555898 FOREIGN KEY (OutMapCode) REFERENCES Area (MapCode);
+ALTER TABLE physicalflows ADD CONSTRAINT FKPhysicalFl871357 FOREIGN KEY (InMapCode) REFERENCES area (MapCode);
+ALTER TABLE physicalflows ADD CONSTRAINT FKPhysicalFl555898 FOREIGN KEY (OutMapCode) REFERENCES area (MapCode);

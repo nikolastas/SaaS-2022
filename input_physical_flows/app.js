@@ -24,7 +24,7 @@ let host_list = [
     {
     "host":process.env.DATABASE_HOST,
     "user":'root',
-    "password":'root',
+    "password":process.env.DATABASE_USER_PASSWORD,
     "database":'modify_ff',
     "tablename": 'physicalflows', 
     },
