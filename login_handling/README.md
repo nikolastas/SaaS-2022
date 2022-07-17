@@ -1,8 +1,8 @@
-# MICROSERVICE
+# Login Handling
 
-## LOGIN
+Κύρια λειτουργία του microservice αυτού είναι:
 
-This microservice handles the loggin process through the Google API authorization.
-# Auth
-A jwt token.
-AUTH middleweare function in every request ?
+- Εκτελεί τον Login στον χρήστη και ελέγχει εαν χρειάζεται ανανέωση η συνδρομή του η να δημιουργήσει νέα συνδρομή
+- Ελέγχει έαν ο χρήστης ειναι συνδεδεμένος όταν χρησιμοποιέι την ιστοσελίδα
+- Προσφέρει την δυνατότητα ακύρωσης συνδρομής
+- Παρουσιάζει σοτν χρήστη δεδομένα σχετικά με την συνδρομή του
