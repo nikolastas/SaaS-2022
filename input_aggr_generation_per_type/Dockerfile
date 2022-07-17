@@ -45,7 +45,7 @@ CMD [ "node", "server.js" ]
 # 1. docker build . -t nikos/input_agrt
 # 2.(skip if dont want to test it) docker run -p 8080:6660 -d nikos/input_agrt
 # 2.5.(skip if done once) gcloud authenticate and get the json key form google console
-# 3. (skip if done once) gcloud auth activate-service-account solid-coral-355916@appspot.gserviceaccount.com --key-file=1.json
+# 3. (skip if done once) gcloud auth activate-service-account --key-file=1.json
 # 4. docker tag nikos/input_agrt eu.gcr.io/keen-ascent-356215/input_agrt:v0
 # 5. docker push eu.gcr.io/keen-ascent-356215/input_agrt:v0
 # 6. delete all docker images from pc 

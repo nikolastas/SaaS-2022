@@ -105,6 +105,7 @@ module.exports.upload_csv = async function (folder, file) {
         fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
 
         // make query
+        let result_from_query = "QUERY DIDNT RUN BUT THATS A GOOD THING RIGHT ?!";
         let sql_query = return_correct_data(csv_json, folder);
         // console.log("sql: ",sql_query);
         if(sql_query != ""){
@@ -118,7 +119,7 @@ module.exports.upload_csv = async function (folder, file) {
             if ("error" in result_from_query){throw result_from_query}
         }
         console.log("csv file updated to database");
-        return(sql_query)
+        return(result_from_query)
         }
         catch{
            return("Error3: either making query or writing file");

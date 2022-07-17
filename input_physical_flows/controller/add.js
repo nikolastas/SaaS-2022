@@ -95,7 +95,7 @@ module.exports.upload_csv = async function (folder, file) {
                 // return;
             }
         } 
-        else
+        else{
             try{
                 csv_original = await readFileasync(filePath, true);
 
@@ -105,7 +105,7 @@ module.exports.upload_csv = async function (folder, file) {
                 return("Error2: File not found");
                 // return;
             }
-            
+        }  
         try{
         
         let csv_json = CsvToJson(csv_original, '\t'); 
@@ -130,7 +130,7 @@ module.exports.upload_csv = async function (folder, file) {
             if ("error" in result_from_query){throw result_from_query}
         }
         console.log("csv file made query to database");
-        return(sql_query)
+        return(result_from_query)
         }
         catch{
            return("Error3: either making query or writing file");

@@ -121,7 +121,7 @@ async function make_request(datetime, hh){
             //kafka message
             thekey++;
             
-            kafka_producer("data_input_total","DATA READY : " + modifydatetime ,thekey);
+            await kafka_producer("data_input_total","DATA READY : " + modifydatetime ,thekey);
             
             await timeout(freq);
              // if prev and curr datetime are on different months, then wait for next month

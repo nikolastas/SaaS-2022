@@ -1,7 +1,7 @@
 const express = require('express');
 
 const request = require('./controller/request.js');
-
+const cors = require('cors');
 const app = express();
 const resetDB = require('./controller/reset.js');
 const dot = require('dotenv');
@@ -58,6 +58,8 @@ async function get_data(req, res) {
         
         hh++;
     }
+    res.set("Access-Control-Allow-Origin","*");
+
     res.send(result);
 }
 
@@ -71,6 +73,7 @@ async function reset_databases(req, res) {
        
     }   
     // console.log(result);
+    res.set("Access-Control-Allow-Origin","*");
     if(result.success){
         res.send(result).status(200);
     }
@@ -79,7 +82,7 @@ async function reset_databases(req, res) {
     }
     
 }
-
+app.use(cors());
 app.get("/get_data", get_data)
 app.get("/reset", reset_databases)
 
