@@ -1,15 +1,15 @@
 {
   "db_modify": {
-    "host": "localhost",
+    "host": "35.187.15.140",
     "user": "root",
-    "password": "root",
-    "database": "saas"
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
+    "database": "modify_agrt"
   },
   "db_datafetch": {
-    "host": "localhost",
+    "host": "35.187.15.140",
     "user": "root",
-    "password": "root",
-    "database": "saas"
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN", 
+    "database": "fetch_agrt"
   },
   "sql": {
     "SQL_QUERY_SELECT": "SELECT * from aggrgenerationpertype",

@@ -1,9 +1,9 @@
 {
   "dbconf": {
-    "host": "localhost",
+    "host": "35.195.0.175",
     "user": "root",
-    "password": "root",
-    "database": "saas"
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
+    "database": "subscriptions"
   },
   "temp": -1
 }
