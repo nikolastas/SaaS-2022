@@ -139,10 +139,14 @@ const Home = () => {
 
 
     let [msg1, setMsg1] = useState(
-        <>
-            <h1>Select an option to display the data</h1>
-            <Select placeholder="Data to display" options={disp_options} onChange={HandleFirstSel}/>
-        </>
+        <div>
+            <div>
+                <h1 align={"center"}>Select an option to display the data</h1>
+            </div>
+            <div>
+                <Select placeholder="Data to display" options={disp_options} onChange={HandleFirstSel}/>
+            </div>
+        </div>
     )
 
     let [msg2, setMsg2] = useState(<p>Please select above</p>)
@@ -270,10 +274,14 @@ const Home = () => {
 
             if (selval1.value === 0) {
                 setMsg2(
-                    <>
-                        <h1>Select Country</h1>
-                        <Select placeholder="Country" options={Countries} onChange={HandleSecSel}/>
-                    </>
+                    <div>
+                        <div>
+                            <h1 align={"center"}>Select Country</h1>
+                        </div>
+                        <div>
+                            <Select placeholder="Country" options={Countries} onChange={HandleSecSel}/>
+                        </div>
+                    </div>
                 )
                 setMsg3(
                     <></>
@@ -281,39 +289,51 @@ const Home = () => {
             }
             if (selval1.value === 1) {
                 setMsg2(
-                    <>
-                        <h1>Select Country</h1>
-                        <Select placeholder="Country" options={Countries} onChange={HandleSecSel}/>
-                    </>
+                    <div>
+                        <div>
+                            <h1 align={"center"}>Select Country</h1>
+                        </div>
+                        <div>
+                            <Select placeholder="Country" options={Countries} onChange={HandleSecSel}/>
+                        </div>
+                    </div>
                 )
                 setMsg3(
                     <>
-                        <h1>Select Generation Type</h1>
-                        <Select placeholder="Generation Type" options={ProdTypes} onChange={HandleGeneratedType}/>
+                        <h1 align={"center"}>Select Generation Type</h1>
+                        <Select placeholder="Generation Type" options={ProdTypes}
+                                onChange={HandleGeneratedType}/>
                     </>
                 )
             }
             if (selval1.value === 2) {
                 setMsg2(
-                    <>
-                        <h1>Select Country (from)</h1>
-                        <Select placeholder="Country (from)" options={Countries} onChange={HandleSecSel}/>
-                    </>
+                    <div>
+                        <div>
+                            <h1 align={"center"}>Select Country (from)</h1>
+                        </div>
+                        <div>
+                            <Select placeholder="Country (from)" options={Countries}
+                                    onChange={HandleSecSel}/>
+                        </div>
+                    </div>
                 )
                 setMsg3(
-                    <>
-                        <h1>Select Country (to)</h1>
-                        <Select placeholder="Country (to)" options={Countries} onChange={HandleThirdSel}/>
-                    </>
+                    <div>
+                        <div>
+                            <h1 align={"center"}>Select Country (to)</h1>
+                        </div>
+                        <div>
+                            <Select placeholder="Country (to)" options={Countries} onChange={HandleThirdSel}/>
+                        </div>
+                    </div>
                 )
             }
-            console.log(selval1.value + " " + selval2.value + " " + selval3.value + " " + (date ? date : new Date()).toISOString().slice(0, 19).replace('T', ' '))
-
 
             //setLink("")
 
             if (selval1.value === 0 && selval2.value !== -1) {
-                console.log(0)
+
                 setOptions({
                     method: "post",
                     cache: "no-cache",
@@ -331,7 +351,7 @@ const Home = () => {
                 setLink('https://fetch-atl-b4jugd4qqq-ew.a.run.app/data_fetch/Total')
 
             } else if (selval1.value === 1 && selval2.value !== -1 && selval3.value !== -1) {
-                console.log(1)
+
                 setOptions({
                     method: "post",
                     cache: "no-cache",
@@ -349,7 +369,7 @@ const Home = () => {
                 setLink('https://fetch-agrt-jco5wuvaqq-ew.a.run.app/data_fetch/Aggr')
 
             } else if (selval1.value === 2 && selval2.value !== -1 && selval3.value !== -1) {
-                console.log(2)
+
                 setOptions({
                     method: "post",
                     cache: "no-cache",
@@ -420,20 +440,27 @@ const Home = () => {
 
     return (
         <>
-            <div align={"central"}>
-                <DatePicker selected={date} onChange={(date) => setDate(date)} value={date}/>
-                {msg1}
-                {msg2}
-                {msg3}
+            <div className={"selo"} align={"center"}>
+                <DatePicker align={"central"} selected={date} onChange={(date) => setDate(date)} value={date}/>
             </div>
+            {msg1}
+            {msg2}
+            {msg3}
+
             <div hidden={(!msg4)}>
                 {msg5}
             </div>
             <div hidden={msg4}>
-                <HighchartsReact ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>
-                <h3 align={"central"}>Stats accumulated</h3>
-                <HighchartsReact ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
-                <h3> Last Update Time: {updatetime}</h3>
+                <div>
+                    <HighchartsReact ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>
+                </div>
+
+                <div>
+                    <HighchartsReact ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
+
+                </div>
+                <h3 hidden={msg4} align={"central"}> Last Update Time: {updatetime}</h3>
+                <br/><br/><br/><br/><br/>
             </div>
 
         </>
