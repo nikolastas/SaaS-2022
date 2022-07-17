@@ -22,9 +22,9 @@ let host_list = [
     "tablename": 'aggrgenerationpertype', 
     },
     {
-    "host":'35.204.254.162',
-    "user":'root',
-    "password":'root',
+    "host":process.env.DATABASE_HOST,
+    "user":process.env.DATABASE_USER,
+    "password":process.env.DATABASE_USER_PASSWORD,
     "database":'modify_agrt',
     "tablename": 'aggrgenerationpertype', 
     },

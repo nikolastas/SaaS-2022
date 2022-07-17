@@ -98,6 +98,7 @@ async function make_request(datetime, hh){
     
     
         try{
+            let folder = "physicalflows"
             let datetime_formated = datetime.toISOString().split('T')[0].replaceAll('-','_') + "_" + ("0" + hh).slice(-2);
             if( hh == 0){
                 prev_hh = 23;
@@ -108,6 +109,7 @@ async function make_request(datetime, hh){
                 prev_datetime = datetime;
                 prev_hh = hh-1;
             }
+            
             modifydatetime = prev_datetime.toISOString().split('T')[0] + " " + ("0" + prev_hh).slice(-2);
             await getdata(datetime_formated);
             if(hh === 23){
@@ -121,7 +123,7 @@ async function make_request(datetime, hh){
             }
 
             let file = datetime_formated+"_"+"PhysicalFlows12.1.G.csv";
-            let folder = "physicalflows"
+            
             
             // folder = folders[files.indexOf(f)];
             // let file = datetime_formated+"_"+f;
@@ -136,18 +138,7 @@ async function make_request(datetime, hh){
             
             await timeout(freq);
             // if prev and curr datetime are on different months, then wait for next month
-            if(prev_datetime.getMonth() != datetime.getMonth()){
-                try{
-                    await make_query_function(con, "truncate table "+ folder+";");
-                    // con.end();
-                    console.log("i truncated table " + folder+ " because the month changed");
-                    
-                }catch(err){
-                    console.log(err);
-                    console.log("Error: cannot truncate table "+folder);
-                    return {success:false};
-                }
-            }
+            
             return {success:true};  
         }
         catch(error){
