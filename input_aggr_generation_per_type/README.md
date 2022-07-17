@@ -1,6 +1,11 @@
-# MICROSERVICE
+# Data Input Aggregation per Type
 
-## (name)
+Κύρια λειτουργία του microservice αυτού είναι:
 
-(description)
+- Λήψη καινούργιων δεδομένων από το cloud AWS
+- Μετατροπή του απο μορφή CSV σε json για κατάλληλη επεξεργασία
+- Διόρθωση κενών στα δεδομένα
+- Ανέβασμα στην αντίστοιχη βάση δεδομένων του microservice
+- Αποστολή μυνήματος Kafka έτσι ώστε να συνεχίσει την επεξεργασία το microservice modify_aggr_generation_per_type
 
+Επίσης τα δεδομένα που λαμβάνουμε γινονται χειροκίνητα με΄σω του frontend απο την κλήση get_data Και μπορούν να διαγράφονται μέσω του reset

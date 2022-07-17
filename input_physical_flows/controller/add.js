@@ -13,6 +13,7 @@ con.connect( function(err){
 });
 
 function return_correct_data(csv_json, folder){
+    
     let sql_query="";
     // if(folder == "aggrgenerationpertype"){     
     //     // sql_query = "INSERT INTO aggrgenerationpertype VALUES"
@@ -28,6 +29,7 @@ function return_correct_data(csv_json, folder){
     // }
 
     // sql_query = "INSERT INTO physicalflows VALUES"
+    
     for (let i = 1; i < csv_json.length - 1; i++) {
         let temp = "('" + csv_json[i]['DateTime'] + "','" + csv_json[i]['ResolutionCode'] +"','"+ csv_json[i]['FlowValue'] + "','"  + csv_json[i]['UpdateTime'] + "','" + csv_json[i]['InMapCode']  + "','" + csv_json[i]['OutMapCode']+ "')" 
         if(i < csv_json.length - 2)
@@ -50,10 +52,12 @@ function return_correct_data(csv_json, folder){
     // }
     
     if (sql_query=="" || sql_query==null|| sql_query==";"){
+        console.log("No data to insert");
         return "";
     }
     else{
         sql_query = "INSERT INTO "+ folder + " VALUES" + sql_query;
+        ;
         // wraios ! thanks
     }
     return sql_query;
@@ -67,8 +71,12 @@ module.exports.upload_csv = async function (folder, file) {
         let filePath = `./data/${folder}/${file}`;  
 
         let text_last;
-        try{text_last = fs.readFileSync("./controller/"+ folder + "_last.txt");}
-        catch{text_last = ''}
+        try{
+            text_last = fs.readFileSync("./controller/"+ folder + "_last.txt");
+        }
+        catch{
+            text_last = '';
+        }
         
 
         let csv_original;
@@ -93,31 +101,35 @@ module.exports.upload_csv = async function (folder, file) {
 
             }
             catch{
-                console.log("no such file ", filePath);
+                
                 return("Error2: File not found");
                 // return;
             }
             
         try{
+        
         let csv_json = CsvToJson(csv_original, '\t'); 
 
         // write latest input file in the text
         fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
-
+        
         // make query
         let sql_query = return_correct_data(csv_json, folder);
         // console.log("sql: ",sql_query);
         if(sql_query != ""){
             try{
                 await make_query_function(con, "truncate table "+ folder+";");
+                // con.end();
                 
-            }catch{
-                console.log("Error: cannot truncate table"+folder);
+            }catch(err){
+                console.log(err);
+                console.log("Error: cannot truncate table "+folder);
             }
             result_from_query = await make_query_function(con, sql_query);
+            // con.end();
             if ("error" in result_from_query){throw result_from_query}
         }
-        console.log("csv file updated to database");
+        console.log("csv file made query to database");
         return(sql_query)
         }
         catch{

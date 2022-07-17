@@ -99,26 +99,27 @@ module.exports.upload_csv = async function (folder, file) {
             }
             
         try{
-        let csv_json = CsvToJson(csv_original, '\t'); 
+            // console.log(csv_original.toString())
+            let csv_json = CsvToJson(csv_original, '\t'); 
+            // console.log(csv_json);
+            // write latest input file in the text
+            fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
 
-        // write latest input file in the text
-        fs.writeFileSync("./controller/"+ folder + "_last.txt", filePath)
-
-        // make query
-        let sql_query = return_correct_data(csv_json, folder);
-        // console.log("sql: ",sql_query);
-        if(sql_query != ""){
-            try{
-                await make_query_function(con, "truncate table "+ folder+";");
-                
-            }catch{
-                console.log("Error: cannot truncate table"+folder);
+            // make query
+            let sql_query = return_correct_data(csv_json, folder);
+            // console.log("sql: ",sql_query);
+            if(sql_query != ""){
+                try{
+                    await make_query_function(con, "truncate table "+ folder+";");
+                    
+                }catch{
+                    console.log("Error: cannot truncate table"+folder);
+                }
+                result_from_query = await make_query_function(con, sql_query);
+                if ("error" in result_from_query){throw result_from_query}
             }
-            result_from_query = await make_query_function(con, sql_query);
-            if ("error" in result_from_query){throw result_from_query}
-        }
-        console.log("csv file updated to database");
-        return(sql_query)
+            console.log("csv file updated to database");
+            return(sql_query)
         }
         catch{
            return("Error3: either making query or writing file");

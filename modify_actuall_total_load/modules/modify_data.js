@@ -1,6 +1,6 @@
 const CsvToJson = require('./CsvToJson.js');
 
-function ModifyData(csv_json, folder, wanted_datetime) {
+function ModifyData(csv_json, folder, wanted_datetime="2021-12-31 00") {
     // function that takes data in a json format and inserts it into the database
     // the wanted datetime must be 1 hour before the csv file datetime column
     //convert csv to json
@@ -87,3 +87,4 @@ function ModifyData(csv_json, folder, wanted_datetime) {
     return [query, del_queries];
 }
 module.exports.ModifyData = ModifyData;
+
