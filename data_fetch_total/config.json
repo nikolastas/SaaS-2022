@@ -12,7 +12,7 @@
     "database": "fetch_atl"
   },
   "sql": {
-    "SQL_QUERY_SELECT": "SELECT * from actualtotalload LIMIT 5",
+    "SQL_QUERY_SELECT": "SELECT * from actualtotalload",
     "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE actualtotalload"
   },
   "kafka": {

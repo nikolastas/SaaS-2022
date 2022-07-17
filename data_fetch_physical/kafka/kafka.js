@@ -10,7 +10,7 @@ const m_password = 'aTLGhy8a1/lYhe9GX71oEps9U6HzHfn29x2Pfy2bRvmNUGZP2pvQ9IP6gf1b
 // Create client instance upon running
 // based upon confluent instructions
 const kafka = new Kafka({
-    clientID: 'testing',
+    clientID: 'fetch_ff',
     // set it to desired confluent host
     brokers: ['pkc-41mxj.uksouth.azure.confluent.cloud:9092'],
     ssl: true,

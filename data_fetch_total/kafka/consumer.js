@@ -14,7 +14,7 @@ const con_datafetch = mysql.createConnection(config.db_datafetch);
 
 //if group id doesnt exist, throws some errors but then works just fine
 //TODO check if groupid needs change
-const consumer = kafka_client.consumer({groupId: "my-consumer-total"})
+const consumer = kafka_client.consumer({groupId: "atl2"})
 
 const simple_consume = async () => {
     // first, we wait for the client to connect and subscribe to the given topic
@@ -26,13 +26,18 @@ const simple_consume = async () => {
             async ({message}) => {
                 if (message.value.toString() === "DATA READY") {
                     //take the data from the modify microservice database
-                    let new_data = await make_query_func(con_modify, config.sql.SQL_QUERY_SELECT);
-                    console.log(new_data);
-                    //truncate table actualtotalload;
-                    await make_query_func(con_datafetch, config.sql.SQL_QUERY_TRUNCATE);
-                    //import new_data to the table
-                    let import_status = await import_data(con_datafetch, new_data);
-                    console.log(`Status = ${import_status}`);
+                    try{
+                        let new_data = await make_query_func(con_modify, config.sql.SQL_QUERY_SELECT);
+                        console.log(new_data);
+                        //truncate table actualtotalload;
+                        await make_query_func(con_datafetch, config.sql.SQL_QUERY_TRUNCATE);
+                        //import new_data to the table
+                        let import_status = await import_data(con_datafetch, new_data);
+                        console.log(`Status = ${import_status}`);
+                    }
+                    catch(err){
+                        console.log(err);
+                    }
                     //TODO consumer in display/frontend different topic and group-id;
                     await produce_string(config.kafka.producer_topic, "DATA READY", 1);
                 }
