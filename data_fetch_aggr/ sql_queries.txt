@@ -1,0 +1,30 @@
+CREATE TABLE ActualTotalLoad (Datetime datetime NOT NULL,
+ResolutionCode varchar(255),
+TotalLoadValue float,
+UpdateTime datetime NULL,
+MapCode varchar(255) NOT NULL);
+
+CREATE TABLE AggrGenerationPerType (DateTime datetime NOT NULL,
+ResolutionCode varchar(255),
+ProductionType varchar(255) NOT NULL,
+ActualGenerationOutput float,
+ActualConsumption float,
+UpdateTime datetime NULL,
+MapCode varchar(255) NOT NULL);
+
+CREATE TABLE PhysicalFlows (DateTime datetime NOT NULL,
+ResolutionCode varchar(255),
+FlowValue float,
+UpdateTime datetime NULL,
+InMapCode varchar(255) NOT NULL,
+OutMapCode varchar(255) NOT NULL);
+
+INSERT INTO aggrgenerationpertype (Datetime, ResolutionCode, ProductionType, ActualGenerationOutput, ActualConsumption, UpdateTime, MapCode)
+VALUES ('2022-07-01 00:55:00', 'PT15M', 'Biomass', '136', '0', '2022-01-01 02:23:47', 'AT');
+
+INSERT INTO physicalflows (Datetime, ResolutionCode, FlowValue, UpdateTime, InMapCode, OutMapCode)
+VALUES ('2022-07-01 00:55:00', 'PT15M', '31', '2022-01-01 05:00:58', 'AL', 'GR');
+
+SELECT * from physicalflows Order by (Datetime) desc Limit 100;
+
+TRUNCATE TABLE physicalflows;

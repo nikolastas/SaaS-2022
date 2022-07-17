@@ -1,0 +1,4 @@
+/node_modules
+/package-lock.json
+/data/aggrgenerationpertype/*
+controller/aggrgenerationpertype_last.txt

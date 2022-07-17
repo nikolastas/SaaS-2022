@@ -1,0 +1,22 @@
+{
+  "db_modify": {
+    "host": "35.195.0.175",
+    "user": "root",
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
+    "database": "modify_atl"
+  },
+  "db_datafetch": {
+    "host": "35.195.0.175",
+    "user": "root",
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
+    "database": "fetch_atl"
+  },
+  "sql": {
+    "SQL_QUERY_SELECT": "SELECT * from actualtotalload",
+    "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE actualtotalload"
+  },
+  "kafka": {
+    "consumer_topic" : "data_modify_total",
+    "producer_topic" : "data_fetch_to_display"
+  }
+}

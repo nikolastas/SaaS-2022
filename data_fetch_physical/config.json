@@ -1,0 +1,22 @@
+{
+  "db_modify": {
+    "host": "146.148.125.29",
+    "user": "root",
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
+    "database": "modify_ff"
+  },
+  "db_datafetch": {
+    "host": "146.148.125.29",
+    "user": "root",
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
+    "database": "fetch_ff"
+  },
+  "sql": {
+    "SQL_QUERY_SELECT": "SELECT * from physicalflows",
+    "SQL_QUERY_TRUNCATE": "TRUNCATE TABLE physicalflows"
+  },
+  "kafka": {
+    "consumer_topic" : "data_modify_physical",
+    "producer_topic" : "data_fetch_to_display"
+  }
+}

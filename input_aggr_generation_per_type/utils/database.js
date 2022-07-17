@@ -1,0 +1,17 @@
+const mysql = require("mysql2");
+const dot = require("dotenv");
+dot.config();
+
+let con = mysql.createConnection({
+    // host: "localhost",
+    // user:"root",
+    // password:"root",
+    // database:"input_aggr"
+    host: process.env.DATABASE_HOST,//needs to be changed to unix sock
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_USER_PASSWORD,
+    database: process.env.DATABASE_NAME
+});
+
+
+module.exports = con;

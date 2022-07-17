@@ -1,2 +1,6 @@
-**/.DS_Store
-
+/login_handling/node_modules
+/data_fetch/node_modules
+/data_fetch_total/node_modules
+/data_fetch_physical/node_modules
+/data_fetch_aggr/node_modules
+/.idea
