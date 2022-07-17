@@ -26,11 +26,11 @@ const Footer = () => {
     }
 
     const fetch_api = () => {
-        fetch("http://localhost:6660/subscription/EndSub", options)
+        fetch("https://login-dsgmlwmwqa-ew.a.run.app/subscription/EndSub", options)
             .then((r) => {
-                if (!r.ok) setStat(<p style={{color: "red"}}>Down</p>)
+                if (!r.ok) setStat(<p className="p1" style={{color: "red"}}>Down</p>)
                 else setStat(
-                    <p
+                    <p className="p1"
                         style={{color: "green"}}>Live</p>
                 )
                 return r
@@ -41,14 +41,14 @@ const Footer = () => {
                 const dat2 = new Date(d.SubscriptionEndTime)
                 const diff = days(dat2, dat)
                 if (diff < 0) {
-                    setMsg(<p>Subscription Plan Ended</p>)
+                    setMsg(<p className="p1">Subscription Plan Ended</p>)
                 } else {
-                    setMsg(<p>Days left {diff}</p>)
+                    setMsg(<p className="p1">Days left {diff}</p>)
                 }
             })
             .catch((e) => {
                 console.log(e)
-                setStat(<p style={{color: "red"}}>Down</p>)
+                setStat(<p className="p1" style={{color: "red"}}>Down</p>)
             });
     }
 
@@ -75,17 +75,28 @@ const Footer = () => {
     return (
         <>
             <div className="footer">
-                <p>a project by group SAAS21-24®</p>
-                {msg}
-                <div>Service Status: {stat} </div>
-                <button onClick={() => {
-                    window.location.href = "/renewuser"
-                }} hidden={hid}>Extend Plan
-                </button>
-                <button onClick={() => {
-                    window.location.href = "/about"
-                }}>About
-                </button>
+                <div className="title">
+                    <h1>A project by group SAAS 21-24®</h1>
+                </div>
+                <div className="title">
+                    {msg}
+                </div>
+                <div className="title">
+                    <div>Service Status: {stat} </div>
+                </div>
+                <div className="title">
+                    <button className='button button2' onClick={() => {
+                        window.location.href = "/renewuser"
+                    }} hidden={hid}>Extend Plan
+                    </button>
+                </div>
+
+                <div className="title">
+                    <button className='button button2' onClick={() => {
+                        window.location.href = "/about"
+                    }}>About
+                    </button>
+                </div>
             </div>
         </>
     )

@@ -30,7 +30,7 @@ const Postlogin = () => {
                 }
             }
 
-            fetch("http://localhost:6660/home", options)
+            fetch("https://login-dsgmlwmwqa-ew.a.run.app/home", options)
                 .then(r => r.json())
                 .then(data => {
                     sessionStorage.setItem("authentication", token)
