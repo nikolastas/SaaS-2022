@@ -11,8 +11,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({credentials: true}));
 
 
-app.get("/home", (req, res) => {
+app.post("/home", verifyUser, (req, res) => {
     console.log("Home")
+    let accessToken = req.body.token
+    res.set('authentication', accessToken);
+    res.set("Access-Control-Allow-Origin", "*")
     res.status(200).send()
 });
 

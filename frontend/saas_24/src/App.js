@@ -8,7 +8,6 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Postlogin from './Pages/Postlogin';
 import NewUser from "./Pages/NewUser";
-import Statistics from './Pages/Statistics';
 import RenewUser from "./Pages/RenewUser";
 import HighchartTest from "./Pages/HighChartPresentation"
 import About from "./Pages/About";
@@ -24,9 +23,9 @@ function App() {
                 <Route path="/postlogin" element={<Postlogin/>}/>
                 <Route path="/newuser" element={<NewUser/>}/>
                 <Route path="/renewuser" element={<RenewUser/>}/>
-                <Route path="/statistics" element={<Statistics/>}/>
                 <Route path="/hc" element={<HighchartTest/>}/>
                 <Route path="/about" element={<About/>}/>
+                <Route path="*" element={<Login/>}/>
             </Routes>
             <Footer/>
         </BrowserRouter>

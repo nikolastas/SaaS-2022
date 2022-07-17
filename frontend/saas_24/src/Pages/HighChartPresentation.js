@@ -13,49 +13,6 @@ require("highcharts/modules/export-data")(Highcharts);
 // Needed functions for running the code (react didnt let me module export)
 //#region module
 
-//#region demo JSON
-let jsonArr = `[
-    {
-        "DateTime": "2021-12-31T22:45:00.000Z",
-        "ResolutionCode": "PT15M",
-        "ProductionType": "Fossil Oil",
-        "ActualGenerationOutput": 279.14,
-        "ActualConsumption": null,
-        "UpdateTime": "2022-01-01T00:50:06.000Z",
-        "MapCode": "hgdf"
-    },
-    {
-        "DateTime": "2021-12-31T22:30:00.000Z",
-        "ResolutionCode": "PT15M",
-        "ProductionType": "Fossil Oil",
-        "ActualGenerationOutput": 279.14,
-        "ActualConsumption": null,
-        "UpdateTime": "2022-01-01T00:33:53.000Z",
-        "MapCode": "hgdf"
-    },
-    {
-        "DateTime": "2021-12-31T22:15:00.000Z",
-        "ResolutionCode": "PT15M",
-        "ProductionType": "Fossil Oil",
-        "ActualGenerationOutput": 279.14,
-        "ActualConsumption": null,
-        "UpdateTime": "2022-01-01T00:19:29.000Z",
-        "MapCode": "DE"
-    },
-    {
-        "DateTime": "2021-12-31T22:00:00.000Z",
-        "ResolutionCode": "PT15M",
-        "ProductionType": "Fossil Oil",
-        "ActualGenerationOutput": 279.14,
-        "ActualConsumption": null,
-        "UpdateTime": "2022-01-01T00:13:06.000Z",
-        "MapCode": "DE"
-    }
-]`;
-
-jsonArr = JSON.parse(jsonArr)
-
-//#endregion demo JSON
 
 /**
  * @name FindTypeOfJSON

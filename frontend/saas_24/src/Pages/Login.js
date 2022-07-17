@@ -2,7 +2,7 @@ import React from 'react'
 import {useEffect} from "react";
 
 const Login = () => {
-
+    sessionStorage.removeItem('authentication')
     // const sleep = (milliseconds) => {
     //     return new Promise(resolve => setTimeout(resolve, milliseconds))
     // }
