@@ -5,15 +5,12 @@ const produce_string = require('./producer');
 const config = require('../config.json')
 const mysql = require("mysql");
 
-// require('dotenv').config();
-// console.log(cred.dbconf);
-//TODO check dotenv for config.json path;
 
 const con_modify = mysql.createConnection(config.db_modify);
 const con_datafetch = mysql.createConnection(config.db_datafetch);
 
 //if group id doesnt exist, throws some errors but then works just fine
-//TODO check if groupid needs change
+
 const consumer = kafka_client.consumer({groupId: "my-consumer-aggr"})
 
 const simple_consume = async () => {
@@ -33,7 +30,6 @@ const simple_consume = async () => {
                     //import new_data to the table
                     let import_status = await import_data(con_datafetch, new_data);
                     console.log(`Status = ${import_status}`);
-                    //TODO consumer in display/frontend different topic and group-id;
                     await produce_string(config.kafka.producer_topic, "DATA READY", 1);
                 }
 

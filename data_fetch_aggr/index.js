@@ -1,13 +1,13 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const select_data = require("./endpoints/AggrGenerationPerType");
-// const router = require("router");
-const jwt = require("jsonwebtoken");
+const cors = require("cors");
 const simple_consume = require("./kafka/consumer");
 const verifyUser = require('./middleware/verifyUser.js')
 require('dotenv').config();
 app = express();
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors({credentials: true}));
 
 app.get("/home", (req, res) => {
     console.log("Home")
@@ -20,26 +20,21 @@ app.post("/data_fetch/Aggr", verifyUser, (req, res) => {
         return await select_data(req, res);
     }
 
-    const data = {
-        username: req.body.user,
-        email: req.body.email,
-        userID: req.body.userID
-    };
-
-    console.log(JSON.stringify(data));
-
-    const accessToken = jwt.sign(data, process.env.MY_SECRET_KEY)
+    let accessToken = req.body.token
     res.set('authentication', accessToken);
-
-    //TODO delete console.log below;
+    res.set("Access-Control-Allow-Origin", "*")
     //TODO handle error;
-    promise_select_data().then((d) => {
-        if (d.length === 0) {
-            res.status(503).send({"error": "No data available"});
-        } else {
-            res.status(200).send(d)
-        }
-    });
+    promise_select_data()
+        .then((d) => {
+            if (d.length === 0) {
+                res.status(503).send({"error": "No data available"});
+            } else {
+                res.status(200).send(d)
+            }
+        })
+        .catch((err) => {
+            res.status(406).send({"error":"error communicating with service bus"})
+        })
 });
 
 simple_consume().catch((err) => {

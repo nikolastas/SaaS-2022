@@ -1,0 +1,11 @@
+-- auto-generated definition
+create table subscriptions
+(
+    Username              varchar(255) not null
+        primary key,
+    email                 varchar(255) null,
+    SubscriptionStartTime datetime     null,
+    SubscriptionEndTime   datetime     null,
+    SubcriptionType       varchar(255) null
+);
+
