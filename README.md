@@ -9,7 +9,7 @@ In order to acces the app, users must have a google acount a pick their desired 
 
 **Website that hosts the application** 
 
-Website: [Pass Pantou](http://localhost:3000/)
+**Website: [Energy Live 2022](https://master.d1eqcvae5rwrd.amplifyapp.com/) **
 
 
 **Technical Details**
