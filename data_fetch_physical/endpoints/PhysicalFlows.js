@@ -14,7 +14,7 @@ module.exports = function physicalflows(req) {
 
         con.query(sql_query, (err, res) => {
             //TODO handle error
-            if (err) throw(err);
+            if (err) console.log(err);
             resolve(res);
         });
     })

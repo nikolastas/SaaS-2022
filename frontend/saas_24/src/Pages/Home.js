@@ -5,6 +5,7 @@ const Home = () => {
 
     let [msg, setMsg] = useState(<h1>Loading</h1>);
     let token = sessionStorage.getItem('authentication');
+    console.log(token);
 
     const login = () => {
         window.location.href = "/login";
@@ -51,7 +52,7 @@ const Home = () => {
                     console.log(e.status)
                 })
         }
-    }, [])
+    }, [token])
 
     return (
         <>

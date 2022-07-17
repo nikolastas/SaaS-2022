@@ -15,7 +15,7 @@ module.exports = function aggrgenerationpertype(req) {
 
         con.query(sql_query, (err, res) => {
 
-            if (err) throw(err);
+            if (err) console.log(err);
             resolve(res);
         });
     })

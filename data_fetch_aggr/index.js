@@ -24,13 +24,17 @@ app.post("/data_fetch/Aggr", verifyUser, (req, res) => {
     res.set('authentication', accessToken);
     res.set("Access-Control-Allow-Origin", "*")
     //TODO handle error;
-    promise_select_data().then((d) => {
-        if (d.length === 0) {
-            res.status(503).send({"error": "No data available"});
-        } else {
-            res.status(200).send(d)
-        }
-    });
+    promise_select_data()
+        .then((d) => {
+            if (d.length === 0) {
+                res.status(503).send({"error": "No data available"});
+            } else {
+                res.status(200).send(d)
+            }
+        })
+        .catch((err) => {
+            res.status(406).send({"error":"error communicating with service bus"})
+        })
 });
 
 simple_consume().catch((err) => {

@@ -3,9 +3,9 @@ import {useEffect} from "react";
 
 const Login = () => {
 
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
+    // const sleep = (milliseconds) => {
+    //     return new Promise(resolve => setTimeout(resolve, milliseconds))
+    // }
 
     const handleLogin = (response) => {
 

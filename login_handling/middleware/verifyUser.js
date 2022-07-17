@@ -22,9 +22,9 @@ async function verify(token) {
 
 let cnt = 0;
 
-setInterval(()=>{
-    console.log("Verifications: "+cnt)
-},600000)
+setInterval(() => {
+    console.log("Verifications: " + cnt)
+}, 600000)
 
 module.exports = function verifyUser(req, res, next) {
 
@@ -32,27 +32,29 @@ module.exports = function verifyUser(req, res, next) {
     // res.set('authentication', tokenHeader);
 
     // console.log(tokenHeader);
-    cnt +=1;
+    cnt += 1;
     let data = parseJwt(tokenHeader);
 
     if (tokenHeader == null) return res.status(401).send();
 
     else {
 
-        verify(tokenHeader).then(() => {
-            // console.log("Verified :"+data.name + new Date())
+        verify(tokenHeader)
+            .then(() => {
+                // console.log("Verified :"+data.name + new Date())
 
-            req.body.name = data.name;
-            req.body.email = data.email;
-            req.body.userID = data.sub;
-            req.body.token = tokenHeader;
-            // console.log(req.body.sublength);
-            // if(req.body.sublength !== undefined)
-            //     next.body.sublength = req.body.sublength;
-            next()
-        }).catch((e) => {
-            console.error(e);
-            return res.status(403).send({log: "Token is invalid"});
-        });
+                req.body.name = data.name;
+                req.body.email = data.email;
+                req.body.userID = data.sub;
+                req.body.token = tokenHeader;
+                // console.log(req.body.sublength);
+                // if(req.body.sublength !== undefined)
+                //     next.body.sublength = req.body.sublength;
+                next()
+            })
+            .catch((e) => {
+                console.error(e);
+                return res.status(403).send({log: "Token is invalid"});
+            });
     }
 }
