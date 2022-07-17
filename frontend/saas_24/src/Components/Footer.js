@@ -26,7 +26,7 @@ const Footer = () => {
     }
 
     const fetch_api = () => {
-        fetch("http://localhost:6660/subscription/EndSub", options)
+        fetch("https://login-dsgmlwmwqa-ew.a.run.app/subscription/EndSub", options)
             .then((r) => {
                 if (!r.ok) setStat(<p style={{color: "red"}}>Down</p>)
                 else setStat(

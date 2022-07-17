@@ -21,7 +21,7 @@ const Header = () => {
 
         }
         else{
-            fetch("http://localhost:6660/logout",options).then(r => {
+            fetch("https://login-dsgmlwmwqa-ew.a.run.app/logout",options).then(r => {
                 if(r.ok){
                     sessionStorage.removeItem('authentication')
                     window.location.href = "/login"
@@ -40,7 +40,7 @@ const Header = () => {
                 setHid(true)
             }
             if(token && window.location.pathname !== "/postlogin"){
-                fetch("http://localhost:6660/home",options).then(r => r.json())
+                fetch("https://login-dsgmlwmwqa-ew.a.run.app/home",options).then(r => r.json())
                     .then(d => {
                         setMail(d.email);
                     });

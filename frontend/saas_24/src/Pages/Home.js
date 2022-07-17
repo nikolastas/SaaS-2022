@@ -148,6 +148,7 @@ const Home = () => {
     let [msg2, setMsg2] = useState(<p>Please select above</p>)
     let [msg3, setMsg3] = useState(<p>Please select above</p>)
     let [msg4, setMsg4] = useState(true)
+    let [msg5, setMsg5] = useState(<p></p>)
     // let [data, setData] = useState([])
     let [date, setDate] = useState(new Date())
     let [updatetime, setUpdateTime] = useState("");
@@ -306,7 +307,7 @@ const Home = () => {
                     </>
                 )
             }
-            console.log(selval1.value + " " + selval2.value + " " + selval3.value + " " + (date ? date:new Date()).toISOString().slice(0, 19).replace('T', ' '))
+            console.log(selval1.value + " " + selval2.value + " " + selval3.value + " " + (date ? date : new Date()).toISOString().slice(0, 19).replace('T', ' '))
 
 
             //setLink("")
@@ -323,7 +324,7 @@ const Home = () => {
                     },
                     body: new URLSearchParams({
                         'MapCode': selval2.value,
-                        'Date': (date ? date:new Date()).toISOString().slice(0, 19).replace('T', ' ')
+                        'Date': (date ? date : new Date()).toISOString().slice(0, 19).replace('T', ' ')
                     })
                 })
 
@@ -341,7 +342,7 @@ const Home = () => {
                     },
                     body: new URLSearchParams({
                         'MapCode': selval2.value,
-                        'Date': (date ? date:new Date()).toISOString().slice(0, 19).replace('T', ' '),
+                        'Date': (date ? date : new Date()).toISOString().slice(0, 19).replace('T', ' '),
                         'ProductionType': selval3.label
                     })
                 })
@@ -359,7 +360,7 @@ const Home = () => {
                     },
                     body: new URLSearchParams({
                         'InMapCode': selval2.value,
-                        'Date': (date ? date:new Date()).toISOString().slice(0, 19).replace('T', ' '),
+                        'Date': (date ? date : new Date()).toISOString().slice(0, 19).replace('T', ' '),
                         'OutMapCode': selval3.value
                     })
                 })
@@ -374,7 +375,17 @@ const Home = () => {
                 fetch(link, options)
                     .then(r => {
                         setUpdateTime((new Date()).toISOString().slice(0, 19).replace('T', ' '));
-                        if (!r.ok) setMsg4(true); else setMsg4(false);
+                        if (!r.ok) {
+                            setMsg4(true)
+                            setMsg5(
+                                <>
+                                    <h3>There are no data for the selected values</h3>
+                                </>
+                            )
+                        } else {
+                            setMsg4(false)
+                            setMsg5(<p></p>)
+                        }
                         return r
                     })
                     .then(r => r.json())
@@ -414,6 +425,9 @@ const Home = () => {
                 {msg1}
                 {msg2}
                 {msg3}
+            </div>
+            <div hidden={(!msg4)}>
+                {msg5}
             </div>
             <div hidden={msg4}>
                 <HighchartsReact ref={chartComponent} highcharts={Highcharts} options={optionsLine}/>

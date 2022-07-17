@@ -29,7 +29,7 @@ const About = () => {
                     'authentication': token
                 }
             }
-            fetch("http://localhost:6660/check", options)
+            fetch("https://login-dsgmlwmwqa-ew.a.run.app/check", options)
                 .then(r => {
                     if (!r.ok) {
                         sessionStorage.removeItem("authentication")
