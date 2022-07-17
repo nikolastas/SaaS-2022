@@ -1,36 +1,23 @@
 const express = require('express');
 const verifyUser = require('./middleware/verifyUser.js')
+const cors = require('cors');
 const checkSubscription = require('./modules/check_sub.js')
-const parseJwt = require('./modules/decodeToken')
+// const parseJwt = require('./modules/decodeToken')
 const bodyParser = require("body-parser");
 const AddUser = require('./controller/addUser');
 const UpdateUser = require('./controller/updateUser');
 const EndSub = require('./controller/end_sub');
-const jwt = require("jsonwebtoken");
-const take_data = require("./modules/MakeQueryFunction");
+// const jwt = require("jsonwebtoken");
+// const take_data = require("./modules/MakeQueryFunction");
 require('dotenv').config()
 
 app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 
-// app.get("/",(req,res) => {
-//     res.status(200).sendFile(__dirname + "/index.html");
-// })
-//TODO: this belongs in frontend
-app.get("/login", (req, res) => {
+app.use(cors({credentials: true}));
 
-    res.status(200).sendFile(__dirname + "/login.html");
-})
-
-//TODO: check logout in frontend
-
-// app.get("/logout", (req,res)=>{
-//         res.status()
-// })
-
-
-app.get("/home", (req, res) => {
+app.post("/home", verifyUser, (req, res) => {
 
     let ans = {
         name: '',
@@ -39,125 +26,85 @@ app.get("/home", (req, res) => {
         subscription: -2,
         errors: ''
     }
-    const token = req.query.token;
-    // console.log(token);
 
-    if (token) {
-        let decodeToken = parseJwt(token);
-        console.log(decodeToken);
+    ans.name = req.body.name;
+    ans.userID = req.body.sub;
+    ans.email = req.body.email;
 
-        ans.name = decodeToken.name;
-        ans.userID = decodeToken.sub;
-        ans.email = decodeToken.email;
-
-        async function CheckSubs() {
-            ans.subscription = await checkSubscription(decodeToken.sub);
-        }
-
-        CheckSubs()
-            .then(() => {
-
-                const data = {
-                    username: ans.name,
-                    email: ans.email,
-                    userID: ans.userID
-                };
-
-                console.log(JSON.stringify(data));
-
-                const accessToken = jwt.sign(data, process.env.MY_SECRET_KEY)
-                console.log(accessToken);
-                res.set('authentication', accessToken);
-                // if(ans.subscription >= 0){
-                //     res.status(200).send({
-                //         log: "Request Completed"
-                //     });
-                // }
-                // else if(ans.subscription === -1)  {
-                // AddUser(ans.userID,ans.email);
-                // ans.subscription = 0;
-                // ans.errors = " ";
-                res.status(200).send(ans);
-                // }
-                console.log(ans);
-            })
-            .catch(console.error)
-    } else {
-        res.status(401).send({
-            errors: "Unauthorised User"
-        });
+    async function CheckSubs() {
+        // redirect client through frontend based on subscription value
+        ans.subscription = await checkSubscription(ans.email);
     }
+
+    CheckSubs()
+        .then(() => {
+            res.set('authentication', req.body.token);
+            res.set("Access-Control-Allow-Origin","*");
+            res.status(200).send(ans);
+            console.log(ans);
+        })
+        .catch(console.error)
 });
 
-app.get("/test", verifyUser, (req, res) => {
-
-    res.status(200).send("ZEOS");
-
-})
-
+// update subscription according to the value of req.body.sub_length value (1/3/6 months)
+// subscription value corresponds to the ongoing subscription (-1 -> never subscripted)
+// used when user is not in subscriptions table
 app.post("/subscription/NewSub", verifyUser, (req, res) => {
-    AddUser(req.body.user, req.body.email, req.body.sublength);
-
-    const data = {
-        username: req.body.user,
-        email: req.body.email,
-        userID: req.body.userID
-    };
-
-    console.log(JSON.stringify(data));
-
-    const accessToken = jwt.sign(data, process.env.MY_SECRET_KEY)
-
-    res.set('authentication', accessToken);
-
-    res.status(200).send("ZEOS");
+    AddUser(req.body.name, req.body.email, req.body.sublength)
+    res.set('authentication', req.body.token);
+    res.set("Access-Control-Allow-Origin","*");
+    res.status(200).send({
+        log: "Subscription created successfully"
+    });
 })
+
+// update subscription according to the value of req.body.sub_length value (1/3/6 months)
+// subscription value corresponds to the ongoing subscription (1-> active, 0-> expired, -1 -> never subscripted)
 
 app.post("/subscription/UpdateSub", verifyUser, (req, res) => {
-    UpdateUser(req.body.user, req.body.email, req.body.sublength, req.body.subscription);
-
-    const data = {
-        username: req.body.user,
-        email: req.body.email,
-        userID: req.body.userID
-    };
-
-    console.log(JSON.stringify(data));
-
-    const accessToken = jwt.sign(data, process.env.MY_SECRET_KEY)
-
-    res.set('authentication', accessToken);
-
-    res.status(200).send("ZEOS");
+    UpdateUser(req.body.name, req.body.email, req.body.sublength, req.body.subscription);
+    res.set('authentication', req.body.token);
+    res.set("Access-Control-Allow-Origin","*");
+    res.status(200).send( {
+            log: "Subscription updated successfully"
+    });
 })
-
+// endpoint used for checking when the subscription of the user is ending
 app.post("/subscription/EndSub", verifyUser, (req, res) => {
 
     let resdate = new Date();
 
     async function FindEndTime() {
-        let res = await EndSub(req.body.user);
-        resdate = new Date(res)
+        let rest = await EndSub(req.body.name);
+        resdate = new Date(rest);
         // console.log(resdate);
     }
 
     FindEndTime().then(() => {
 
-        const data = {
-            username: req.body.username,
-            email: req.body.email,
-            userID: req.body.userID
-        };
-
-        const accessToken = jwt.sign(data, process.env.MY_SECRET_KEY)
-
-        res.set('authentication', accessToken);
-
+        res.set('authentication', req.body.token);
+        res.set("Access-Control-Allow-Origin","*");
         res.status(200).send({
             SubscriptionEndTime: resdate
         });
+    }).catch((e) => {
+        res.status(501).send({errors: e})
     })
 });
+
+app.post("/check", verifyUser, (req, res) => {
+    res.set('authentication', req.body.token);
+    res.set("Access-Control-Allow-Origin","*");
+    res.status(200).send("Test passed successfully");
+
+})
+
+app.post("/logout",verifyUser,(req,res)=>{
+    res.set("Access-Control-Allow-Origin","*");
+    res.status(200).send({
+        log:"Logout Successfull"
+    })
+})
 
 
 app.listen(process.env.PORT, () => {

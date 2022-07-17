@@ -1,14 +1,14 @@
 {
   "db_modify": {
-    "host": "35.204.254.162",
+    "host": "146.148.125.29",
     "user": "root",
-    "password": "root",
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
     "database": "modify_ff"
   },
   "db_datafetch": {
-    "host": "35.204.254.162",
+    "host": "146.148.125.29",
     "user": "root",
-    "password": "root",
+    "password": "ATfx8SExk$N!YP&p5h&9@3G@AX@HmKtN",
     "database": "fetch_ff"
   },
   "sql": {

@@ -1,0 +1,16 @@
+{
+  iss: 'https://accounts.google.com',
+  nbf: 1657737498,
+  aud: '427817892641-7pif8nq9bmqt36sbpo9a8hdnq7l93qgj.apps.googleusercontent.com',
+  sub: '104881660807990284320',
+  email: 'ageorge884@gmail.com',
+  email_verified: true,
+  azp: '427817892641-7pif8nq9bmqt36sbpo9a8hdnq7l93qgj.apps.googleusercontent.com',
+  name: 'Γιώργος Αλεξανδρής',
+  picture: 'https://lh3.googleusercontent.com/a-/AFdZucpmv4-ANd8-pfS3LYmyVAI5Lo8wD1Cn76shVsVsA_w=s96-c',
+  given_name: 'Γιώργος',
+  family_name: 'Αλεξανδρής',
+  iat: 1657737798,
+  exp: 1657741398,
+  jti: 'ce6d9e574ad6e9c09476fdbb396fbe23b1a13fa1'
+}

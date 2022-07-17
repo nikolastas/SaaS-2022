@@ -29,7 +29,7 @@ const simple_consume = async () => {
                 if (message.value.toString() === "DATA READY") {
                     //take the data from the modify microservice database
                     let new_data = await make_query_func(con_modify, config.sql.SQL_QUERY_SELECT);
-                    console.log(new_data);
+                    // console.log(new_data);
                     //truncate table actualtotalload;
                     await make_query_func(con_datafetch, config.sql.SQL_QUERY_TRUNCATE);
                     //import new_data to the table

@@ -10,11 +10,11 @@ module.exports = function actualtotalload(req) {
     return new Promise(function (resolve, reject) {
         // console.log(req.body.Date);
         let currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        const sql_query = `Select * from actualtotalload where MapCode = '${req.body.MapCode}' AND Datetime between '${req.body.Date}' and '${currentDate}' ORDER BY  (Datetime) desc`
+        const sql_query = `Select * from actualtotalload where MapCode = '${req.body.MapCode}' AND Datetime between '${req.body.Date}' and '${currentDate}' ORDER BY  (Datetime) asc`
 
         con.query(sql_query, (err, res) => {
             //TODO handle error
-            if (err) throw(err);
+            if (err) console.log(err);
             resolve(res);
         });
     })

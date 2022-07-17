@@ -1,0 +1,20 @@
+create table subscriptions
+(
+    Username              varchar(255) not null
+        primary key,
+    email                 varchar(255) null,
+    SubscriptionStartTime datetime     null,
+    SubscriptionEndTime   datetime     null,
+    SubcriptionType       varchar(255) null
+);
+
+INSERT INTO saas.subscriptions (Username, email, SubscriptionStartTime, SubscriptionEndTime, SubcriptionType)
+VALUES ('102898846638332952747', null, '2020-01-01 00:00:00', '2022-12-30 00:00:00', 'VALID');
+INSERT INTO saas.subscriptions (Username, email, SubscriptionStartTime, SubscriptionEndTime, SubcriptionType)
+VALUES ('104059457961494644509', null, '2020-01-01 00:00:00', '2022-12-30 00:00:00', 'VALID');
+INSERT INTO saas.subscriptions (Username, email, SubscriptionStartTime, SubscriptionEndTime, SubcriptionType)
+VALUES ('104881660807990284320', null, '2020-10-10 00:00:00', '2022-12-30 00:00:00', 'VALID');
+INSERT INTO saas.subscriptions (Username, email, SubscriptionStartTime, SubscriptionEndTime, SubcriptionType)
+VALUES ('117516749689603537471', null, '2020-10-10 00:00:00', '2022-12-30 00:00:00', 'VALID');
+INSERT INTO saas.subscriptions (Username, email, SubscriptionStartTime, SubscriptionEndTime, SubcriptionType)
+VALUES ('John Panagioto', 'johnmegalopoli7@gmail.com', '2022-07-09 12:18:33', '2022-12-09 02:18:33', 'VALID');
