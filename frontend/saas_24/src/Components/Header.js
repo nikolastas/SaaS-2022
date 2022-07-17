@@ -54,7 +54,7 @@ const Header = () => {
                 <h1>Energy Live 2022</h1>
                 <h3 hidden={hid}>{mail}</h3>
                 <button onClick={handleLogout} hidden={hid}>Logout</button>
-
+                <button onClick={()=>window.location.href="/home"} hidden={hid}>Statistics</button>
             </div>
         </>
     )
