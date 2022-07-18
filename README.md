@@ -67,6 +67,13 @@ If is greater only a insert is nessecery , if is less than the datetime we basic
 KAFKA READY 
 ```
 to the data fetch microservice.
-***Data Fetch** <br>
 
+**Data Fetch** <br>
+
+
+**Front End Test API calls** <br>
+In order to test our application we had to build an API where the user could press a button to make a GET request and add start the input proccess.
+We added a specified button to the frontend page for that reason.
+Also we added a reset button to reset the database data with 1 click.
+### WARNING : API calls only accept 1 request per 15 seconds.
 
