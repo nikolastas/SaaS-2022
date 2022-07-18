@@ -5,7 +5,8 @@ const resetDB = require('./controller/reset.js');
 const request = require('./controller/request.js');
 const dot = require('dotenv');
 const cors = require('cors');
-
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 
@@ -68,7 +69,24 @@ async function reset_databases(req, res) {
        
        result =  await resetDB.ResetDB(hostElement);
        
-    }   
+    } 
+    let counter = 0;
+    try {
+        const direcotry = "data/actualtotalload/";
+        let files = fs.readdirSync((path.join(__dirname,direcotry)));
+        for (const file of files) {
+            console.log((path.join(__dirname,direcotry, file)))
+            fs.unlinkSync(path.join(__dirname,direcotry, file));
+            counter++;
+        };    
+        const directory2 = "/controller/actualtotalload_last.txt";
+        console.log(path.join(directory2));
+        fs.unlinkSync(path.join(__dirname,directory2));
+        counter++;
+    }catch(err) {
+        console.log(err);
+    }
+    console.log("TOTAL FILES DELETED: " + counter);  
     // console.log(result);
     res.set("Access-Control-Allow-Origin","*");
     if(result.success){
