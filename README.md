@@ -69,7 +69,7 @@ KAFKA READY
 to the data fetch microservice.
 
 **Data Fetch** <br>
-
+Fetching data with a kafka message from modify and serving them in frontend in a form equest. 
 
 **Front End Test API calls** <br>
 In order to test our application we had to build an API where the user could press a button to make a GET request and add start the input proccess.
