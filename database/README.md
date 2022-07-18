@@ -2,6 +2,8 @@
 
 Here we explain the basics on our database sytem.
 This is a mysql database.
+This was required to the early stages of the project! 
+You can see the actual SQL code of the microservices in each microservice.
 
 # Required 
 
@@ -15,17 +17,19 @@ This is a mysql database.
 
 # Generate database
 A SQL file with all the code for the database.
+You can run it through your GUI/console and see all database scheemas need it!
 
-# drop database
 
+# Drop database
 
-# initialize database
+To drop the basic scheema you have to run the ``` drop database.sql ``` file .
+
+# Initialize database
 This file contains a code about database initilization.
 It does the following things:
 1. adds with secure code the first users of the APP
-2. adds the conties 
-3. add the first day of January 2022 of the actual total load, aggregation generration per type and the physical flows
+2. adds the contries 
+3. add the first day of January 2022 of the actual total load, aggregation generration per type and the physical flows .
 
-
-All data is used from the ```./saas2022-24/data``` folder.
-
+In order for the python script to work you need to create a ```./saas2022-24/data``` folder.
+with the 2022_01_01_01_*.csv files of each type.
