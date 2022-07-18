@@ -28,10 +28,9 @@ const Footer = () => {
     const fetch_api = () => {
         fetch("https://login-dsgmlwmwqa-ew.a.run.app/subscription/EndSub", options)
             .then((r) => {
-                if (!r.ok) setStat(<p className="p1" style={{color: "red"}}>Down</p>)
+                if (!r.ok) setStat(<p style={{color: "red"}}>Down</p>)
                 else setStat(
-                    <p className="p1"
-                        style={{color: "green"}}>Live</p>
+                    <p style={{color: "green"}}>Live</p>
                 )
                 return r
             })
@@ -41,17 +40,16 @@ const Footer = () => {
                 const dat2 = new Date(d.SubscriptionEndTime)
                 const diff = days(dat2, dat)
                 if (diff < 0) {
-                    setMsg(<p className="p1">Subscription Plan Ended</p>)
+                    setMsg(<li className={"fakebut"}>Subscription Plan Ended</li>)
                 } else {
-                    setMsg(<p className="p1">Days left {diff}</p>)
+                    setMsg(<li className={"fakebut"}>Days left {diff}</li>)
                 }
             })
             .catch((e) => {
                 console.log(e)
-                setStat(<p className="p1" style={{color: "red"}}>Down</p>)
+                setStat(<p style={{color: "red"}}>Down</p>)
             });
     }
-
 
 
     useEffect(() => {
@@ -73,32 +71,38 @@ const Footer = () => {
 
 
     return (
-        <>
-            <div className="footer">
-                <div className="title">
-                    <h1>A project by group SAAS 21-24®</h1>
-                </div>
-                <div className="title">
-                    {msg}
-                </div>
-                <div className="title">
-                    <div>Service Status: {stat} </div>
-                </div>
-                <div className="title">
-                    <button className='button button2' onClick={() => {
-                        window.location.href = "/renewuser"
-                    }} hidden={hid}>Extend Plan
-                    </button>
-                </div>
 
-                <div className="title">
-                    <button className='button button2' onClick={() => {
-                        window.location.href = "/about"
-                    }}>About
-                    </button>
+        <footer>
+            <div className={"footer-content"}>
+                <h3>A project by group SAAS 21-24®</h3>
+
+                <div className="footer-menu">
+                    <ul className="f-menu">
+                        {msg}
+
+                        <li className={"fakebut"}>Service Status: {stat} </li>
+
+                        <li>
+                            <button className='button button2' onClick={() => {
+                                window.location.href = "/renewuser"
+                            }} hidden={hid}>Extend Plan
+                            </button>
+                        </li>
+
+                        <li>
+                            <button className='button button2' onClick={() => {
+                                window.location.href = "/about"
+                            }}>About
+                            </button>
+                        </li>
+                        {/*<li className="footer-bottom">*/}
+                        {/*    <p>copyright &copy;2022 <a href="about">Saas NTUA 22-24</a></p>*/}
+                        {/*</li>*/}
+                    </ul>
                 </div>
             </div>
-        </>
+        </footer>
+
     )
 }
 

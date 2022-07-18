@@ -279,7 +279,7 @@ const Home = () => {
                             <h1 align={"center"}>Select Country</h1>
                         </div>
                         <div>
-                            <Select placeholder="Country" options={Countries} onChange={HandleSecSel}/>
+                            <Select className={"lolo"} placeholder="Country" options={Countries} onChange={HandleSecSel}/>
                         </div>
                     </div>
                 )
@@ -301,7 +301,7 @@ const Home = () => {
                 setMsg3(
                     <>
                         <h1 align={"center"}>Select Generation Type</h1>
-                        <Select placeholder="Generation Type" options={ProdTypes}
+                        <Select className={"lolo"} placeholder="Generation Type" options={ProdTypes}
                                 onChange={HandleGeneratedType}/>
                     </>
                 )
@@ -313,7 +313,7 @@ const Home = () => {
                             <h1 align={"center"}>Select Country (from)</h1>
                         </div>
                         <div>
-                            <Select placeholder="Country (from)" options={Countries}
+                            <Select className={"lolo"} placeholder="Country (from)" options={Countries}
                                     onChange={HandleSecSel}/>
                         </div>
                     </div>
@@ -324,7 +324,8 @@ const Home = () => {
                             <h1 align={"center"}>Select Country (to)</h1>
                         </div>
                         <div>
-                            <Select placeholder="Country (to)" options={Countries} onChange={HandleThirdSel}/>
+                            <Select className={"lolo"} placeholder="Country (to)" options={Countries}
+                                    onChange={HandleThirdSel}/>
                         </div>
                     </div>
                 )
@@ -399,7 +400,7 @@ const Home = () => {
                             setMsg4(true)
                             setMsg5(
                                 <>
-                                    <h3>There are no data for the selected values</h3>
+                                    <h3 align={"center"}>There are no data for the selected values</h3>
                                 </>
                             )
                         } else {
@@ -441,12 +442,14 @@ const Home = () => {
     return (
         <>
             <div className={"selo"} align={"center"}>
-                <DatePicker align={"central"} selected={date} onChange={(date) => setDate(date)} value={date}/>
+                <DatePicker className={"lolo"} selected={date} onChange={(date) => setDate(date)} value={date}/>
             </div>
-            {msg1}
-            {msg2}
-            {msg3}
 
+            <div className={"lolo2"}>
+                {msg1}
+                {msg2}
+                {msg3}
+            </div>
             <div hidden={(!msg4)}>
                 {msg5}
             </div>
@@ -459,8 +462,8 @@ const Home = () => {
                     <HighchartsReact ref={chartComponent2} highcharts={Highcharts} options={optionsArea}/>
 
                 </div>
-                <h3 hidden={msg4} align={"central"}> Last Update Time: {updatetime}</h3>
-                <br/><br/><br/><br/><br/>
+                <h3 hidden={msg4} style={{textAlign:"center"}}> Last Update Time: {updatetime}</h3>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
 
         </>

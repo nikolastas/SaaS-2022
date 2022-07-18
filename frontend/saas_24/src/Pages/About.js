@@ -15,7 +15,7 @@ const About = () => {
             sessionStorage.removeItem("authentication")
             setMsg(
                 <>
-                    <h1 className ='center'>You are on this page by mistake please log in</h1>
+                    <h1 className='center'>You are on this page by mistake please log in</h1>
                     <button id="butt" className={"button button"} onClick={login}>Login</button>
                 </>
             )
@@ -35,15 +35,20 @@ const About = () => {
                         sessionStorage.removeItem("authentication")
                         setMsg(
                             <>
-                                <h1 className ='center'>There was an error with your login credentials. Try Logging in again</h1>
-                                <button id ="butt" className={"button button"} onClick={login}>Login</button>
+
+                                <h1 align={"center"}>There was an error with your login credentials. Try Logging in
+                                    again</h1>
+                                <button align={"center"} className={"button3 butto"} onClick={login}>Login</button>
+
+
                             </>
                         )
 
                     } else {
                         setMsg(
                             <div className='center'>
-                                <p className={"p1"}  style={{textAlign:'center' , fontSize:'17px'}}>The goal of the project was to
+                                <p className={"p1"} style={{textAlign: 'center', fontSize: '17px'}}>The goal of the
+                                    project was to
                                     develop an cloud-based application using the
                                     microservice architecture. The apps hosts data about the energy consumption of
                                     countries in Europe and presents
@@ -62,7 +67,9 @@ const About = () => {
 
     return (
         <>
-            {msg}
+            <div align={"center"}>
+                {msg}
+            </div>
         </>
     )
 

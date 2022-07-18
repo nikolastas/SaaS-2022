@@ -48,8 +48,8 @@ const RenewUser = () => {
                     } else {
                         setMsg(
                             <>
-                                <h1>Subscription renewed Successfully</h1>
-                                <p>Redirecting to Home</p>
+                                <h1 align={"center"}>Subscription renewed Successfully</h1>
+                                <p align={"center"}>Redirecting to Home</p>
                             </>
                         )
                         sleep(2000).then(() => {
@@ -60,7 +60,7 @@ const RenewUser = () => {
                 .catch((e) => {
                     console.log(e)
                     setMsg(
-                        <h1>User Creation failed please try to log in again</h1>
+                        <h1 align={"center"}>User Creation failed please try to log in again</h1>
                     )
                     window.location.href = "/renewuser";
                 })
@@ -70,7 +70,7 @@ const RenewUser = () => {
             sessionStorage.removeItem("authentication")
             setMsg(
                 <>
-                    <h1>You are in this page by mistake</h1>;
+                    <h1 align={"center"}>You are in this page by mistake</h1>;
                 </>
             )
             sleep(2000).then(() => {
@@ -79,13 +79,27 @@ const RenewUser = () => {
         } else {
             setMsg(
                 <>
-                    <h1>Choose a subscription plan below</h1>
-                    <button id="submit" onClick={handlesub}>Subscribe and Renew subscription</button>
-                    <select id="select">
-                        <option name="1" value={1}>1 month</option>
-                        <option name="2" value={2}>6 months</option>
-                        <option name="3" value={3}>1 year</option>
-                    </select>
+                    <h1 align={"center"}>Choose a subscription plan below</h1>
+                    <div align={"center"}>
+                        <ul >
+                            <li>
+                                <select id="select" className={"button3 butto"}>
+                                    <option name="1" value={1}>1 month</option>
+                                    <option name="2" value={2}>6 months</option>
+                                    <option name="3" value={3}>1 year</option>
+                                </select>
+                            </li>
+                            <li>
+                                <button id="submit" className={"button3 butto "} onClick={handlesub}>Subscribe and Renew
+                                    subscription
+                                </button>
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+
                 </>
             )
         }

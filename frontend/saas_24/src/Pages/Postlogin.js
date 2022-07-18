@@ -37,24 +37,28 @@ const Postlogin = () => {
                     if (parseInt(data.subscription) === -1) {
                         setMsg(
                             <>
-                                <h1 id="UserArea">Hello {data.name}</h1>
-                                <h2 id="Info">You need to create a new account to continue</h2>
-                                <button id="newUser" onClick={() => {
-                                    window.location.href = "/newuser";
-                                }}>New User
-                                </button>
+                                <div align={"center"}>
+                                    <h1 align={"center"} id="UserArea">Hello {data.name}</h1>
+                                    <h2 align={"center"} id="Info">You need to create a new account to continue</h2>
+                                    <button id="newUser" align="center" className={"button3 butto "} onClick={() => {
+                                        window.location.href = "/newuser";
+                                    }}>New User
+                                    </button>
+                                </div>
                             </>
                         )
 
                     } else if (parseInt(data.subscription) === 0) {
                         setMsg(
                             <>
-                                <h1 id="UserArea">Hello {data.name}</h1>
-                                <h2>You need to renew your subscription to continue</h2>
-                                <button id="renewUser" onClick={() => {
-                                    window.location.href = "/renewuser";
-                                }}>Renew Subscription
-                                </button>
+                                <div align={"center"}>
+                                    <h1 align={"center"} id="UserArea">Hello {data.name}</h1>
+                                    <h2 align={"center"}>You need to renew your subscription to continue</h2>
+                                    <button id="renewUser" className={"button3 butto "} onClick={() => {
+                                        window.location.href = "/renewuser";
+                                    }}>Renew Subscription
+                                    </button>
+                                </div>s
                             </>
                         )
 
@@ -63,7 +67,7 @@ const Postlogin = () => {
                     } else {
                         setMsg(
                             <>
-                                <h1>There was an unexpected error</h1>
+                                <h1 align={"center"}>There was an unexpected error</h1>
                             </>
                         )
                     }
