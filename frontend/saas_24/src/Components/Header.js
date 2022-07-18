@@ -82,6 +82,9 @@ const Header = () => {
             }
         }
     }, [])
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
 
     return (
         <>
@@ -104,16 +107,16 @@ const Header = () => {
                 </div>
 
                 <div className="dropdown" hidden={hid}>
-                    <button className="dropbtn" onClick="myFunction()">API CALLS
+                    <button className="dropbtn" onClick={myFunction}>API CALLS
                         <i className="fa fa-caret-down"></i>
                     </button>
                     <div className={"dropdown-content"} id="myDropdown" className="dropdown-content" hidden={hid}>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link1,"ATL",false)}>API CALL ATL</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link2,"AGRT",false)}>API CALL AGRT</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link3,"FF",false)}>API CALL FF</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link1,"ATL",true)}>API CALL RESET ATL</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link2,"AGRT",true)}>API CALL RESET AGRT</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link3,"FF",true)}>API CALL RESET FF</p>
+                        <p style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link1,"ATL",false)}>API CALL ATL</p>
+                        <p style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link2,"AGRT",false)}>API CALL AGRT</p>
+                        <p style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link3,"FF",false)}>API CALL FF</p>
+                        <p style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link1,"ATL",true)}>API CALL RESET ATL</p>
+                        <p style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link2,"AGRT",true)}>API CALL RESET AGRT</p>
+                        <p style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link3,"FF",true)}>API CALL RESET FF</p>
                     </div>
                 </div>
                 </>:null}

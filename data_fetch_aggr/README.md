@@ -1,8 +1,6 @@
-# Data fetch Agregation per Type
+# Data fetch Agregation Per Type
 
-Κύρια λειτουργία του microservice αυτού είναι:
-
-- Περιμένει μήνυμα απο το microservice modify_aggr_generation_per_type απο τον Kafka
-- Για την δοσμένη ημερομηνία, λαμβανει τα κατάλληλα δεδομένα απο την βάση του αντίστοιχου microservice data modify
-- Ανέβάζει τα δεδομένα στην βάση του
-- Όταν ζητηθεί απο το frontend, εκτελεί αίτημα POST (εφόσον επαληθεύσει την ταυτότητα χρήστη)και επιστρέφει μέσω SQL query τα κατάλληλα δεδομένα στο frontend
+This microservice does the following tasks in out SaaS:
+- Getting the allready modified data from the [modify_aggr_generation_per_type](https://github.com/ntua/saas2022-24/tree/master/modify_aggr_generation_per_type) when informed by Kafka that the data is ready to be sent
+- Saves them into a cloud based database.
+- Listens to a port for POST requests from the [frontend](https://github.com/ntua/saas2022-24/tree/master/frontend/saas_24) microservice and serves the saved data
