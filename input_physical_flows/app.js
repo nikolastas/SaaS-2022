@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const request = require('./controller/request.js');
-
+const fs = require('fs');
+const path = require('path');
 const app = express();
 const resetDB = require('./controller/reset.js');
 const dot = require('dotenv');
@@ -70,8 +71,25 @@ async function reset_databases(req, res) {
        
        result =  await resetDB.ResetDB(hostElement);
        
-    }   
-    console.log(result);
+    }
+    let counter = 0;   
+    try {
+        const direcotry = "data/physicalflows/";
+        let files = fs.readdirSync(direcotry);
+        for (const file of files) {
+            console.log((path.join(__dirname,direcotry, file)))
+            fs.unlinkSync(path.join(__dirname,direcotry, file));
+            counter++;
+        };    
+        const directory2 = "/controller/physicalflows_last.txt";
+        console.log(path.join(directory2));
+        fs.unlinkSync(path.join(__dirname,directory2));
+        counter++;
+    }catch(err) {
+        console.log(err);
+    }
+    console.log("total files deleted: " + counter);
+    // console.log(result);
     res.set("Access-Control-Allow-Origin","*");
     if(result.success){
         res.send(result).status(200);

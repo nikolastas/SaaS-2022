@@ -27,19 +27,7 @@ async function ResetDB(jsonHost) {
             con.query(sql_query, function (err, result, fields) {
               if (err) reject({err:err, success:false});
                 con.end();
-                try {
-                    const direcotry = "data/actualtotalload/";
-                    let files = fs.readdirSync(direcotry);
-                    for (const file of files) {
-                        console.log((path.join(__dirname,direcotry, file)))
-                        fs.unlinkSync(path.join(__dirname,direcotry, file));
-                    };    
-                    const directory2 = "/controller/actualtotalload_last.txt";
-                    console.log(path.join(directory2));
-                    fs.unlinkSync(path.join(__dirname,directory2));
-                    }catch(err) {
-                        console.log(err);
-                    }
+                
                 resolve({success: true});
             });
           

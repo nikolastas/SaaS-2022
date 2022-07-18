@@ -1,5 +1,6 @@
 const express = require('express');
-
+const fs = require('fs');
+const path = require('path');
 const request = require('./controller/request.js');
 const cors = require('cors');
 const app = express();
@@ -71,7 +72,24 @@ async function reset_databases(req, res) {
        
        result =  await resetDB.ResetDB(hostElement);
        
-    }   
+    }
+    let counter =0;
+    try {
+        const direcotry = "data/aggrgenerationpertype/";
+        let files = fs.readdirSync(direcotry);
+        for (const file of files) {
+            console.log((path.join(__dirname,direcotry, file)))
+            fs.unlinkSync(path.join(__dirname,direcotry, file));
+            counter++;
+        };    
+        const directory2 = "/controller/aggrgenerationpertype_last.txt";
+        console.log(path.join(directory2));
+        fs.unlinkSync(path.join(__dirname,directory2));
+        counter++;
+    }catch(err) {
+        console.log(err);
+    }  
+    console.log("TOTAL FILES DELETED: " + counter); 
     // console.log(result);
     res.set("Access-Control-Allow-Origin","*");
     if(result.success){
