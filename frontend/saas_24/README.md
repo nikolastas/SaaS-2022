@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Energy Live 2022 Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![built with React](https://img.shields.io/badge/built%20with-react-green)](https://reactjs.org/)
+[![built with Highcharts](https://img.shields.io/badge/built%20with-highcharts-orange)](https://www.highcharts.com/)
 
-## Available Scripts
+This code section is about the implementation of a web app that connects with the microservices of [login_handling](https://github.com/ntua/saas2022-24/tree/master/login_handling)
+and data_fetch (3 sepparent microservices) in order to provide information in the form of charts about the energy flows, total energy loads and
+generated energy within the european Countries.
 
-In the project directory, you can run:
+## Hosting
 
-### `npm start`
+The web app is publicly hosted [here](https://master.d1eqcvae5rwrd.amplifyapp.com/). The hosting services are provited by
+the amazon web services (AWS) amplify my app cloud hosting.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Login service
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The login section is constructed using Google SSO login services and with cross-checking the token given by the client
+with Google in every section of the web app.
 
-### `npm test`
+## Subscription services
+The subscription plans are in a demo form, which means that there is not a payment service in the subscription renewal or in
+the purchase of the new subscription. The current subscription plans is the following:
+- 1 month
+- 6 months
+- 1 year
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## User management services
+The user subscription status and the user credentials are saved in a cloud database provided by Google Cloud Run 
+services.
 
-### `npm run build`
+## Statistics services
+The statistics services are constantly communicating with the data_fetch microservices and getting the appropriate data
+from the database of this microservices in order to display it in 2 different forms.
+In order for the user to access this data he must be logged in and provide the following
+- The date from which the data start to display
+- The type of the chart to display
+- The specific parameters according each display type
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Then the data is displayed in 2 forms:
+- The first form is the actual values that is being fetched overtime
+- The second form is the accumulated values that display se summary of all the previous values over time
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The display is handled using the Highchart.js firmware.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Fake API Calls
+The header of the web app provides a dropdown list which include options that simulate the FTP API calls for the 
+input microservice to catch and start the process of processing the data and in the end displaying in the frontend.
+The supported calls is the following
 
-### `npm run eject`
+| API CALL NAME       | FUNCTION                                                                |
+|---------------------|-------------------------------------------------------------------------|
+| API CALL ATL        | Gets a new csv for the Actual Total load input database                 |
+| API CALL AGRT       | Gets a new csv for the Generated Total Load Per Type input database     |
+| API CALL FF         | Gets a new csv for the Physical Flows input database                    |
+| API CALL RESET ATL  | Removes the data from Actual Total load data input database             |
+| API CALL RESET AGRT | Removes the data from Generated Total Load Per Type data input database |
+| API CALL RESET FF   | Removes the data from Physical Flows data input database                |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

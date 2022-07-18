@@ -22,9 +22,9 @@ const Header = () => {
         credentials: "same-origin"
     }
 
-    const link1 = "input-atl-b4jugd4qqq-ew.a.run.app/get_data"
-    const link2 = "input-agrt-jco5wuvaqq-ew.a.run.app/get_data"
-    const link3 = "input-ff-dsgmlwmwqa-ew.a.run.app/get_data"
+    const link1 = "input-atl-b4jugd4qqq-ew.a.run.app/"
+    const link2 = "input-agrt-jco5wuvaqq-ew.a.run.app/"
+    const link3 = "input-ff-dsgmlwmwqa-ew.a.run.app/"
 
     const apiCallATL = () => {
 
@@ -35,11 +35,11 @@ const Header = () => {
         })
     }
 
-    const apiCallAGRT = () => {
+    const apiCall = (link,name,reset) => {
 
-        fetch("https://" + link2, o).then((r) => {
+        fetch("https://" + link+(reset?"reset":"get_data"), o).then((r) => {
             console.log(r)
-            if (r.ok) console.log("API CALL FOR AGRT OK"); else console.log("API CALL FAILED")
+            if (r.ok) console.log("API CALL FOR "+name + (reset?" RESET":"") +" OK"); else console.log("API CALL FAILED")
         })
     }
 
@@ -69,6 +69,7 @@ const Header = () => {
     useEffect(() => {
         return () => {
             if (token) {
+
                 setHid(false)
             } else {
                 setHid(true)
@@ -82,14 +83,13 @@ const Header = () => {
         }
     }, [])
 
-
     return (
         <>
             <div className="wrapper">
                 <div className="title">
                     <h1>Energy Live 2022</h1>
                 </div>
-
+                {token? <>
                 <div className="title">
                     <p className="p1" hidden={hid}>{mail}</p>
                 </div>
@@ -107,12 +107,16 @@ const Header = () => {
                     <button className="dropbtn" onClick="myFunction()">API CALLS
                         <i className="fa fa-caret-down"></i>
                     </button>
-                    <div className={"dropdown-content"} id="myDropdown" className="dropdown-content">
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={apiCallATL}>API CALL ATL</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={apiCallAGRT}>API CALL AGRT</p>
-                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={apiCallFF}>API CALL FF</p>
+                    <div className={"dropdown-content"} id="myDropdown" className="dropdown-content" hidden={hid}>
+                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link1,"ATL",false)}>API CALL ATL</p>
+                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link2,"AGRT",false)}>API CALL AGRT</p>
+                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link3,"FF",false)}>API CALL FF</p>
+                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link1,"ATL",true)}>API CALL RESET ATL</p>
+                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link2,"AGRT",true)}>API CALL RESET AGRT</p>
+                        <p className="fa fa-caret-down" style={{textDecoration : 'none' ,color:"black"}} onClick={()=>apiCall(link3,"FF",true)}>API CALL RESET FF</p>
                     </div>
                 </div>
+                </>:null}
             </div>
         </>
     )
