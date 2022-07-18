@@ -4,7 +4,7 @@
 [![built with Highcharts](https://img.shields.io/badge/built%20with-highcharts-orange)](https://www.highcharts.com/)
 
 This code section is about the implementation of a web app that connects with the microservices of [login_handling](https://github.com/ntua/saas2022-24/tree/master/login_handling)
-and data_fetch (3 sepparent microservices) in order to provide information in the form of charts about the energy flows, total energy loads and
+and data_fetch (3 separate microservices) in order to provide information in the form of charts about the energy flows, total energy loads and
 generated energy within the european Countries.
 
 ## Hosting
